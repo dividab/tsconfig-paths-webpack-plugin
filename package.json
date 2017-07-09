@@ -22,6 +22,7 @@
   "scripts": {
     "tsc": "tsc -p src",
     "tsc:tests": "tsc -p tests",
+    "tsc:example": "tsc -p example",
     "example": "cd example && webpack",
     "build": "rm -rf lib && tsc -p src",
     "publish:major": "yarn run build && node scripts/publish.js major",

@@ -5,7 +5,7 @@ module.exports = {
   devtool: 'sourcemap',
   entry: './index',
   output: {
-    path: path.join(__dirname, 'output'),
+    path: path.join(__dirname, 'temp'),
     filename: 'bundle.js',
   },
   module: {
