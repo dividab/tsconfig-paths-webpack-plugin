@@ -1,0 +1,21 @@
+{
+  "extends": "../base-tsconfig.json",
+  "compilerOptions": {
+    // Output
+    "module": "commonjs",
+    "target": "es5",
+    "sourceMap": false,
+    "outDir": "../lib",
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "../custom-typings/*"
+      ]
+    },
+    "lib": [
+      "dom",
+      "es2015",
+      "es2017.object"
+    ]
+  }
+}

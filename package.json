@@ -1,0 +1,28 @@
+{
+  "name": "tsconfig-paths-webpack-plugin",
+  "version": "2.1.2",
+  "description": "Load node modules according to tsconfig paths in webpack.",
+  "main": "lib/index.js",
+  "author": "Jonas Kello",
+  "license": "MIT",
+  "repository": "https://github.com/jonaskello/tsconfig-paths-webpack-plugin",
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "tsconfig": "^6.0.0"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.68",
+    "@types/node": "^8.0.9",
+    "shelljs": "^0.7.8",
+    "ts-node": "^3.2.0",
+    "typescript": "^2.4.1"
+  },
+  "scripts": {
+    "tsc": "tsc -p src",
+    "tsc:tests": "tsc -p tests",
+    "build": "rm -rf lib && tsc -p src",
+    "publish:major": "yarn run build && node scripts/publish.js major",
+    "publish:minor": "yarn run build && node scripts/publish.js minor",
+    "publish:patch": "yarn run build && node scripts/publish.js patch"
+  }
+}
