@@ -1,6 +1,6 @@
 {
   "name": "tsconfig-paths-webpack-plugin",
-  "version": "2.1.2",
+  "version": "0.1.0",
   "description": "Load modules according to tsconfig paths in webpack.",
   "main": "index.js",
   "author": "Jonas Kello",
@@ -23,7 +23,7 @@
     "tsc": "tsc -p src",
     "tsc:tests": "tsc -p tests",
     "tsc:example": "tsc -p example",
-    "example": "cd example && webpack",
+    "example": "yarn build && cd example && webpack",
     "build": "rm -rf lib && tsc -p src",
     "publish:major": "yarn run build && node scripts/publish.js major",
     "publish:minor": "yarn run build && node scripts/publish.js minor",
