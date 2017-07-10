@@ -3,7 +3,6 @@ const TsConfigPathsPlugin = require('../index');
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
-  devtool: 'sourcemap',
   entry: './index',
   output: {
     path: path.join(__dirname, 'temp'),
