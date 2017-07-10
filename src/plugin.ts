@@ -54,7 +54,7 @@ export interface PathPluginOptions {
   context?: string;
 }
 
-export class PathPlugin implements ResolverPlugin {
+export class TsConfigPathsPlugin implements ResolverPlugin {
   source: string;
   target: string;
   ts: typeof ts;
@@ -171,4 +171,3 @@ export class PathPlugin implements ResolverPlugin {
     };
   }
 }
-

@@ -6,8 +6,8 @@
     "outDir": "./js_out",
     "baseUrl": ".",
     "paths": {
-      "*": [
-        "../custom-typings/*"
+      "foo": [
+        "./src/foo"
       ]
     }
   }
