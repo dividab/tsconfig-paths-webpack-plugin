@@ -67,8 +67,6 @@ export class TsConfigPathsPlugin implements ResolverPlugin {
 
   constructor(config: LoaderConfig & ts.CompilerOptions & PathPluginOptions = {} as any) {
 
-    console.log("constructorconstructorconstructor");
-
     this.source = 'described-resolve';
     this.target = 'resolve';
 
@@ -113,8 +111,6 @@ export class TsConfigPathsPlugin implements ResolverPlugin {
 
   apply(resolver: Resolver) {
     const { baseUrl, mappings } = this;
-
-    console.log("APPLY!!");
 
     if (baseUrl) {
       resolver.apply(new ModulesInRootPlugin("module", this.absoluteBaseUrl, "resolve"));
