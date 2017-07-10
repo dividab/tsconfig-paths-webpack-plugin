@@ -29,6 +29,14 @@ resolve: {
 }
 ```
 
+## How to test
+
+To run the provided example:
+
+```
+yarn example
+```
+
 ## Prior work
 
 This project uses work done in the [awesome-typescript-loader](https://github.com/s-panferov/awesome-typescript-loader).
