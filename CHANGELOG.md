@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 - Nothing for now
 
+## [0.1.1]
+### Added
+- Include files.
+
 ## [0.1.0]
 ### Added
 - First release.
