@@ -81,7 +81,12 @@
     "one-variable-per-declaration": [true],
     "quotemark": [true, "double", "avoid-escape"],
     "semicolon": [true, "always", "ignore-interfaces"],
-    "variable-name": [true, "ban-keywords", "check-format"],
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore"
+    ],
     "whitespace": [
       true,
       "check-branch",

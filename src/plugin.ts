@@ -1,14 +1,8 @@
 import { readConfigFile } from "./read-config-file";
 import * as path from "path";
-
-interface LoaderConfig {
-  compiler?: string;
-  configFileName?: string;
-}
-
-interface PathPluginOptions {
-  context?: string;
-}
+import * as Options from "./options";
+import * as logger from "./logger";
+import chalk from "chalk";
 
 interface ResolverPlugin {
   apply(resolver: Resolver): void;
@@ -76,18 +70,28 @@ export class TsConfigPathsPlugin implements ResolverPlugin {
   mappings: Array<Mapping>;
   absoluteBaseUrl: string;
 
-  constructor(config: LoaderConfig & PathPluginOptions = {}) {
+  constructor(rawOptions: Partial<Options.Options> = {}) {
     this.source = "described-resolve";
     this.target = "resolve";
 
-    const context = config.context || process.cwd();
+    const options = Options.getOptions(rawOptions);
+
+    const colors = new chalk.constructor({ enabled: options.colors });
+    const log = logger.makeLogger(options, colors);
+
+    const context = options.context || process.cwd();
     const { configFilePath, baseUrl, paths } = readConfigFile(
       context,
-      config.compiler,
-      config.configFileName
+      options.compiler,
+      options.configFile
     );
 
-    console.log(`tsconfig-paths-webpack-plugin: Using ${configFilePath}`);
+    console.log("HEJ", options.silent);
+
+    log.logInfo(
+      `tsconfig-paths-webpack-plugin: Using config file at ${configFilePath}`
+    );
+    // console.log(`tsconfig-paths-webpack-plugin: Using ${configFilePath}`);
 
     this.baseUrl = baseUrl;
     this.absoluteBaseUrl = path.resolve(

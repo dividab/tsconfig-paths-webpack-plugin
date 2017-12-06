@@ -36,5 +36,8 @@
   "lint-staged": {
     "*.{ts,tsx}": "tslint",
     "*.{ts,tsx,json,css}": ["prettier --write", "git add"]
+  },
+  "dependencies": {
+    "chalk": "^2.3.0"
   }
 }

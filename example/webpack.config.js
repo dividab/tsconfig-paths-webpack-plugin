@@ -15,13 +15,13 @@ module.exports = {
         exclude: /^node_modules/,
         loader: "ts-loader",
         options: {
-          configFileName: "./example/tsconfig.json"
+          configFile: "./example/tsconfig.json"
         }
       }
     ]
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
-    plugins: [new TsConfigPathsPlugin({ configFileName: "./tsconfig.json" })]
+    plugins: [new TsConfigPathsPlugin({ configFile: "./tsconfig.json" })]
   }
 };
