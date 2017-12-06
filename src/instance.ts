@@ -2,11 +2,18 @@ import * as fs from "fs";
 import * as path from "path";
 import * as _ from "lodash";
 import * as ts from "typescript";
-import { CompilerInfo, LoaderConfig, TsConfig } from "./interfaces";
+import { LoaderConfig } from "./interfaces";
+
+export interface CompilerInfo {
+  compilerPath: string;
+  compilerVersion: string;
+  tsImpl: typeof ts;
+}
 
 let colors = require("colors/safe");
 
-export type QueryOptions = LoaderConfig & ts.CompilerOptions;
+type QueryOptions = LoaderConfig & ts.CompilerOptions;
+type TsConfig = ts.ParsedCommandLine;
 
 const COMPILER_ERROR = colors.red(`\n\nTypescript compiler cannot be found, please add it to your package.json file:
     npm install --save-dev typescript
