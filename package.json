@@ -13,20 +13,31 @@
   "devDependencies": {
     "@types/lodash": "^4.14.68",
     "@types/node": "^8.0.9",
+    "husky": "^0.14.3",
+    "lint-staged": "^6.0.0",
     "shelljs": "^0.7.8",
     "ts-loader": "^2.2.2",
     "ts-node": "^3.2.0",
+    "tslint": "^5.8.0",
+    "tslint-immutable": "^4.4.0",
     "typescript": "^2.4.1",
     "webpack": "^3.1.0"
   },
   "scripts": {
+    "precommit": "lint-staged",
     "tsc": "tsc -p src",
     "tsc:tests": "tsc -p tests",
     "tsc:example": "tsc -p example",
     "example": "yarn build && cd example && webpack",
     "build": "rm -rf lib && tsc -p src",
+    "lint":
+      "tslint -t msbuild './src/**/*.ts{,x}' -e './src/node_modules/**/*'",
     "publish:major": "yarn run build && node scripts/publish.js major",
     "publish:minor": "yarn run build && node scripts/publish.js minor",
     "publish:patch": "yarn run build && node scripts/publish.js patch"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": "tslint",
+    "*.{ts,tsx,json,css}": ["prettier --write", "git add"]
   }
 }

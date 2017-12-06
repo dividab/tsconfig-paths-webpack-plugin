@@ -1,10 +1,10 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import * as _ from 'lodash';
-import * as ts from 'typescript';
-import { CompilerInfo, LoaderConfig, TsConfig } from './interfaces';
+import * as fs from "fs";
+import * as path from "path";
+import * as _ from "lodash";
+import * as ts from "typescript";
+import { CompilerInfo, LoaderConfig, TsConfig } from "./interfaces";
 
-let colors = require('colors/safe');
+let colors = require("colors/safe");
 
 export type QueryOptions = LoaderConfig & ts.CompilerOptions;
 
@@ -12,17 +12,17 @@ const COMPILER_ERROR = colors.red(`\n\nTypescript compiler cannot be found, plea
     npm install --save-dev typescript
 `);
 
-function findTsImplPackage(inputPath: string) {
+function findTsImplPackage(inputPath: string): string {
   let pkgDir = path.dirname(inputPath);
-  if (fs.readdirSync(pkgDir).find((value) => value === 'package.json')) {
-    return path.join(pkgDir, 'package.json');
+  if (fs.readdirSync(pkgDir).find(value => value === "package.json")) {
+    return path.join(pkgDir, "package.json");
   } else {
     return findTsImplPackage(pkgDir);
   }
 }
 
 export function setupTs(compiler: string): CompilerInfo {
-  let compilerPath = compiler || 'typescript';
+  let compilerPath = compiler || "typescript";
 
   let tsImpl: typeof ts;
   let tsImplPath: string;
@@ -41,7 +41,7 @@ export function setupTs(compiler: string): CompilerInfo {
   let compilerInfo: CompilerInfo = {
     compilerPath,
     compilerVersion,
-    tsImpl,
+    tsImpl
   };
 
   return compilerInfo;
@@ -53,14 +53,13 @@ export interface Configs {
   loaderConfig: LoaderConfig;
 }
 
-function absolutize(fileName: string, context: string) {
+function absolutize(fileName: string, context: string): string {
   if (path.isAbsolute(fileName)) {
     return fileName;
   } else {
     return path.join(context, fileName);
   }
 }
-
 
 export function readConfigFile(
   context: string,
@@ -75,23 +74,34 @@ export function readConfigFile(
     configFilePath = tsImpl.findConfigFile(context, tsImpl.sys.fileExists);
   }
 
-  let existingOptions = tsImpl.convertCompilerOptionsFromJson(query, context, 'atl.query');
+  let existingOptions = tsImpl.convertCompilerOptionsFromJson(
+    query,
+    context,
+    "atl.query"
+  );
 
   if (!configFilePath || query.configFileContent) {
     return {
-      configFilePath: configFilePath || path.join(context, 'tsconfig.json'),
+      configFilePath: configFilePath || path.join(context, "tsconfig.json"),
       compilerConfig: tsImpl.parseJsonConfigFileContent(
         query.configFileContent || {},
         tsImpl.sys,
         context,
-        _.extend({}, tsImpl.getDefaultCompilerOptions(), existingOptions.options) as ts.CompilerOptions,
+        _.extend(
+          {},
+          tsImpl.getDefaultCompilerOptions(),
+          existingOptions.options
+        ) as ts.CompilerOptions,
         context
       ),
       loaderConfig: query as LoaderConfig
     };
   }
 
-  let jsonConfigFile = tsImpl.readConfigFile(configFilePath, tsImpl.sys.readFile);
+  let jsonConfigFile = tsImpl.readConfigFile(
+    configFilePath,
+    tsImpl.sys.readFile
+  );
   let compilerConfig = tsImpl.parseJsonConfigFileContent(
     jsonConfigFile.config,
     tsImpl.sys,
