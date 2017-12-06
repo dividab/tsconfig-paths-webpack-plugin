@@ -16,8 +16,13 @@ interface ResolverPlugin {
 
 interface Resolver {
   apply(plugin: ResolverPlugin): void;
-  plugin(source: string, cb: ResolverCallback): any;
-  doResolve(target: string, req: Request, desc: string, callback: any): any;
+  plugin(source: string, cb: ResolverCallback): void;
+  doResolve(
+    target: string,
+    req: Request,
+    desc: string,
+    callback: Callback
+  ): void;
   join(relativePath: string, innerRequest: Request): Request;
 }
 
@@ -39,15 +44,15 @@ type CreateInnerCallback = (
 type getInnerRequest = (resolver: Resolver, request: Request) => string;
 
 interface Request {
-  request?: Request;
+  request?: Request | string;
   relativePath: string;
 }
 
 interface Callback {
-  (err?: Error, result?: any): void;
-  log?: any;
-  stack?: any;
-  missing?: any;
+  (err?: Error, result?: string): void;
+  log?: string;
+  stack?: string;
+  missing?: string;
 }
 
 const modulesInRootPlugin: new (
@@ -136,7 +141,7 @@ export class TsConfigPathsPlugin implements ResolverPlugin {
     return target.indexOf("@types") !== -1 || target.indexOf(".d.ts") !== -1;
   }
 
-  private createPlugin(resolver: Resolver, mapping: Mapping): any {
+  private createPlugin(resolver: Resolver, mapping: Mapping): ResolverCallback {
     return (request, callback) => {
       const innerRequest = getInnerRequest(resolver, request);
       if (!innerRequest) {
@@ -176,7 +181,7 @@ export class TsConfigPathsPlugin implements ResolverPlugin {
           "' to '" +
           newRequestStr +
           "'",
-        createInnerCallback(function(err: any, result: any): any {
+        createInnerCallback((err: Error, result: string): void => {
           if (arguments.length > 0) {
             return callback(err, result);
           }

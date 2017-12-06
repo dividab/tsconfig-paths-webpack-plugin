@@ -6,9 +6,8 @@
     "outDir": "./js_out",
     "baseUrl": ".",
     "paths": {
-      "foo": [
-        "./src/foo"
-      ]
+      "foo": ["./src/mapped/foo"],
+      "bar/*": ["./src/mapped/bar/*"]
     }
   }
 }

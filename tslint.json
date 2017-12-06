@@ -1,7 +1,7 @@
 {
   "extends": ["tslint-immutable"],
   "rules": {
-    // "no-any": true,
+    "no-any": true,
     "no-internal-module": true,
     "no-namespace": true,
     "no-reference": true,
