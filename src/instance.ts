@@ -1,24 +1,19 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as ts from "typescript";
+import * as colors from "colors/safe";
 import { LoaderConfig } from "./interfaces";
 
-export interface CompilerInfo {
+interface CompilerInfo {
   compilerPath: string;
   compilerVersion: string;
   tsImpl: typeof ts;
 }
 
-export interface Configs {
+interface Configs {
   configFilePath: string;
-  compilerConfig: TsConfig;
-  loaderConfig: LoaderConfig;
+  compilerConfig: ts.ParsedCommandLine;
 }
-
-let colors = require("colors/safe");
-
-type QueryOptions = LoaderConfig;
-type TsConfig = ts.ParsedCommandLine;
 
 const COMPILER_ERROR = colors.red(`\n\nTypescript compiler cannot be found, please add it to your package.json file:
     npm install --save-dev typescript
@@ -33,7 +28,7 @@ function findTsImplPackage(inputPath: string): string {
   }
 }
 
-export function setupTs(compiler: string): CompilerInfo {
+function setupTs(compiler: string): CompilerInfo {
   let compilerPath = compiler || "typescript";
 
   let tsImpl: typeof ts;
@@ -50,7 +45,7 @@ export function setupTs(compiler: string): CompilerInfo {
   const pkgPath = findTsImplPackage(tsImplPath);
   const compilerVersion = require(pkgPath).version;
 
-  let compilerInfo: CompilerInfo = {
+  const compilerInfo: CompilerInfo = {
     compilerPath,
     compilerVersion,
     tsImpl
@@ -69,18 +64,20 @@ function absolutize(fileName: string, context: string): string {
 
 export function readConfigFile(
   context: string,
-  query: QueryOptions,
-  tsImpl: typeof ts
+  config: LoaderConfig
+  //tsImpl: typeof ts
 ): Configs {
+  const tsImpl: typeof ts = setupTs(config.compiler).tsImpl;
+
   let configFilePath: string;
-  if (query.configFileName && query.configFileName.match(/\.json$/)) {
-    configFilePath = absolutize(query.configFileName, context);
+  if (config.configFileName && config.configFileName.match(/\.json$/)) {
+    configFilePath = absolutize(config.configFileName, context);
   } else {
     configFilePath = tsImpl.findConfigFile(context, tsImpl.sys.fileExists);
   }
 
   const existingOptions = tsImpl.convertCompilerOptionsFromJson(
-    query,
+    config,
     context,
     "atl.query"
   );
@@ -99,7 +96,6 @@ export function readConfigFile(
 
   return {
     configFilePath,
-    compilerConfig,
-    loaderConfig: query
+    compilerConfig
   };
 }

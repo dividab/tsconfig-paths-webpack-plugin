@@ -1,4 +1,4 @@
-import { setupTs, readConfigFile } from "./instance";
+import { readConfigFile } from "./instance";
 import { LoaderConfig } from "./interfaces";
 import * as path from "path";
 
@@ -71,14 +71,8 @@ export class TsConfigPathsPlugin implements ResolverPlugin {
     this.source = "described-resolve";
     this.target = "resolve";
 
-    const thisTs = setupTs(config.compiler).tsImpl;
-
-    let context = config.context || process.cwd();
-    let { configFilePath, compilerConfig } = readConfigFile(
-      context,
-      config,
-      thisTs
-    );
+    const context = config.context || process.cwd();
+    const { configFilePath, compilerConfig } = readConfigFile(context, config);
 
     console.log(`tsconfig-paths-webpack-plugin: Using ${configFilePath}`);
 
