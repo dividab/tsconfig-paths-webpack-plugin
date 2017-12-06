@@ -3,6 +3,7 @@ import * as path from "path";
 import * as ts from "typescript";
 import * as colors from "colors/safe";
 import { LoaderConfig } from "./interfaces";
+import { MapLike } from "typescript";
 
 interface CompilerInfo {
   compilerPath: string;
@@ -12,7 +13,8 @@ interface CompilerInfo {
 
 interface Configs {
   configFilePath: string;
-  compilerConfig: ts.ParsedCommandLine;
+  baseUrl?: string;
+  paths?: MapLike<string[]>;
 }
 
 const COMPILER_ERROR = colors.red(`\n\nTypescript compiler cannot be found, please add it to your package.json file:
@@ -62,11 +64,7 @@ function absolutize(fileName: string, context: string): string {
   }
 }
 
-export function readConfigFile(
-  context: string,
-  config: LoaderConfig
-  //tsImpl: typeof ts
-): Configs {
+export function readConfigFile(context: string, config: LoaderConfig): Configs {
   const tsImpl: typeof ts = setupTs(config.compiler).tsImpl;
 
   let configFilePath: string;
@@ -96,6 +94,7 @@ export function readConfigFile(
 
   return {
     configFilePath,
-    compilerConfig
+    baseUrl: compilerConfig.options.baseUrl,
+    paths: compilerConfig.options.paths
   };
 }

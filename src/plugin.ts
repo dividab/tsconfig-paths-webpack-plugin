@@ -72,22 +72,22 @@ export class TsConfigPathsPlugin implements ResolverPlugin {
     this.target = "resolve";
 
     const context = config.context || process.cwd();
-    const { configFilePath, compilerConfig } = readConfigFile(context, config);
+    const { configFilePath, baseUrl, paths } = readConfigFile(context, config);
 
     console.log(`tsconfig-paths-webpack-plugin: Using ${configFilePath}`);
 
-    this.baseUrl = compilerConfig.options.baseUrl;
+    this.baseUrl = baseUrl;
     this.absoluteBaseUrl = path.resolve(
       path.dirname(configFilePath),
       this.baseUrl || "."
     );
 
     this.mappings = [];
-    let paths = compilerConfig.options.paths || {};
-    Object.keys(paths).forEach(alias => {
+    const paths2 = paths || {};
+    Object.keys(paths2).forEach(alias => {
       let onlyModule = alias.indexOf("*") === -1;
       let excapedAlias = escapeRegExp(alias);
-      let targets = paths[alias];
+      let targets = paths2[alias];
       targets.forEach(target => {
         let aliasPattern: RegExp;
         if (onlyModule) {
