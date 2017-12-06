@@ -2,7 +2,6 @@ import { setupTs, readConfigFile } from "./instance";
 import { LoaderConfig } from "./interfaces";
 import * as path from "path";
 import * as _ from "lodash";
-import * as ts from "typescript";
 
 const modulesInRootPlugin: new (
   a: string,
@@ -65,41 +64,34 @@ export interface PathPluginOptions {
 export class TsConfigPathsPlugin implements ResolverPlugin {
   source: string;
   target: string;
-  ts: typeof ts;
-  configFilePath: string;
-  options: ts.CompilerOptions;
 
   baseUrl: string;
   mappings: Array<Mapping>;
   absoluteBaseUrl: string;
 
-  constructor(
-    config: LoaderConfig & ts.CompilerOptions & PathPluginOptions = {} as any
-  ) {
+  constructor(config: LoaderConfig & PathPluginOptions = {}) {
     this.source = "described-resolve";
     this.target = "resolve";
 
-    this.ts = setupTs(config.compiler).tsImpl;
+    const thisTs = setupTs(config.compiler).tsImpl;
 
     let context = config.context || process.cwd();
     let { configFilePath, compilerConfig } = readConfigFile(
       context,
       config,
-      {},
-      this.ts
+      thisTs
     );
 
-    this.options = compilerConfig.options;
-    this.configFilePath = configFilePath;
+    console.log(`tsconfig-paths-webpack-plugin: Using ${configFilePath}`);
 
-    this.baseUrl = this.options.baseUrl;
+    this.baseUrl = compilerConfig.options.baseUrl;
     this.absoluteBaseUrl = path.resolve(
-      path.dirname(this.configFilePath),
+      path.dirname(configFilePath),
       this.baseUrl || "."
     );
 
     this.mappings = [];
-    let paths = this.options.paths || {};
+    let paths = compilerConfig.options.paths || {};
     Object.keys(paths).forEach(alias => {
       let onlyModule = alias.indexOf("*") === -1;
       let excapedAlias = escapeRegExp(alias);
@@ -140,11 +132,11 @@ export class TsConfigPathsPlugin implements ResolverPlugin {
     });
   }
 
-  isTyping(target: string): boolean {
+  private isTyping(target: string): boolean {
     return target.indexOf("@types") !== -1 || target.indexOf(".d.ts") !== -1;
   }
 
-  createPlugin(resolver: Resolver, mapping: Mapping): any {
+  private createPlugin(resolver: Resolver, mapping: Mapping): any {
     return (request, callback) => {
       let innerRequest = getInnerRequest(resolver, request);
       if (!innerRequest) {

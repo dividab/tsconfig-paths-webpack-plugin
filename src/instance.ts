@@ -1,6 +1,5 @@
 import * as fs from "fs";
 import * as path from "path";
-import * as _ from "lodash";
 import * as ts from "typescript";
 import { LoaderConfig } from "./interfaces";
 
@@ -10,9 +9,15 @@ export interface CompilerInfo {
   tsImpl: typeof ts;
 }
 
+export interface Configs {
+  configFilePath: string;
+  compilerConfig: TsConfig;
+  loaderConfig: LoaderConfig;
+}
+
 let colors = require("colors/safe");
 
-type QueryOptions = LoaderConfig & ts.CompilerOptions;
+type QueryOptions = LoaderConfig;
 type TsConfig = ts.ParsedCommandLine;
 
 const COMPILER_ERROR = colors.red(`\n\nTypescript compiler cannot be found, please add it to your package.json file:
@@ -54,12 +59,6 @@ export function setupTs(compiler: string): CompilerInfo {
   return compilerInfo;
 }
 
-export interface Configs {
-  configFilePath: string;
-  compilerConfig: TsConfig;
-  loaderConfig: LoaderConfig;
-}
-
 function absolutize(fileName: string, context: string): string {
   if (path.isAbsolute(fileName)) {
     return fileName;
@@ -71,7 +70,6 @@ function absolutize(fileName: string, context: string): string {
 export function readConfigFile(
   context: string,
   query: QueryOptions,
-  options: LoaderConfig,
   tsImpl: typeof ts
 ): Configs {
   let configFilePath: string;
@@ -81,35 +79,17 @@ export function readConfigFile(
     configFilePath = tsImpl.findConfigFile(context, tsImpl.sys.fileExists);
   }
 
-  let existingOptions = tsImpl.convertCompilerOptionsFromJson(
+  const existingOptions = tsImpl.convertCompilerOptionsFromJson(
     query,
     context,
     "atl.query"
   );
 
-  if (!configFilePath || query.configFileContent) {
-    return {
-      configFilePath: configFilePath || path.join(context, "tsconfig.json"),
-      compilerConfig: tsImpl.parseJsonConfigFileContent(
-        query.configFileContent || {},
-        tsImpl.sys,
-        context,
-        _.extend(
-          {},
-          tsImpl.getDefaultCompilerOptions(),
-          existingOptions.options
-        ) as ts.CompilerOptions,
-        context
-      ),
-      loaderConfig: query as LoaderConfig
-    };
-  }
-
-  let jsonConfigFile = tsImpl.readConfigFile(
+  const jsonConfigFile = tsImpl.readConfigFile(
     configFilePath,
     tsImpl.sys.readFile
   );
-  let compilerConfig = tsImpl.parseJsonConfigFileContent(
+  const compilerConfig = tsImpl.parseJsonConfigFileContent(
     jsonConfigFile.config,
     tsImpl.sys,
     path.dirname(configFilePath),
@@ -120,10 +100,6 @@ export function readConfigFile(
   return {
     configFilePath,
     compilerConfig,
-    loaderConfig: _.defaults(
-      query,
-      jsonConfigFile.config.awesomeTypescriptLoaderOptions,
-      options
-    )
+    loaderConfig: query
   };
 }

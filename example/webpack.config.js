@@ -1,12 +1,12 @@
-const path = require('path');
-const TsConfigPathsPlugin = require('../index');
+const path = require("path");
+const TsConfigPathsPlugin = require("../index");
 
 module.exports = {
-  context: path.resolve(__dirname, 'src'),
-  entry: './index',
+  context: path.resolve(__dirname, "src"),
+  entry: "./index",
   output: {
-    path: path.join(__dirname, 'temp'),
-    filename: 'bundle.js',
+    path: path.join(__dirname, "temp"),
+    filename: "bundle.js"
   },
   module: {
     rules: [
@@ -15,15 +15,13 @@ module.exports = {
         exclude: /^node_modules/,
         loader: "ts-loader",
         options: {
-          configFileName: "./example/tsconfig.json",
+          configFileName: "./example/tsconfig.json"
         }
-      },
+      }
     ]
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
-    plugins: [
-      new TsConfigPathsPlugin({ configFileName: "./tsconfig.json" })
-    ]
-  },
+    plugins: [new TsConfigPathsPlugin({ configFileName: "./tsconfig.json" })]
+  }
 };
