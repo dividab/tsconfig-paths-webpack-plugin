@@ -86,12 +86,9 @@ export class TsConfigPathsPlugin implements ResolverPlugin {
       options.configFile
     );
 
-    console.log("HEJ", options.silent);
-
     log.logInfo(
       `tsconfig-paths-webpack-plugin: Using config file at ${configFilePath}`
     );
-    // console.log(`tsconfig-paths-webpack-plugin: Using ${configFilePath}`);
 
     this.baseUrl = baseUrl;
     this.absoluteBaseUrl = path.resolve(
