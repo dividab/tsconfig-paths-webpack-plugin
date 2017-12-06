@@ -5,7 +5,7 @@
   "main": "index.js",
   "author": "Jonas Kello",
   "license": "MIT",
-  "repository": "https://github.com/jonaskello/tsconfig-paths-webpack-plugin",
+  "repository": "https://github.com/dividab/tsconfig-paths-webpack-plugin",
   "devDependencies": {
     "@types/lodash": "^4.14.68",
     "@types/node": "^8.0.9",
