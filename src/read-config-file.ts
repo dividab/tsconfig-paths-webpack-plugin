@@ -2,7 +2,6 @@ import * as fs from "fs";
 import * as path from "path";
 import * as ts from "typescript";
 import * as colors from "colors/safe";
-import { LoaderConfig } from "./interfaces";
 import { MapLike } from "typescript";
 
 interface CompilerInfo {
@@ -64,21 +63,25 @@ function absolutize(fileName: string, context: string): string {
   }
 }
 
-export function readConfigFile(context: string, config: LoaderConfig): Configs {
-  const tsImpl: typeof ts = setupTs(config.compiler).tsImpl;
+export function readConfigFile(
+  context: string,
+  compiler?: string,
+  configFileName?: string
+): Configs {
+  const tsImpl: typeof ts = setupTs(compiler).tsImpl;
 
   let configFilePath: string;
-  if (config.configFileName && config.configFileName.match(/\.json$/)) {
-    configFilePath = absolutize(config.configFileName, context);
+  if (configFileName && configFileName.match(/\.json$/)) {
+    configFilePath = absolutize(configFileName, context);
   } else {
     configFilePath = tsImpl.findConfigFile(context, tsImpl.sys.fileExists);
   }
 
-  const existingOptions = tsImpl.convertCompilerOptionsFromJson(
-    config,
-    context,
-    "atl.query"
-  );
+  // const existingOptions = tsImpl.convertCompilerOptionsFromJson(
+  //   config,
+  //   context,
+  //   "atl.query"
+  // );
 
   const jsonConfigFile = tsImpl.readConfigFile(
     configFilePath,
@@ -88,7 +91,8 @@ export function readConfigFile(context: string, config: LoaderConfig): Configs {
     jsonConfigFile.config,
     tsImpl.sys,
     path.dirname(configFilePath),
-    existingOptions.options,
+    //existingOptions.options,
+    {},
     configFilePath
   );
 
