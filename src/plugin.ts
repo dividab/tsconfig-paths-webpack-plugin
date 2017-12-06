@@ -1,7 +1,50 @@
 import { setupTs, readConfigFile } from "./instance";
 import { LoaderConfig } from "./interfaces";
 import * as path from "path";
-import * as _ from "lodash";
+
+interface ResolverPlugin {
+  apply(resolver: Resolver): void;
+}
+
+interface Resolver {
+  apply(plugin: ResolverPlugin): void;
+  plugin(source: string, cb: ResolverCallback): any;
+  doResolve(target: string, req: Request, desc: string, callback: any): any;
+  join(relativePath: string, innerRequest: Request): Request;
+}
+
+type ResolverCallback = (request: Request, callback: Callback) => void;
+
+interface Mapping {
+  onlyModule: boolean;
+  alias: string;
+  aliasPattern: RegExp;
+  target: string;
+}
+
+type CreateInnerCallback = (
+  callback: Callback,
+  options: Callback,
+  message?: string,
+  messageOptional?: string
+) => Callback;
+type getInnerRequest = (resolver: Resolver, request: Request) => string;
+
+interface Request {
+  request?: Request;
+  relativePath: string;
+}
+
+interface Callback {
+  (err?: Error, result?: any): void;
+  log?: any;
+  stack?: any;
+  missing?: any;
+}
+
+export interface PathPluginOptions {
+  context?: string;
+}
 
 const modulesInRootPlugin: new (
   a: string,
@@ -12,53 +55,8 @@ const modulesInRootPlugin: new (
 const createInnerCallback: CreateInnerCallback = require("enhanced-resolve/lib/createInnerCallback");
 const getInnerRequest: getInnerRequest = require("enhanced-resolve/lib/getInnerRequest");
 
-type CreateInnerCallback = (
-  callback: Callback,
-  options: Callback,
-  message?: string,
-  messageOptional?: string
-) => Callback;
-type getInnerRequest = (resolver: Resolver, request: Request) => string;
-
-export interface Request {
-  request?: Request;
-  relativePath: string;
-}
-
-export interface Callback {
-  (err?: Error, result?: any): void;
-
-  log?: any;
-  stack?: any;
-  missing?: any;
-}
-
-export type ResolverCallback = (request: Request, callback: Callback) => void;
-
-export interface ResolverPlugin {
-  apply(resolver: Resolver): void;
-}
-
-export interface Resolver {
-  apply(plugin: ResolverPlugin): void;
-  plugin(source: string, cb: ResolverCallback): any;
-  doResolve(target: string, req: Request, desc: string, callback: any): any;
-  join(relativePath: string, innerRequest: Request): Request;
-}
-
-export interface Mapping {
-  onlyModule: boolean;
-  alias: string;
-  aliasPattern: RegExp;
-  target: string;
-}
-
 function escapeRegExp(str: string): string {
   return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-}
-
-export interface PathPluginOptions {
-  context?: string;
 }
 
 export class TsConfigPathsPlugin implements ResolverPlugin {
@@ -138,12 +136,12 @@ export class TsConfigPathsPlugin implements ResolverPlugin {
 
   private createPlugin(resolver: Resolver, mapping: Mapping): any {
     return (request, callback) => {
-      let innerRequest = getInnerRequest(resolver, request);
+      const innerRequest = getInnerRequest(resolver, request);
       if (!innerRequest) {
         return callback();
       }
 
-      let match = innerRequest.match(mapping.aliasPattern);
+      const match = innerRequest.match(mapping.aliasPattern);
       if (!match) {
         return callback();
       }
@@ -157,9 +155,14 @@ export class TsConfigPathsPlugin implements ResolverPlugin {
         newRequestStr = path.resolve(this.absoluteBaseUrl, newRequestStr);
       }
 
-      let newRequest = _.extend({}, request, {
+      // const newRequest = _.extend({}, request, {
+      //   request: newRequestStr
+      // });
+
+      const newRequest = {
+        ...request,
         request: newRequestStr
-      }) as Request;
+      };
 
       return resolver.doResolve(
         this.target,
