@@ -3,7 +3,6 @@ import chalk from "chalk";
 import { readConfigFile } from "./read-config-file";
 import * as Options from "./options";
 import * as logger from "./logger";
-// tslint:disable-next-line:variable-name
 import * as TsconfigPaths from "tsconfig-paths";
 
 interface ResolverPlugin {
