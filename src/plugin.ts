@@ -1,8 +1,9 @@
-import { readConfigFile } from "./read-config-file";
 import * as path from "path";
+import chalk from "chalk";
+import { MapLike } from "typescript";
+import { readConfigFile } from "./read-config-file";
 import * as Options from "./options";
 import * as logger from "./logger";
-import chalk from "chalk";
 
 interface ResolverPlugin {
   apply(resolver: Resolver): void;
@@ -80,7 +81,7 @@ export class TsConfigPathsPlugin implements ResolverPlugin {
     const log = logger.makeLogger(options, colors);
 
     const context = options.context || process.cwd();
-    const { configFilePath, baseUrl, paths } = readConfigFile(
+    const { configFilePath, baseUrl, paths = {} } = readConfigFile(
       context,
       options.compiler,
       options.configFile
@@ -96,29 +97,10 @@ export class TsConfigPathsPlugin implements ResolverPlugin {
       this.baseUrl || "."
     );
 
-    this.mappings = [];
-    const paths2 = paths || {};
-    Object.keys(paths2).forEach(alias => {
-      let onlyModule = alias.indexOf("*") === -1;
-      let excapedAlias = escapeRegExp(alias);
-      let targets = paths2[alias];
-      targets.forEach(target => {
-        let aliasPattern: RegExp;
-        if (onlyModule) {
-          aliasPattern = new RegExp(`^${excapedAlias}$`);
-        } else {
-          let withStarCapturing = excapedAlias.replace("\\*", "(.*)");
-          aliasPattern = new RegExp(`^${withStarCapturing}`);
-        }
+    console.log("paths", paths);
 
-        this.mappings.push({
-          onlyModule,
-          alias,
-          aliasPattern,
-          target: target
-        });
-      });
-    });
+    // Fill this.mappings
+    this.mappings = createMappings(paths);
   }
 
   apply(resolver: Resolver): void {
@@ -193,4 +175,34 @@ export class TsConfigPathsPlugin implements ResolverPlugin {
       );
     };
   }
+}
+
+function createMappings(paths: MapLike<Array<string>>): Array<Mapping> {
+  const mappings: Array<Mapping> = [];
+  Object.keys(paths).forEach(alias => {
+    const onlyModule = alias.indexOf("*") === -1;
+    const escapedAlias = escapeRegExp(alias);
+    const targets = paths[alias];
+    targets.forEach(target => {
+      const aliasPattern = createAliasPattern(onlyModule, escapedAlias);
+      mappings.push({
+        onlyModule,
+        alias,
+        aliasPattern,
+        target: target
+      });
+    });
+  });
+  return mappings;
+}
+
+function createAliasPattern(onlyModule: boolean, excapedAlias: string): RegExp {
+  let aliasPattern: RegExp;
+  if (onlyModule) {
+    aliasPattern = new RegExp(`^${excapedAlias}$`);
+  } else {
+    const withStarCapturing = excapedAlias.replace("\\*", "(.*)");
+    aliasPattern = new RegExp(`^${withStarCapturing}`);
+  }
+  return aliasPattern;
 }
