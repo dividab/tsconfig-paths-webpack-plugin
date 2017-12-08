@@ -1,6 +1,5 @@
 import * as path from "path";
 import chalk from "chalk";
-import { MapLike } from "typescript";
 import { readConfigFile } from "./read-config-file";
 import * as Options from "./options";
 import * as logger from "./logger";
@@ -24,13 +23,6 @@ interface Resolver {
 }
 
 type ResolverCallback = (request: Request, callback: Callback) => void;
-
-interface Mapping {
-  onlyModule: boolean;
-  alias: string;
-  aliasPattern: RegExp;
-  target: string;
-}
 
 type CreateInnerCallback = (
   callback: Callback,
@@ -65,17 +57,24 @@ const modulesInRootPlugin: new (
 const createInnerCallback: CreateInnerCallback = require("enhanced-resolve/lib/createInnerCallback");
 const getInnerRequest: getInnerRequest = require("enhanced-resolve/lib/getInnerRequest");
 
-function escapeRegExp(str: string): string {
-  return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-}
+type MatchPath = (
+  absoluteSourceFileName: string,
+  requestedModule: string,
+  // tslint:disable-next-line:no-any
+  readPackageJson?: (packageJsonPath: string) => any,
+  // tslint:disable-next-line:no-any
+  fileExists?: any,
+  extensions?: Array<string>
+) => string | undefined;
 
 export class TsConfigPathsPlugin implements ResolverPlugin {
   source: string;
   target: string;
 
   baseUrl: string;
-  mappings: Array<Mapping>;
   absoluteBaseUrl: string;
+
+  matchPath: MatchPath;
 
   constructor(rawOptions: Partial<Options.Options> = {}) {
     this.source = "described-resolve";
@@ -103,18 +102,11 @@ export class TsConfigPathsPlugin implements ResolverPlugin {
       this.baseUrl || "."
     );
 
-    // Fill this.mappings
-    this.mappings = createMappings(paths);
+    this.matchPath = TsconfigPaths.createMatchPath(this.absoluteBaseUrl, paths);
   }
 
   apply(resolver: Resolver): void {
-    const { baseUrl, mappings } = this;
-
-    if (mappings.length > 0 && !baseUrl) {
-      throw new Error(
-        "If you have paths in your tsconfig.json, you need to specify baseUrl."
-      );
-    }
+    const { baseUrl } = this;
 
     if (!baseUrl) {
       // Nothing to do if there is no baseUrl
@@ -128,93 +120,26 @@ export class TsConfigPathsPlugin implements ResolverPlugin {
 
     resolver.plugin(
       this.source,
-      createPlugin(resolver, this.absoluteBaseUrl, mappings, this.target)
+      createPlugin(this.matchPath, resolver, this.absoluteBaseUrl, this.target)
     );
-
-    // mappings.forEach(mapping => {
-    //   // skip "phantom" type references
-    //   if (!isTyping(mapping.target)) {
-    //     resolver.plugin(
-    //       this.source,
-    //       createPlugin(resolver, mapping, this.absoluteBaseUrl, this.target)
-    //     );
-    //   }
-    // });
   }
 }
-
-function createMappings(paths: MapLike<Array<string>>): Array<Mapping> {
-  const mappings: Array<Mapping> = [];
-  Object.keys(paths).forEach(alias => {
-    const onlyModule = alias.indexOf("*") === -1;
-    const escapedAlias = escapeRegExp(alias);
-    const targets = paths[alias];
-    targets.forEach(target => {
-      const aliasPattern = createAliasPattern(onlyModule, escapedAlias);
-      mappings.push({
-        onlyModule,
-        alias,
-        aliasPattern,
-        target: target
-      });
-    });
-  });
-  return mappings;
-}
-
-function createAliasPattern(onlyModule: boolean, escapedAlias: string): RegExp {
-  let aliasPattern: RegExp;
-  if (onlyModule) {
-    aliasPattern = new RegExp(`^${escapedAlias}$`);
-  } else {
-    const withStarCapturing = escapedAlias.replace("\\*", "(.*)");
-    aliasPattern = new RegExp(`^${withStarCapturing}`);
-  }
-  return aliasPattern;
-}
-
-// function isTyping(target: string): boolean {
-//   return target.indexOf("@types") !== -1 || target.indexOf(".d.ts") !== -1;
-// }
 
 function createPlugin(
+  matchPath: MatchPath,
   resolver: Resolver,
   absoluteBaseUrl: string,
-  mappings: Array<Mapping>,
   target: string
 ): ResolverCallback {
   return (request, callback) => {
     const innerRequest = getInnerRequest(resolver, request);
 
-    if (!innerRequest) {
+    if (
+      !innerRequest ||
+      (innerRequest.startsWith(".") || innerRequest.startsWith(".."))
+    ) {
       return callback();
     }
-
-    if (innerRequest.startsWith(".") || innerRequest.startsWith("..")) {
-      return callback();
-    }
-
-    // const matchPath = TsconfigPaths.createMatchPath("/root/", {
-    //   "lib/*": ["foo1/*", "foo2/*", "location/*", "foo3/*"]
-    // });
-    // const result = matchPath(
-    //   "/root/test.ts",
-    //   "lib/mylib",
-    //   (_: string): string => undefined,
-    //   (name: string) => {
-    //     console.log("name", name);
-    //     return name === "\\root\\location\\mylib\\index.ts";
-    //   },
-    //   [".ts"]
-    // );
-    // console.log(result, "/root/location/mylib");
-
-    console.log(mappings);
-
-    const matchPath = TsconfigPaths.createMatchPath(absoluteBaseUrl, {
-      foo: ["./src/mapped/foo"],
-      "bar/*": ["./src/mapped/bar/*"]
-    });
 
     const foundMatch = matchPath(
       request.context.issuer,
@@ -223,64 +148,15 @@ function createPlugin(
       undefined,
       [".ts", ".tsx"]
     );
-    console.log("request.context.issuer", request.context.issuer);
-    console.log("innerRequest", innerRequest);
-    console.log("OLLE---->");
 
     if (!foundMatch) {
       return callback();
     }
 
-    // const match = innerRequest.match(mapping.aliasPattern);
-    // if (!match) {
-    //   return callback();
-    // }
-
-    // let newRequestStr = mapping.target;
-    // if (!mapping.onlyModule) {
-    //   newRequestStr = newRequestStr.replace("*", match[1]);
-    // }
-
-    // if (newRequestStr[0] === ".") {
-    //   newRequestStr = path.resolve(absoluteBaseUrl, newRequestStr);
-    // }
-
-    // const newRequestStr = path.resolve("./", innerRequest);
-
-    // let foundMapping;
-    // for (const mapping of mappings) {
-    //   const match = innerRequest.match(mapping.aliasPattern);
-    //   if (match) {
-    //     foundMapping = mapping;
-    //     break;
-    //   }
-    // }
-
-    // if (!foundMapping) {
-    //   return callback();
-    // }
-
-    // console.log("filePath", (request as any).filePath);
-    // tslint:disable-next-line:no-any
-    // console.log("------------------> request", (request as any).path);
-
-    // const fullTargetPath = path.join(absoluteBaseUrl, foundMapping.target);
-    // const fullPathToImporter = path.resolve(request.path);
-    // const relativeTargetPath =
-    //   "./" + path.relative(fullPathToImporter, fullTargetPath);
-
-    // console.log("fullTargetPath    ", fullTargetPath);
-    // console.log("fullPathToImporter", fullPathToImporter);
-    // console.log("relativeTargetPath", relativeTargetPath);
-
-    // const mapping = mappings[0];
-
     const newRequest = {
       ...request,
-      // request: "./mapped/foo"
       request: foundMatch,
       path: absoluteBaseUrl
-      // relativePath: foundMatch
     };
 
     return resolver.doResolve(
@@ -289,7 +165,7 @@ function createPlugin(
       // `aliased with mapping '${innerRequest}': '${foundMapping.alias}' to '${
       //   relativeTargetPath
       // }'`,
-      "sdfadf",
+      "aliased with mapping",
       createInnerCallback((err: Error, result2: string): void => {
         if (arguments.length > 0) {
           return callback(err, result2);
