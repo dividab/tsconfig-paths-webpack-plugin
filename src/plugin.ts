@@ -4,6 +4,8 @@ import { MapLike } from "typescript";
 import { readConfigFile } from "./read-config-file";
 import * as Options from "./options";
 import * as logger from "./logger";
+// tslint:disable-next-line:variable-name
+const TsconfigPaths = require("tsconfig-paths");
 
 interface ResolverPlugin {
   apply(resolver: Resolver): void;
@@ -41,6 +43,10 @@ type getInnerRequest = (resolver: Resolver, request: Request) => string;
 interface Request {
   request?: Request | string;
   relativePath: string;
+  path: string;
+  context: {
+    issuer: string;
+  };
 }
 
 interface Callback {
@@ -97,8 +103,6 @@ export class TsConfigPathsPlugin implements ResolverPlugin {
       this.baseUrl || "."
     );
 
-    console.log("paths", paths);
-
     // Fill this.mappings
     this.mappings = createMappings(paths);
   }
@@ -122,15 +126,20 @@ export class TsConfigPathsPlugin implements ResolverPlugin {
       new modulesInRootPlugin("module", this.absoluteBaseUrl, "resolve")
     );
 
-    mappings.forEach(mapping => {
-      // skip "phantom" type references
-      if (!isTyping(mapping.target)) {
-        resolver.plugin(
-          this.source,
-          createPlugin(resolver, mapping, this.absoluteBaseUrl, this.target)
-        );
-      }
-    });
+    resolver.plugin(
+      this.source,
+      createPlugin(resolver, this.absoluteBaseUrl, mappings, this.target)
+    );
+
+    // mappings.forEach(mapping => {
+    //   // skip "phantom" type references
+    //   if (!isTyping(mapping.target)) {
+    //     resolver.plugin(
+    //       this.source,
+    //       createPlugin(resolver, mapping, this.absoluteBaseUrl, this.target)
+    //     );
+    //   }
+    // });
   }
 }
 
@@ -158,64 +167,113 @@ function createAliasPattern(onlyModule: boolean, escapedAlias: string): RegExp {
   if (onlyModule) {
     aliasPattern = new RegExp(`^${escapedAlias}$`);
   } else {
-    console.log("escapedAlias", escapedAlias);
     const withStarCapturing = escapedAlias.replace("\\*", "(.*)");
-    console.log("withStarCapturing", withStarCapturing);
     aliasPattern = new RegExp(`^${withStarCapturing}`);
   }
   return aliasPattern;
 }
 
-function isTyping(target: string): boolean {
-  return target.indexOf("@types") !== -1 || target.indexOf(".d.ts") !== -1;
-}
+// function isTyping(target: string): boolean {
+//   return target.indexOf("@types") !== -1 || target.indexOf(".d.ts") !== -1;
+// }
 
 function createPlugin(
   resolver: Resolver,
-  mapping: Mapping,
   absoluteBaseUrl: string,
+  mappings: Array<Mapping>,
   target: string
 ): ResolverCallback {
   return (request, callback) => {
     const innerRequest = getInnerRequest(resolver, request);
+
     if (!innerRequest) {
       return callback();
     }
 
-    const match = innerRequest.match(mapping.aliasPattern);
-    if (!match) {
+    if (innerRequest.startsWith(".") || innerRequest.startsWith("..")) {
       return callback();
     }
 
-    let newRequestStr = mapping.target;
-    if (!mapping.onlyModule) {
-      newRequestStr = newRequestStr.replace("*", match[1]);
+    const matchPath2 = TsconfigPaths.createMatchPath("/root/", {
+      "lib/*": ["location/*"]
+    });
+    const result = matchPath2(
+      "/root/test.ts",
+      "lib/mylib",
+      (_: string): string => undefined,
+      (name: string) => name === "/root/location/mylib/index.ts"
+    );
+    console.log(result, "/root/location/mylib");
+
+    // const matchPath = TsconfigPaths.createMatchPath(absoluteBaseUrl, {
+    //   foo: ["./src/mapped/foo"],
+    //   "bar/*": ["./src/mapped/bar/*"]
+    // });
+
+    // console.log("request.context.issuer", request.context.issuer);
+    // console.log("innerRequest", innerRequest);
+    // console.log("OLLE---->", matchPath(request.context.issuer, innerRequest));
+
+    // const match = innerRequest.match(mapping.aliasPattern);
+    // if (!match) {
+    //   return callback();
+    // }
+
+    // let newRequestStr = mapping.target;
+    // if (!mapping.onlyModule) {
+    //   newRequestStr = newRequestStr.replace("*", match[1]);
+    // }
+
+    // if (newRequestStr[0] === ".") {
+    //   newRequestStr = path.resolve(absoluteBaseUrl, newRequestStr);
+    // }
+
+    // const newRequestStr = path.resolve("./", innerRequest);
+
+    let foundMapping;
+    for (const mapping of mappings) {
+      const match = innerRequest.match(mapping.aliasPattern);
+      if (match) {
+        foundMapping = mapping;
+        break;
+      }
     }
 
-    if (newRequestStr[0] === ".") {
-      newRequestStr = path.resolve(absoluteBaseUrl, newRequestStr);
+    if (!foundMapping) {
+      return callback();
     }
+
+    // console.log("filePath", (request as any).filePath);
+    // tslint:disable-next-line:no-any
+    // console.log("------------------> request", (request as any).path);
+
+    const fullTargetPath = path.join(absoluteBaseUrl, foundMapping.target);
+    const fullPathToImporter = path.resolve(request.path);
+    const relativeTargetPath =
+      "./" + path.relative(fullPathToImporter, fullTargetPath);
+
+    // console.log("fullTargetPath    ", fullTargetPath);
+    // console.log("fullPathToImporter", fullPathToImporter);
+    // console.log("relativeTargetPath", relativeTargetPath);
+
+    // const mapping = mappings[0];
 
     const newRequest = {
       ...request,
-      request: newRequestStr
+      // request: "./mapped/foo"
+      request: relativeTargetPath
     };
 
     return resolver.doResolve(
       target,
       newRequest,
-      "aliased with mapping '" +
-        innerRequest +
-        "': '" +
-        mapping.alias +
-        "' to '" +
-        newRequestStr +
-        "'",
-      createInnerCallback((err: Error, result: string): void => {
+      `aliased with mapping '${innerRequest}': '${foundMapping.alias}' to '${
+        relativeTargetPath
+      }'`,
+      createInnerCallback((err: Error, result2: string): void => {
         if (arguments.length > 0) {
-          return callback(err, result);
+          return callback(err, result2);
         }
-
         // don't allow other aliasing or raw request
         callback(null, null);
       }, callback)
