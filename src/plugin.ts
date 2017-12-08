@@ -194,25 +194,42 @@ function createPlugin(
       return callback();
     }
 
-    const matchPath2 = TsconfigPaths.createMatchPath("/root/", {
-      "lib/*": ["location/*"]
-    });
-    const result = matchPath2(
-      "/root/test.ts",
-      "lib/mylib",
-      (_: string): string => undefined,
-      (name: string) => name === "/root/location/mylib/index.ts"
-    );
-    console.log(result, "/root/location/mylib");
-
-    // const matchPath = TsconfigPaths.createMatchPath(absoluteBaseUrl, {
-    //   foo: ["./src/mapped/foo"],
-    //   "bar/*": ["./src/mapped/bar/*"]
+    // const matchPath = TsconfigPaths.createMatchPath("/root/", {
+    //   "lib/*": ["foo1/*", "foo2/*", "location/*", "foo3/*"]
     // });
+    // const result = matchPath(
+    //   "/root/test.ts",
+    //   "lib/mylib",
+    //   (_: string): string => undefined,
+    //   (name: string) => {
+    //     console.log("name", name);
+    //     return name === "\\root\\location\\mylib\\index.ts";
+    //   },
+    //   [".ts"]
+    // );
+    // console.log(result, "/root/location/mylib");
 
-    // console.log("request.context.issuer", request.context.issuer);
-    // console.log("innerRequest", innerRequest);
-    // console.log("OLLE---->", matchPath(request.context.issuer, innerRequest));
+    console.log(mappings);
+
+    const matchPath = TsconfigPaths.createMatchPath(absoluteBaseUrl, {
+      foo: ["./src/mapped/foo"],
+      "bar/*": ["./src/mapped/bar/*"]
+    });
+
+    const foundMatch = matchPath(
+      request.context.issuer,
+      innerRequest,
+      undefined,
+      undefined,
+      [".ts", ".tsx"]
+    );
+    console.log("request.context.issuer", request.context.issuer);
+    console.log("innerRequest", innerRequest);
+    console.log("OLLE---->");
+
+    if (!foundMatch) {
+      return callback();
+    }
 
     // const match = innerRequest.match(mapping.aliasPattern);
     // if (!match) {
@@ -230,27 +247,27 @@ function createPlugin(
 
     // const newRequestStr = path.resolve("./", innerRequest);
 
-    let foundMapping;
-    for (const mapping of mappings) {
-      const match = innerRequest.match(mapping.aliasPattern);
-      if (match) {
-        foundMapping = mapping;
-        break;
-      }
-    }
+    // let foundMapping;
+    // for (const mapping of mappings) {
+    //   const match = innerRequest.match(mapping.aliasPattern);
+    //   if (match) {
+    //     foundMapping = mapping;
+    //     break;
+    //   }
+    // }
 
-    if (!foundMapping) {
-      return callback();
-    }
+    // if (!foundMapping) {
+    //   return callback();
+    // }
 
     // console.log("filePath", (request as any).filePath);
     // tslint:disable-next-line:no-any
     // console.log("------------------> request", (request as any).path);
 
-    const fullTargetPath = path.join(absoluteBaseUrl, foundMapping.target);
-    const fullPathToImporter = path.resolve(request.path);
-    const relativeTargetPath =
-      "./" + path.relative(fullPathToImporter, fullTargetPath);
+    // const fullTargetPath = path.join(absoluteBaseUrl, foundMapping.target);
+    // const fullPathToImporter = path.resolve(request.path);
+    // const relativeTargetPath =
+    //   "./" + path.relative(fullPathToImporter, fullTargetPath);
 
     // console.log("fullTargetPath    ", fullTargetPath);
     // console.log("fullPathToImporter", fullPathToImporter);
@@ -261,15 +278,18 @@ function createPlugin(
     const newRequest = {
       ...request,
       // request: "./mapped/foo"
-      request: relativeTargetPath
+      request: foundMatch,
+      path: absoluteBaseUrl
+      // relativePath: foundMatch
     };
 
     return resolver.doResolve(
       target,
       newRequest,
-      `aliased with mapping '${innerRequest}': '${foundMapping.alias}' to '${
-        relativeTargetPath
-      }'`,
+      // `aliased with mapping '${innerRequest}': '${foundMapping.alias}' to '${
+      //   relativeTargetPath
+      // }'`,
+      "sdfadf",
       createInnerCallback((err: Error, result2: string): void => {
         if (arguments.length > 0) {
           return callback(err, result2);
