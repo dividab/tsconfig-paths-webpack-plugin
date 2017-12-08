@@ -39,6 +39,6 @@
   },
   "dependencies": {
     "chalk": "^2.3.0",
-    "tsconfig-paths": "^2.4.0"
+    "tsconfig-paths": "^2.4.2"
   }
 }

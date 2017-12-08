@@ -1,0 +1,278 @@
+yarn run v1.2.1
+$ tsc -p src --traceResolution
+======== Resolving module 'console' from '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/logger.ts'. ========
+Module resolution kind is not specified, using 'NodeJs'.
+'baseUrl' option is set to '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src', using this value to resolve non-relative module name 'console'.
+'paths' option is specified, looking for a pattern to match module name 'console'.
+Module name 'console', matched pattern '*'.
+Trying substitution '../custom-typings/*', candidate module location: '../custom-typings/console'.
+Loading module as file / folder, candidate module location '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/custom-typings/console', target file type 'TypeScript'.
+Loading module 'console' from 'node_modules' folder, target file type 'TypeScript'.
+Directory '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/node_modules' does not exist, skipping all lookups in it.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/console.ts' does not exist.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/console.tsx' does not exist.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/console.d.ts' does not exist.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/console.d.ts' does not exist.
+Directory '/Users/JonKel/code/github/dividab/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/JonKel/code/github/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/JonKel/code/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/JonKel/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/node_modules' does not exist, skipping all lookups in it.
+Directory '/node_modules' does not exist, skipping all lookups in it.
+'baseUrl' option is set to '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src', using this value to resolve non-relative module name 'console'.
+'paths' option is specified, looking for a pattern to match module name 'console'.
+Module name 'console', matched pattern '*'.
+Trying substitution '../custom-typings/*', candidate module location: '../custom-typings/console'.
+Loading module as file / folder, candidate module location '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/custom-typings/console', target file type 'JavaScript'.
+Loading module 'console' from 'node_modules' folder, target file type 'JavaScript'.
+Directory '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/node_modules' does not exist, skipping all lookups in it.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/console.js' does not exist.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/console.jsx' does not exist.
+Directory '/Users/JonKel/code/github/dividab/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/JonKel/code/github/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/JonKel/code/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/JonKel/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/node_modules' does not exist, skipping all lookups in it.
+Directory '/node_modules' does not exist, skipping all lookups in it.
+======== Module name 'console' was not resolved. ========
+======== Resolving module './options' from '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/logger.ts'. ========
+Module resolution kind is not specified, using 'NodeJs'.
+Loading module as file / folder, candidate module location '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/options', target file type 'TypeScript'.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/options.ts' exist - use it as a name resolution result.
+======== Module name './options' was successfully resolved to '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/options.ts'. ========
+======== Resolving module 'chalk' from '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/logger.ts'. ========
+Module resolution kind is not specified, using 'NodeJs'.
+'baseUrl' option is set to '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src', using this value to resolve non-relative module name 'chalk'.
+'paths' option is specified, looking for a pattern to match module name 'chalk'.
+Module name 'chalk', matched pattern '*'.
+Trying substitution '../custom-typings/*', candidate module location: '../custom-typings/chalk'.
+Loading module as file / folder, candidate module location '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/custom-typings/chalk', target file type 'TypeScript'.
+Loading module 'chalk' from 'node_modules' folder, target file type 'TypeScript'.
+Directory '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/node_modules' does not exist, skipping all lookups in it.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/chalk.ts' does not exist.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/chalk.tsx' does not exist.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/chalk.d.ts' does not exist.
+Found 'package.json' at '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/chalk/package.json'.
+'package.json' does not have a 'typings' field.
+'package.json' has 'types' field 'types/index.d.ts' that references '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/chalk/types/index.d.ts'.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/chalk/types/index.d.ts' exist - use it as a name resolution result.
+Resolving real path for '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/chalk/types/index.d.ts', result '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/chalk/types/index.d.ts'.
+======== Module name 'chalk' was successfully resolved to '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/chalk/types/index.d.ts'. ========
+======== Resolving module 'path' from '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/plugin.ts'. ========
+Module resolution kind is not specified, using 'NodeJs'.
+'baseUrl' option is set to '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src', using this value to resolve non-relative module name 'path'.
+'paths' option is specified, looking for a pattern to match module name 'path'.
+Module name 'path', matched pattern '*'.
+Trying substitution '../custom-typings/*', candidate module location: '../custom-typings/path'.
+Loading module as file / folder, candidate module location '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/custom-typings/path', target file type 'TypeScript'.
+Loading module 'path' from 'node_modules' folder, target file type 'TypeScript'.
+Directory '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/node_modules' does not exist, skipping all lookups in it.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/path.ts' does not exist.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/path.tsx' does not exist.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/path.d.ts' does not exist.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/path.d.ts' does not exist.
+Directory '/Users/JonKel/code/github/dividab/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/JonKel/code/github/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/JonKel/code/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/JonKel/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/node_modules' does not exist, skipping all lookups in it.
+Directory '/node_modules' does not exist, skipping all lookups in it.
+'baseUrl' option is set to '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src', using this value to resolve non-relative module name 'path'.
+'paths' option is specified, looking for a pattern to match module name 'path'.
+Module name 'path', matched pattern '*'.
+Trying substitution '../custom-typings/*', candidate module location: '../custom-typings/path'.
+Loading module as file / folder, candidate module location '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/custom-typings/path', target file type 'JavaScript'.
+Loading module 'path' from 'node_modules' folder, target file type 'JavaScript'.
+Directory '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/node_modules' does not exist, skipping all lookups in it.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/path.js' does not exist.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/path.jsx' does not exist.
+Directory '/Users/JonKel/code/github/dividab/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/JonKel/code/github/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/JonKel/code/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/JonKel/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/node_modules' does not exist, skipping all lookups in it.
+Directory '/node_modules' does not exist, skipping all lookups in it.
+======== Module name 'path' was not resolved. ========
+======== Resolving module 'chalk' from '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/plugin.ts'. ========
+Resolution for module 'chalk' was found in cache.
+======== Module name 'chalk' was successfully resolved to '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/chalk/types/index.d.ts'. ========
+======== Resolving module './read-config-file' from '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/plugin.ts'. ========
+Module resolution kind is not specified, using 'NodeJs'.
+Loading module as file / folder, candidate module location '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/read-config-file', target file type 'TypeScript'.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/read-config-file.ts' exist - use it as a name resolution result.
+======== Module name './read-config-file' was successfully resolved to '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/read-config-file.ts'. ========
+======== Resolving module './options' from '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/plugin.ts'. ========
+Resolution for module './options' was found in cache.
+======== Module name './options' was successfully resolved to '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/options.ts'. ========
+======== Resolving module './logger' from '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/plugin.ts'. ========
+Module resolution kind is not specified, using 'NodeJs'.
+Loading module as file / folder, candidate module location '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/logger', target file type 'TypeScript'.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/logger.ts' exist - use it as a name resolution result.
+======== Module name './logger' was successfully resolved to '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/logger.ts'. ========
+======== Resolving module 'tsconfig-paths' from '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/plugin.ts'. ========
+Module resolution kind is not specified, using 'NodeJs'.
+'baseUrl' option is set to '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src', using this value to resolve non-relative module name 'tsconfig-paths'.
+'paths' option is specified, looking for a pattern to match module name 'tsconfig-paths'.
+Module name 'tsconfig-paths', matched pattern '*'.
+Trying substitution '../custom-typings/*', candidate module location: '../custom-typings/tsconfig-paths'.
+Loading module as file / folder, candidate module location '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/custom-typings/tsconfig-paths', target file type 'TypeScript'.
+Loading module 'tsconfig-paths' from 'node_modules' folder, target file type 'TypeScript'.
+Directory '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/node_modules' does not exist, skipping all lookups in it.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/tsconfig-paths.ts' does not exist.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/tsconfig-paths.tsx' does not exist.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/tsconfig-paths.d.ts' does not exist.
+Found 'package.json' at '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/tsconfig-paths/package.json'.
+'package.json' does not have a 'typings' field.
+'package.json' does not have a 'types' field.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/tsconfig-paths/index.ts' does not exist.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/tsconfig-paths/index.tsx' does not exist.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/tsconfig-paths/index.d.ts' does not exist.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/tsconfig-paths.d.ts' does not exist.
+Directory '/Users/JonKel/code/github/dividab/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/JonKel/code/github/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/JonKel/code/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/JonKel/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/node_modules' does not exist, skipping all lookups in it.
+Directory '/node_modules' does not exist, skipping all lookups in it.
+'baseUrl' option is set to '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src', using this value to resolve non-relative module name 'tsconfig-paths'.
+'paths' option is specified, looking for a pattern to match module name 'tsconfig-paths'.
+Module name 'tsconfig-paths', matched pattern '*'.
+Trying substitution '../custom-typings/*', candidate module location: '../custom-typings/tsconfig-paths'.
+Loading module as file / folder, candidate module location '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/custom-typings/tsconfig-paths', target file type 'JavaScript'.
+Loading module 'tsconfig-paths' from 'node_modules' folder, target file type 'JavaScript'.
+Directory '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/node_modules' does not exist, skipping all lookups in it.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/tsconfig-paths.js' does not exist.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/tsconfig-paths.jsx' does not exist.
+Found 'package.json' at '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/tsconfig-paths/package.json'.
+'package.json' has 'main' field 'lib/index.js' that references '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/tsconfig-paths/lib/index.js'.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/tsconfig-paths/lib/index.js' exist - use it as a name resolution result.
+Resolving real path for '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/tsconfig-paths/lib/index.js', result '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/tsconfig-paths/lib/index.js'.
+======== Module name 'tsconfig-paths' was successfully resolved to '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/tsconfig-paths/lib/index.js'. ========
+======== Resolving module 'fs' from '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/read-config-file.ts'. ========
+Module resolution kind is not specified, using 'NodeJs'.
+'baseUrl' option is set to '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src', using this value to resolve non-relative module name 'fs'.
+'paths' option is specified, looking for a pattern to match module name 'fs'.
+Module name 'fs', matched pattern '*'.
+Trying substitution '../custom-typings/*', candidate module location: '../custom-typings/fs'.
+Loading module as file / folder, candidate module location '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/custom-typings/fs', target file type 'TypeScript'.
+Loading module 'fs' from 'node_modules' folder, target file type 'TypeScript'.
+Directory '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/node_modules' does not exist, skipping all lookups in it.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/fs.ts' does not exist.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/fs.tsx' does not exist.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/fs.d.ts' does not exist.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/fs.d.ts' does not exist.
+Directory '/Users/JonKel/code/github/dividab/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/JonKel/code/github/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/JonKel/code/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/JonKel/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/node_modules' does not exist, skipping all lookups in it.
+Directory '/node_modules' does not exist, skipping all lookups in it.
+'baseUrl' option is set to '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src', using this value to resolve non-relative module name 'fs'.
+'paths' option is specified, looking for a pattern to match module name 'fs'.
+Module name 'fs', matched pattern '*'.
+Trying substitution '../custom-typings/*', candidate module location: '../custom-typings/fs'.
+Loading module as file / folder, candidate module location '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/custom-typings/fs', target file type 'JavaScript'.
+Loading module 'fs' from 'node_modules' folder, target file type 'JavaScript'.
+Directory '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/node_modules' does not exist, skipping all lookups in it.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/fs.js' does not exist.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/fs.jsx' does not exist.
+Directory '/Users/JonKel/code/github/dividab/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/JonKel/code/github/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/JonKel/code/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/JonKel/node_modules' does not exist, skipping all lookups in it.
+Directory '/Users/node_modules' does not exist, skipping all lookups in it.
+Directory '/node_modules' does not exist, skipping all lookups in it.
+======== Module name 'fs' was not resolved. ========
+======== Resolving module 'path' from '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/read-config-file.ts'. ========
+Resolution for module 'path' was found in cache.
+======== Module name 'path' was not resolved. ========
+======== Resolving module 'typescript' from '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/read-config-file.ts'. ========
+Module resolution kind is not specified, using 'NodeJs'.
+'baseUrl' option is set to '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src', using this value to resolve non-relative module name 'typescript'.
+'paths' option is specified, looking for a pattern to match module name 'typescript'.
+Module name 'typescript', matched pattern '*'.
+Trying substitution '../custom-typings/*', candidate module location: '../custom-typings/typescript'.
+Loading module as file / folder, candidate module location '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/custom-typings/typescript', target file type 'TypeScript'.
+Loading module 'typescript' from 'node_modules' folder, target file type 'TypeScript'.
+Directory '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/node_modules' does not exist, skipping all lookups in it.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/typescript.ts' does not exist.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/typescript.tsx' does not exist.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/typescript.d.ts' does not exist.
+Found 'package.json' at '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/typescript/package.json'.
+'package.json' has 'typings' field './lib/typescript.d.ts' that references '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/typescript/lib/typescript.d.ts'.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/typescript/lib/typescript.d.ts' exist - use it as a name resolution result.
+Resolving real path for '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/typescript/lib/typescript.d.ts', result '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/typescript/lib/typescript.d.ts'.
+======== Module name 'typescript' was successfully resolved to '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/typescript/lib/typescript.d.ts'. ========
+======== Resolving module 'colors/safe' from '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/read-config-file.ts'. ========
+Module resolution kind is not specified, using 'NodeJs'.
+'baseUrl' option is set to '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src', using this value to resolve non-relative module name 'colors/safe'.
+'paths' option is specified, looking for a pattern to match module name 'colors/safe'.
+Module name 'colors/safe', matched pattern '*'.
+Trying substitution '../custom-typings/*', candidate module location: '../custom-typings/colors/safe'.
+Loading module as file / folder, candidate module location '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/custom-typings/colors/safe', target file type 'TypeScript'.
+Loading module 'colors/safe' from 'node_modules' folder, target file type 'TypeScript'.
+Directory '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/node_modules' does not exist, skipping all lookups in it.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/colors/safe.ts' does not exist.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/colors/safe.tsx' does not exist.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/colors/safe.d.ts' does not exist.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/colors/safe.d.ts' exist - use it as a name resolution result.
+Resolving real path for '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/colors/safe.d.ts', result '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/colors/safe.d.ts'.
+======== Module name 'colors/safe' was successfully resolved to '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/colors/safe.d.ts'. ========
+======== Resolving type reference directive 'colors', containing file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/__inferred type names__.ts', root directory '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types'. ========
+Resolving with primary search path '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types'.
+Found 'package.json' at '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/colors/package.json'.
+'package.json' does not have a 'typings' field.
+'package.json' does not have a 'types' field.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/colors/index.d.ts' exist - use it as a name resolution result.
+Resolving real path for '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/colors/index.d.ts', result '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/colors/index.d.ts'.
+======== Type reference directive 'colors' was successfully resolved to '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/colors/index.d.ts', primary: true. ========
+======== Resolving type reference directive 'lodash', containing file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/__inferred type names__.ts', root directory '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types'. ========
+Resolving with primary search path '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types'.
+Found 'package.json' at '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/lodash/package.json'.
+'package.json' does not have a 'typings' field.
+'package.json' does not have a 'types' field.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/lodash/index.d.ts' exist - use it as a name resolution result.
+Resolving real path for '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/lodash/index.d.ts', result '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/lodash/index.d.ts'.
+======== Type reference directive 'lodash' was successfully resolved to '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/lodash/index.d.ts', primary: true. ========
+======== Resolving type reference directive 'node', containing file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/src/__inferred type names__.ts', root directory '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types'. ========
+Resolving with primary search path '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types'.
+Found 'package.json' at '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/package.json'.
+'package.json' does not have a 'typings' field.
+'package.json' does not have a 'types' field.
+File '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts' exist - use it as a name resolution result.
+Resolving real path for '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts', result '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+======== Type reference directive 'node' was successfully resolved to '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts', primary: true. ========
+Module 'events' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'net' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'stream' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'url' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'child_process' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'events' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'net' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'stream' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'tls' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'events' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'http' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'url' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'stream' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'readline' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'events' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'stream' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'events' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'stream' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'net' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'stream' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'events' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'events' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'stream' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'events' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'url' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'crypto' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'net' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'stream' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'events' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'net' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+Module 'events' was resolved as locally declared ambient module in file '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/@types/node/index.d.ts'.
+src/plugin.ts(7,32): error TS7016: Could not find a declaration file for module 'tsconfig-paths'. '/Users/JonKel/code/github/dividab/tsconfig-paths-webpack-plugin/node_modules/tsconfig-paths/lib/index.js' implicitly has an 'any' type.
+  Try `npm install @types/tsconfig-paths` if it exists or add a new declaration (.d.ts) file containing `declare module 'tsconfig-paths';`
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.

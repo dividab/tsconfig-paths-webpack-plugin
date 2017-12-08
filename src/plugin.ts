@@ -4,7 +4,7 @@ import { readConfigFile } from "./read-config-file";
 import * as Options from "./options";
 import * as logger from "./logger";
 // tslint:disable-next-line:variable-name
-const TsconfigPaths = require("tsconfig-paths");
+import * as TsconfigPaths from "tsconfig-paths";
 
 interface ResolverPlugin {
   apply(resolver: Resolver): void;
