@@ -18,7 +18,7 @@ interface Resolver {
     desc: string,
     callback: Callback
   ): void;
-  join(relativePath: string, innerRequest: Request): Request;
+  join(relativePath: string, innerRequest: Request | string): string;
 }
 
 type ResolverCallback = (request: Request, callback: Callback) => void;
@@ -40,7 +40,9 @@ type getInnerRequest = (resolver: Resolver, request: Request) => string;
 
 interface Request {
   request?: Request | string;
+  path: string;
   relativePath: string;
+  module: boolean;
 }
 
 interface Callback {
@@ -94,18 +96,16 @@ export class TsConfigPathsPlugin implements ResolverPlugin {
     this.baseUrl = baseUrl;
     this.absoluteBaseUrl = path.resolve(
       path.dirname(configFilePath),
-      this.baseUrl || "."
+      this.baseUrl || "./"
     );
-
-    console.log("paths", paths);
-
+    console.log(paths);
     // Fill this.mappings
     this.mappings = createMappings(paths);
   }
 
   apply(resolver: Resolver): void {
     const { baseUrl, mappings } = this;
-
+    console.log("baseurl", baseUrl);
     if (mappings.length > 0 && !baseUrl) {
       throw new Error(
         "If you have paths in your tsconfig.json, you need to specify baseUrl."
@@ -187,17 +187,22 @@ function createPlugin(
       return callback();
     }
 
+    if (!request.module) {
+      return callback();
+    }
+    console.log("relativepath", request.relativePath);
     let newRequestStr = mapping.target;
     if (!mapping.onlyModule) {
+      console.log(newRequestStr);
       newRequestStr = newRequestStr.replace("*", match[1]);
-    }
-
-    if (newRequestStr[0] === ".") {
-      newRequestStr = path.resolve(absoluteBaseUrl, newRequestStr);
+      console.log(newRequestStr);
+      // console.log(request);
+      // process.exit(0);
     }
 
     const newRequest = {
       ...request,
+      path: absoluteBaseUrl,
       request: newRequestStr
     };
 
