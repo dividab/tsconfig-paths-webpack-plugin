@@ -1,5 +1,5 @@
 const path = require("path");
-const TsConfigPathsPlugin = require("../index");
+const TsconfigPathsPlugin = require("../index");
 
 module.exports = {
   context: path.resolve(__dirname, "src"),
@@ -23,7 +23,7 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
     plugins: [
-      new TsConfigPathsPlugin({
+      new TsconfigPathsPlugin({
         configFile: "./tsconfig.json",
         logLevel: "info"
       })

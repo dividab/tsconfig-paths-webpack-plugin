@@ -28,7 +28,7 @@ var TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 resolve: {
     plugins: [
-        new TsConfigPathsPlugin(/* { configFileName: "path/to/tsconfig.json" } */)
+        new TsconfigPathsPlugin(/* { configFileName: "path/to/tsconfig.json" } */)
     ]
 }
 ```

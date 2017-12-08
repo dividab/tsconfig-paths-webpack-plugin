@@ -56,24 +56,14 @@ const modulesInRootPlugin: new (
 const createInnerCallback: CreateInnerCallback = require("enhanced-resolve/lib/createInnerCallback");
 const getInnerRequest: getInnerRequest = require("enhanced-resolve/lib/getInnerRequest");
 
-type MatchPath = (
-  absoluteSourceFileName: string,
-  requestedModule: string,
-  // tslint:disable-next-line:no-any
-  readPackageJson?: (packageJsonPath: string) => any,
-  // tslint:disable-next-line:no-any
-  fileExists?: any,
-  extensions?: Array<string>
-) => string | undefined;
-
-export class TsConfigPathsPlugin implements ResolverPlugin {
+export class TsconfigPathsPlugin implements ResolverPlugin {
   source: string;
   target: string;
 
   baseUrl: string;
   absoluteBaseUrl: string;
 
-  matchPath: MatchPath;
+  matchPath: TsconfigPaths.MatchPath;
 
   constructor(rawOptions: Partial<Options.Options> = {}) {
     this.source = "described-resolve";
@@ -125,7 +115,7 @@ export class TsConfigPathsPlugin implements ResolverPlugin {
 }
 
 function createPlugin(
-  matchPath: MatchPath,
+  matchPath: TsconfigPaths.MatchPath,
   resolver: Resolver,
   absoluteBaseUrl: string,
   target: string

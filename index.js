@@ -1,2 +1,2 @@
 var plugin = require("./lib/plugin");
-module.exports = plugin.TsConfigPathsPlugin;
+module.exports = plugin.TsconfigPathsPlugin;
