@@ -7,8 +7,8 @@
     "baseUrl": ".",
     "paths": {
       "foo": ["./src/mapped/foo"],
-      "bar/*": ["./src/mapped/bar/*"]
-      // "*": ["./src/mapped/star/*"]
+      "bar/*": ["./src/mapped/bar/*"],
+      "*": ["./src/mapped/star/*"]
     }
   }
 }

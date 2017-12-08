@@ -1,9 +1,10 @@
 import * as path from "path";
 import chalk from "chalk";
-import { MapLike } from "typescript";
 import { readConfigFile } from "./read-config-file";
 import * as Options from "./options";
 import * as logger from "./logger";
+// tslint:disable-next-line:variable-name
+const TsconfigPaths = require("tsconfig-paths");
 
 interface ResolverPlugin {
   apply(resolver: Resolver): void;
@@ -23,13 +24,6 @@ interface Resolver {
 
 type ResolverCallback = (request: Request, callback: Callback) => void;
 
-interface Mapping {
-  onlyModule: boolean;
-  alias: string;
-  aliasPattern: RegExp;
-  target: string;
-}
-
 type CreateInnerCallback = (
   callback: Callback,
   options: Callback,
@@ -41,6 +35,10 @@ type getInnerRequest = (resolver: Resolver, request: Request) => string;
 interface Request {
   request?: Request | string;
   relativePath: string;
+  path: string;
+  context: {
+    issuer: string;
+  };
 }
 
 interface Callback {
@@ -59,17 +57,24 @@ const modulesInRootPlugin: new (
 const createInnerCallback: CreateInnerCallback = require("enhanced-resolve/lib/createInnerCallback");
 const getInnerRequest: getInnerRequest = require("enhanced-resolve/lib/getInnerRequest");
 
-function escapeRegExp(str: string): string {
-  return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-}
+type MatchPath = (
+  absoluteSourceFileName: string,
+  requestedModule: string,
+  // tslint:disable-next-line:no-any
+  readPackageJson?: (packageJsonPath: string) => any,
+  // tslint:disable-next-line:no-any
+  fileExists?: any,
+  extensions?: Array<string>
+) => string | undefined;
 
 export class TsConfigPathsPlugin implements ResolverPlugin {
   source: string;
   target: string;
 
   baseUrl: string;
-  mappings: Array<Mapping>;
   absoluteBaseUrl: string;
+
+  matchPath: MatchPath;
 
   constructor(rawOptions: Partial<Options.Options> = {}) {
     this.source = "described-resolve";
@@ -97,20 +102,11 @@ export class TsConfigPathsPlugin implements ResolverPlugin {
       this.baseUrl || "."
     );
 
-    console.log("paths", paths);
-
-    // Fill this.mappings
-    this.mappings = createMappings(paths);
+    this.matchPath = TsconfigPaths.createMatchPath(this.absoluteBaseUrl, paths);
   }
 
   apply(resolver: Resolver): void {
-    const { baseUrl, mappings } = this;
-
-    if (mappings.length > 0 && !baseUrl) {
-      throw new Error(
-        "If you have paths in your tsconfig.json, you need to specify baseUrl."
-      );
-    }
+    const { baseUrl } = this;
 
     if (!baseUrl) {
       // Nothing to do if there is no baseUrl
@@ -122,100 +118,58 @@ export class TsConfigPathsPlugin implements ResolverPlugin {
       new modulesInRootPlugin("module", this.absoluteBaseUrl, "resolve")
     );
 
-    mappings.forEach(mapping => {
-      // skip "phantom" type references
-      if (!isTyping(mapping.target)) {
-        resolver.plugin(
-          this.source,
-          createPlugin(resolver, mapping, this.absoluteBaseUrl, this.target)
-        );
-      }
-    });
+    resolver.plugin(
+      this.source,
+      createPlugin(this.matchPath, resolver, this.absoluteBaseUrl, this.target)
+    );
   }
-}
-
-function createMappings(paths: MapLike<Array<string>>): Array<Mapping> {
-  const mappings: Array<Mapping> = [];
-  Object.keys(paths).forEach(alias => {
-    const onlyModule = alias.indexOf("*") === -1;
-    const escapedAlias = escapeRegExp(alias);
-    const targets = paths[alias];
-    targets.forEach(target => {
-      const aliasPattern = createAliasPattern(onlyModule, escapedAlias);
-      mappings.push({
-        onlyModule,
-        alias,
-        aliasPattern,
-        target: target
-      });
-    });
-  });
-  return mappings;
-}
-
-function createAliasPattern(onlyModule: boolean, escapedAlias: string): RegExp {
-  let aliasPattern: RegExp;
-  if (onlyModule) {
-    aliasPattern = new RegExp(`^${escapedAlias}$`);
-  } else {
-    console.log("escapedAlias", escapedAlias);
-    const withStarCapturing = escapedAlias.replace("\\*", "(.*)");
-    console.log("withStarCapturing", withStarCapturing);
-    aliasPattern = new RegExp(`^${withStarCapturing}`);
-  }
-  return aliasPattern;
-}
-
-function isTyping(target: string): boolean {
-  return target.indexOf("@types") !== -1 || target.indexOf(".d.ts") !== -1;
 }
 
 function createPlugin(
+  matchPath: MatchPath,
   resolver: Resolver,
-  mapping: Mapping,
   absoluteBaseUrl: string,
   target: string
 ): ResolverCallback {
   return (request, callback) => {
     const innerRequest = getInnerRequest(resolver, request);
-    if (!innerRequest) {
+
+    if (
+      !innerRequest ||
+      (innerRequest.startsWith(".") || innerRequest.startsWith(".."))
+    ) {
       return callback();
     }
 
-    const match = innerRequest.match(mapping.aliasPattern);
-    if (!match) {
+    const foundMatch = matchPath(
+      request.context.issuer,
+      innerRequest,
+      undefined,
+      undefined,
+      [".ts", ".tsx"]
+    );
+
+    if (!foundMatch) {
       return callback();
-    }
-
-    let newRequestStr = mapping.target;
-    if (!mapping.onlyModule) {
-      newRequestStr = newRequestStr.replace("*", match[1]);
-    }
-
-    if (newRequestStr[0] === ".") {
-      newRequestStr = path.resolve(absoluteBaseUrl, newRequestStr);
     }
 
     const newRequest = {
       ...request,
-      request: newRequestStr
+      request: foundMatch,
+      path: absoluteBaseUrl
     };
 
     return resolver.doResolve(
       target,
       newRequest,
-      "aliased with mapping '" +
-        innerRequest +
-        "': '" +
-        mapping.alias +
-        "' to '" +
-        newRequestStr +
-        "'",
-      createInnerCallback((err: Error, result: string): void => {
+      // `aliased with mapping '${innerRequest}': '${foundMapping.alias}' to '${
+      //   relativeTargetPath
+      // }'`,
+      "aliased with mapping",
+      createInnerCallback((err: Error, result2: string): void => {
         if (arguments.length > 0) {
-          return callback(err, result);
+          return callback(err, result2);
         }
-
         // don't allow other aliasing or raw request
         callback(null, null);
       }, callback)

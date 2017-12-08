@@ -38,6 +38,7 @@
     "*.{ts,tsx,json,css}": ["prettier --write", "git add"]
   },
   "dependencies": {
-    "chalk": "^2.3.0"
+    "chalk": "^2.3.0",
+    "tsconfig-paths": "^2.4.0"
   }
 }
