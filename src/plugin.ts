@@ -106,74 +106,31 @@ export class TsConfigPathsPlugin implements ResolverPlugin {
   apply(resolver: Resolver): void {
     const { baseUrl, mappings } = this;
 
-    if (baseUrl) {
-      resolver.apply(
-        new modulesInRootPlugin("module", this.absoluteBaseUrl, "resolve")
+    if (mappings.length > 0 && !baseUrl) {
+      throw new Error(
+        "If you have paths in your tsconfig.json, you need to specify baseUrl."
       );
     }
 
+    if (!baseUrl) {
+      // Nothing to do if there is no baseUrl
+      return;
+    }
+
+    // This is for the baseUrl
+    resolver.apply(
+      new modulesInRootPlugin("module", this.absoluteBaseUrl, "resolve")
+    );
+
     mappings.forEach(mapping => {
       // skip "phantom" type references
-      if (!this.isTyping(mapping.target)) {
-        resolver.plugin(this.source, this.createPlugin(resolver, mapping));
+      if (!isTyping(mapping.target)) {
+        resolver.plugin(
+          this.source,
+          createPlugin(resolver, mapping, this.absoluteBaseUrl, this.target)
+        );
       }
     });
-  }
-
-  private isTyping(target: string): boolean {
-    return target.indexOf("@types") !== -1 || target.indexOf(".d.ts") !== -1;
-  }
-
-  private createPlugin(resolver: Resolver, mapping: Mapping): ResolverCallback {
-    return (request, callback) => {
-      const innerRequest = getInnerRequest(resolver, request);
-      if (!innerRequest) {
-        return callback();
-      }
-
-      const match = innerRequest.match(mapping.aliasPattern);
-      if (!match) {
-        return callback();
-      }
-
-      let newRequestStr = mapping.target;
-      if (!mapping.onlyModule) {
-        newRequestStr = newRequestStr.replace("*", match[1]);
-      }
-
-      if (newRequestStr[0] === ".") {
-        newRequestStr = path.resolve(this.absoluteBaseUrl, newRequestStr);
-      }
-
-      // const newRequest = _.extend({}, request, {
-      //   request: newRequestStr
-      // });
-
-      const newRequest = {
-        ...request,
-        request: newRequestStr
-      };
-
-      return resolver.doResolve(
-        this.target,
-        newRequest,
-        "aliased with mapping '" +
-          innerRequest +
-          "': '" +
-          mapping.alias +
-          "' to '" +
-          newRequestStr +
-          "'",
-        createInnerCallback((err: Error, result: string): void => {
-          if (arguments.length > 0) {
-            return callback(err, result);
-          }
-
-          // don't allow other aliasing or raw request
-          callback(null, null);
-        }, callback)
-      );
-    };
   }
 }
 
@@ -196,13 +153,72 @@ function createMappings(paths: MapLike<Array<string>>): Array<Mapping> {
   return mappings;
 }
 
-function createAliasPattern(onlyModule: boolean, excapedAlias: string): RegExp {
+function createAliasPattern(onlyModule: boolean, escapedAlias: string): RegExp {
   let aliasPattern: RegExp;
   if (onlyModule) {
-    aliasPattern = new RegExp(`^${excapedAlias}$`);
+    aliasPattern = new RegExp(`^${escapedAlias}$`);
   } else {
-    const withStarCapturing = excapedAlias.replace("\\*", "(.*)");
+    console.log("escapedAlias", escapedAlias);
+    const withStarCapturing = escapedAlias.replace("\\*", "(.*)");
+    console.log("withStarCapturing", withStarCapturing);
     aliasPattern = new RegExp(`^${withStarCapturing}`);
   }
   return aliasPattern;
+}
+
+function isTyping(target: string): boolean {
+  return target.indexOf("@types") !== -1 || target.indexOf(".d.ts") !== -1;
+}
+
+function createPlugin(
+  resolver: Resolver,
+  mapping: Mapping,
+  absoluteBaseUrl: string,
+  target: string
+): ResolverCallback {
+  return (request, callback) => {
+    const innerRequest = getInnerRequest(resolver, request);
+    if (!innerRequest) {
+      return callback();
+    }
+
+    const match = innerRequest.match(mapping.aliasPattern);
+    if (!match) {
+      return callback();
+    }
+
+    let newRequestStr = mapping.target;
+    if (!mapping.onlyModule) {
+      newRequestStr = newRequestStr.replace("*", match[1]);
+    }
+
+    if (newRequestStr[0] === ".") {
+      newRequestStr = path.resolve(absoluteBaseUrl, newRequestStr);
+    }
+
+    const newRequest = {
+      ...request,
+      request: newRequestStr
+    };
+
+    return resolver.doResolve(
+      target,
+      newRequest,
+      "aliased with mapping '" +
+        innerRequest +
+        "': '" +
+        mapping.alias +
+        "' to '" +
+        newRequestStr +
+        "'",
+      createInnerCallback((err: Error, result: string): void => {
+        if (arguments.length > 0) {
+          return callback(err, result);
+        }
+
+        // don't allow other aliasing or raw request
+        callback(null, null);
+      }, callback)
+    );
+  };
 }
