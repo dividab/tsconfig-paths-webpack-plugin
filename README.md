@@ -24,7 +24,7 @@ npm install --save-dev tsconfig-paths-webpack-plugin
 In your webpack config add this:
 
 ```
-var TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+var TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 resolve: {
     plugins: [
