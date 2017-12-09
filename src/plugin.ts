@@ -1,6 +1,4 @@
-import * as path from "path";
 import chalk from "chalk";
-import { readConfigFile } from "./read-config-file";
 import * as Options from "./options";
 import * as logger from "./logger";
 import * as TsconfigPaths from "tsconfig-paths";
@@ -75,23 +73,24 @@ export class TsconfigPathsPlugin implements ResolverPlugin {
     const log = logger.makeLogger(options, colors);
 
     const context = options.context || process.cwd();
-    const { configFilePath, baseUrl, paths = {} } = readConfigFile(
-      context,
-      options.compiler,
-      options.configFile
-    );
 
-    log.logInfo(
-      `tsconfig-paths-webpack-plugin: Using config file at ${configFilePath}`
-    );
+    const loadFrom = options.configFile || context;
 
-    this.baseUrl = baseUrl;
-    this.absoluteBaseUrl = path.resolve(
-      path.dirname(configFilePath),
-      this.baseUrl || "."
-    );
+    const loadResult = TsconfigPaths.loadConfig(loadFrom);
+    if (loadResult.resultType === "failed") {
+      log.logError(`Failed to load tsconfig.json: ${loadResult.message}`);
+    } else {
+      log.logInfo(
+        `tsconfig-paths-webpack-plugin: Using config file at ${loadResult.configFileAbsolutePath}`
+      );
 
-    this.matchPath = TsconfigPaths.createMatchPath(this.absoluteBaseUrl, paths);
+      this.baseUrl = loadResult.baseUrl;
+      this.absoluteBaseUrl = loadResult.absoluteBaseUrl;
+      this.matchPath = TsconfigPaths.createMatchPath(
+        this.absoluteBaseUrl,
+        loadResult.paths
+      );
+    }
   }
 
   apply(resolver: Resolver): void {
