@@ -1,6 +1,6 @@
 import chalk from "chalk";
 import * as Options from "./options";
-import * as logger from "./logger";
+import * as Logger from "./logger";
 import * as TsconfigPaths from "tsconfig-paths";
 
 interface ResolverPlugin {
@@ -58,6 +58,7 @@ export class TsconfigPathsPlugin implements ResolverPlugin {
   source: string;
   target: string;
 
+  log: Logger.Logger;
   baseUrl: string;
   absoluteBaseUrl: string;
 
@@ -70,7 +71,7 @@ export class TsconfigPathsPlugin implements ResolverPlugin {
     const options = Options.getOptions(rawOptions);
 
     const colors = new chalk.constructor({ enabled: options.colors });
-    const log = logger.makeLogger(options, colors);
+    this.log = Logger.makeLogger(options, colors);
 
     const context = options.context || process.cwd();
 
@@ -78,9 +79,9 @@ export class TsconfigPathsPlugin implements ResolverPlugin {
 
     const loadResult = TsconfigPaths.loadConfig(loadFrom);
     if (loadResult.resultType === "failed") {
-      log.logError(`Failed to load tsconfig.json: ${loadResult.message}`);
+      this.log.logError(`Failed to load tsconfig.json: ${loadResult.message}`);
     } else {
-      log.logInfo(
+      this.log.logInfo(
         `tsconfig-paths-webpack-plugin: Using config file at ${loadResult.configFileAbsolutePath}`
       );
 
@@ -98,6 +99,9 @@ export class TsconfigPathsPlugin implements ResolverPlugin {
 
     if (!baseUrl) {
       // Nothing to do if there is no baseUrl
+      this.log.logWarning(
+        "Found no baseUrl in tsconfig.json, not applying tsconfig-paths-webpack-plugin"
+      );
       return;
     }
 
@@ -150,10 +154,7 @@ function createPlugin(
     return resolver.doResolve(
       target,
       newRequest,
-      // `aliased with mapping '${innerRequest}': '${foundMapping.alias}' to '${
-      //   relativeTargetPath
-      // }'`,
-      "aliased with mapping",
+      `Resolved request '${innerRequest}' to '${foundMatch}' usign tsconfig.json paths mapping`,
       createInnerCallback((err: Error, result2: string): void => {
         if (arguments.length > 0) {
           return callback(err, result2);
