@@ -7,6 +7,14 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+* Nothing yet.
+
+## [1.0.0]
+
+### Changed
+
+* Log path to tsconfig.json at warn log level so it is logged as default.
+
 ## [0.4.0]
 
 ### Changed
@@ -42,7 +50,8 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 * First release.
 
-[unreleased]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/0.4.0...master
+[unreleased]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/1.0.0...master
+[1.0.0]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/0.4.0...1.0.0
 [0.4.0]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/0.3.0...0.4.0
 [0.3.0]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/0.2.0...0.3.0
 [0.2.0]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/0.1.1...0.2.0
