@@ -80,7 +80,7 @@ export class TsconfigPathsPlugin implements ResolverPlugin {
     if (loadResult.resultType === "failed") {
       this.log.logError(`Failed to load tsconfig.json: ${loadResult.message}`);
     } else {
-      this.log.logInfo(
+      this.log.logWarning(
         `tsconfig-paths-webpack-plugin: Using config file at ${loadResult.configFileAbsolutePath}`
       );
       this.baseUrl = loadResult.baseUrl;
