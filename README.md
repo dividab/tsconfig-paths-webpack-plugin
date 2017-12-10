@@ -29,7 +29,7 @@ var TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 module.exports = {
   ...
   resolve: {
-    plugins: [new TsConfigPathsPlugin({ /*configFile: "./path/to/tsconfig.json" */ })]
+    plugins: [new TsconfigPathsPlugin({ /*configFile: "./path/to/tsconfig.json" */ })]
   }
   ...
 }
