@@ -35,29 +35,6 @@ resolve: {
 
 ## Options
 
-#### logInfoToStdOut _(boolean) (default=false)_
-
-This is important if you read from stdout or stderr and for proper error
-handling. The default value ensures that you can read from stdout e.g. via pipes
-or you use webpack -j to generate json output.
-
-#### logLevel _(string) (default=warn)_
-
-Can be `info`, `warn` or `error` which limits the log output to the specified
-log level. Beware of the fact that errors are written to stderr and everything
-else is written to stderr (or stdout if logInfoToStdOut is true).
-
-#### silent _(boolean) (default=false)_
-
-If true, no console.log messages will be emitted. Note that most error messages
-are emitted via webpack which is not affected by this flag.
-
-#### compiler _(string) (default='typescript')_
-
-Allows use of TypeScript compilers other than the official one. Should be set to
-the NPM name of the compiler, eg
-[`ntypescript`](https://github.com/basarat/ntypescript).
-
 #### configFile _(string) (default='tsconfig.json')_
 
 Allows you to specify where to find the TypeScript configuration file.
@@ -72,9 +49,26 @@ You may provide
   respective `.ts` entry file.
 * an absolute path to the configuration file.
 
+#### silent _(boolean) (default=false)_
+
+If true, no console.log messages will be emitted. Note that most error messages
+are emitted via webpack which is not affected by this flag.
+
+#### logLevel _(string) (default=warn)_
+
+Can be `info`, `warn` or `error` which limits the log output to the specified
+log level. Beware of the fact that errors are written to stderr and everything
+else is written to stderr (or stdout if logInfoToStdOut is true).
+
 #### colors _(boolean) (default=true)_
 
 If `false`, disables built-in colors in logger messages.
+
+#### logInfoToStdOut _(boolean) (default=false)_
+
+This is important if you read from stdout or stderr and for proper error
+handling. The default value ensures that you can read from stdout e.g. via pipes
+or you use webpack -j to generate json output.
 
 ## How to test
 

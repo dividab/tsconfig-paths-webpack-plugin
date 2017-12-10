@@ -1,13 +1,12 @@
 export type LogLevel = "INFO" | "WARN" | "ERROR";
 
 export interface Options {
-  silent: boolean;
-  logLevel: LogLevel;
-  logInfoToStdOut: boolean;
-  compiler: string;
-  configFile: string;
-  context: string;
-  colors: boolean;
+  readonly silent: boolean;
+  readonly logLevel: LogLevel;
+  readonly logInfoToStdOut: boolean;
+  readonly configFile: string;
+  readonly context: string;
+  readonly colors: boolean;
 }
 
 type ValidOptions = keyof Options;
@@ -15,7 +14,6 @@ const validOptions: ReadonlyArray<ValidOptions> = [
   "silent",
   "logLevel",
   "logInfoToStdOut",
-  "compiler",
   "configFile",
   "context"
 ];
@@ -53,21 +51,22 @@ ${validOptions.join(" / ")}
 }
 
 function makeOptions(rawOptions: Partial<Options>): Options {
-  const options = Object.assign(
-    {},
-    {
+  const options: Options = {
+    ...({
       silent: false,
       logLevel: "WARN",
       logInfoToStdOut: false,
-      compiler: "typescript",
       configFile: "tsconfig.json",
       context: undefined,
       colors: true
-    } as Options,
-    rawOptions
-  );
+    } as Options),
+    ...rawOptions
+  };
 
-  options.logLevel = options.logLevel.toUpperCase() as LogLevel;
+  const options2: Options = {
+    ...options,
+    logLevel: options.logLevel.toUpperCase() as LogLevel
+  };
 
-  return options;
+  return options2;
 }
