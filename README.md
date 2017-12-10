@@ -41,13 +41,14 @@ Allows you to specify where to find the TypeScript configuration file.
 
 You may provide
 
-* just a file name. The loader then will search for the config file of each
-  entry point in the respective entry point's containing folder. If a config
-  file cannot be found there, it will travel up the parent directory chain and
-  look for the config file in those folders.
-* a relative path to the configuration file. It will be resolved relative to the
-  respective `.ts` entry file.
+* just a file name. The plugin will search for the filename using the built-in
+  logic in the `tsconfig-paths` package. The search will start at `cwd`.
+* a relative path to the configuration file. It will be resolved relative to
+  `cwd`.
 * an absolute path to the configuration file.
+
+  > The use of `cwd` as default above is not optimal but we've found no better
+  > solution yet. If you have a suggestion please file an issue.
 
 #### silent _(boolean) (default=false)_
 
