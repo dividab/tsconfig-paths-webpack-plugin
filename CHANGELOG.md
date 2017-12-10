@@ -7,7 +7,16 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-* Nothing for now
+## [0.4.0]
+
+### Changed
+
+* Rename plugin class to TsconfigPathsPlugin (lower case s, breaking change)
+* Load config using tsconfig-paths.
+
+### Removed
+
+* Remove compiler option (it was not used)
 
 ## [0.3.0]
 
@@ -33,7 +42,8 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 * First release.
 
-[unreleased]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/0.3.0...master
+[unreleased]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/0.4.0...master
+[0.4.0]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/0.3.0...0.4.0
 [0.3.0]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/0.2.0...0.3.0
 [0.2.0]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/0.1.1...0.2.0
 [0.1.1]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/0.1.0...0.1.1
