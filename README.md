@@ -5,7 +5,9 @@
 [![MIT license][license-image]][license-url]
 
 Use this to load modules whose location is specified in the `paths` section of
-`tsconfig.json` when using webpack.
+`tsconfig.json` when using webpack. This package provides the functionality of
+the [tsconfig-paths](https://www.npmjs.com/package/tsconfig-paths) package but
+as a webpack plug-in.
 
 ## How to install
 
