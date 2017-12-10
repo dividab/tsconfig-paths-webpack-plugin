@@ -47,8 +47,8 @@ You may provide
   `cwd`.
 * an absolute path to the configuration file.
 
-  > The use of `cwd` as default above is not optimal but we've found no better
-  > solution yet. If you have a suggestion please file an issue.
+> The use of `cwd` as default above is not optimal but we've found no better
+> solution yet. If you have a suggestion please file an issue.
 
 #### silent _(boolean) (default=false)_
 
