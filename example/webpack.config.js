@@ -11,7 +11,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\\.tsx?$/,
         exclude: /^node_modules/,
         loader: "ts-loader",
         options: {
@@ -27,6 +27,7 @@ module.exports = {
         configFile: "./tsconfig.json",
         logLevel: "info",
         extensions: [".ts", ".tsx"]
+        // baseUrl: "/foo"
       })
     ]
   }

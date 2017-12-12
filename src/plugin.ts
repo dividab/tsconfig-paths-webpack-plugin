@@ -1,5 +1,6 @@
 import chalk from "chalk";
 import * as TsconfigPaths from "tsconfig-paths";
+import * as path from "path";
 import * as Options from "./options";
 import * as Logger from "./logger";
 
@@ -88,8 +89,10 @@ export class TsconfigPathsPlugin implements ResolverPlugin {
           loadResult.configFileAbsolutePath
         }`
       );
-      this.baseUrl = loadResult.baseUrl;
-      this.absoluteBaseUrl = loadResult.absoluteBaseUrl;
+      this.baseUrl = options.baseUrl || loadResult.baseUrl;
+      this.absoluteBaseUrl = options.baseUrl
+        ? path.resolve(options.baseUrl)
+        : loadResult.absoluteBaseUrl;
       this.matchPath = TsconfigPaths.createMatchPath(
         this.absoluteBaseUrl,
         loadResult.paths

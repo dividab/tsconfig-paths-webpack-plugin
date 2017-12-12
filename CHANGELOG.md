@@ -9,6 +9,12 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 * Nothing yet.
 
+## [1.2.0]
+
+### Added
+
+* Added option for `baseUrl`.
+
 ## [1.1.0]
 
 ### Added
@@ -56,7 +62,8 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 * First release.
 
-[unreleased]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/1.1.0...master
+[unreleased]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/1.2.0...master
+[1.2.0]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/1.0.0...1.1.0
 [1.0.0]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/0.4.0...1.0.0
 [0.4.0]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/0.3.0...0.4.0

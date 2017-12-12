@@ -3,6 +3,7 @@ export type LogLevel = "INFO" | "WARN" | "ERROR";
 export interface Options {
   readonly configFile: string;
   readonly extensions: ReadonlyArray<string>;
+  readonly baseUrl: string;
   readonly silent: boolean;
   readonly logLevel: LogLevel;
   readonly logInfoToStdOut: boolean;
@@ -14,6 +15,7 @@ type ValidOptions = keyof Options;
 const validOptions: ReadonlyArray<ValidOptions> = [
   "configFile",
   "extensions",
+  "baseUrl",
   "silent",
   "logLevel",
   "logInfoToStdOut",
@@ -57,6 +59,7 @@ function makeOptions(rawOptions: Partial<Options>): Options {
     ...({
       configFile: "tsconfig.json",
       extensions: [".ts", ".tsx"],
+      baseUrl: undefined,
       silent: false,
       logLevel: "WARN",
       logInfoToStdOut: false,

@@ -58,6 +58,10 @@ You may provide
 
 An array of the extensions that will be tried during resolve. Ideally this would be the same as the extensions form the webpack config but it seems resolver plug-ins does not have access to this infomration so you need to specify it again for the plugin.
 
+#### baseUrl _(string) (default=undefined)_
+
+This allows you to override the `baseUrl` found in tsconfig.json. The baseUrl specifies from which directory `paths` should be resolved. So this option enabled you to resolve from anhother directory than the one where tsconfig.json is located. This can be useful if you want to use webpack with `tsc --watch` instead of a typescript loader. If this option is `undefined` then the `baseUrl` from tsconfig.json will be used.
+
 #### silent _(boolean) (default=false)_
 
 If true, no console.log messages will be emitted. Note that most error messages
