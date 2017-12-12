@@ -61,6 +61,7 @@ export class TsconfigPathsPlugin implements ResolverPlugin {
   log: Logger.Logger;
   baseUrl: string;
   absoluteBaseUrl: string;
+  extensions: ReadonlyArray<string>;
 
   matchPath: TsconfigPaths.MatchPath;
 
@@ -69,6 +70,8 @@ export class TsconfigPathsPlugin implements ResolverPlugin {
     this.target = "resolve";
 
     const options = Options.getOptions(rawOptions);
+
+    this.extensions = options.extensions;
 
     const colors = new chalk.constructor({ enabled: options.colors });
     this.log = Logger.makeLogger(options, colors);
@@ -81,7 +84,9 @@ export class TsconfigPathsPlugin implements ResolverPlugin {
       this.log.logError(`Failed to load tsconfig.json: ${loadResult.message}`);
     } else {
       this.log.logWarning(
-        `tsconfig-paths-webpack-plugin: Using config file at ${loadResult.configFileAbsolutePath}`
+        `tsconfig-paths-webpack-plugin: Using config file at ${
+          loadResult.configFileAbsolutePath
+        }`
       );
       this.baseUrl = loadResult.baseUrl;
       this.absoluteBaseUrl = loadResult.absoluteBaseUrl;
@@ -110,7 +115,13 @@ export class TsconfigPathsPlugin implements ResolverPlugin {
 
     resolver.plugin(
       this.source,
-      createPlugin(this.matchPath, resolver, this.absoluteBaseUrl, this.target)
+      createPlugin(
+        this.matchPath,
+        resolver,
+        this.absoluteBaseUrl,
+        this.target,
+        this.extensions
+      )
     );
   }
 }
@@ -119,7 +130,8 @@ function createPlugin(
   matchPath: TsconfigPaths.MatchPath,
   resolver: Resolver,
   absoluteBaseUrl: string,
-  target: string
+  target: string,
+  extensions: ReadonlyArray<string>
 ): ResolverCallback {
   return (request, callback) => {
     const innerRequest = getInnerRequest(resolver, request);
@@ -136,7 +148,7 @@ function createPlugin(
       innerRequest,
       undefined,
       undefined,
-      [".ts", ".tsx"]
+      extensions
     );
 
     if (!foundMatch) {

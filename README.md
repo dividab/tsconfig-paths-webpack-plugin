@@ -54,6 +54,10 @@ You may provide
 > The use of `cwd` as default above is not optimal but we've found no better
 > solution yet. If you have a suggestion please file an issue.
 
+#### extensions _(string[]) (default=[".ts", ".tsx"])_
+
+An array of the extensions that will be tried during resolve. Ideally this would be the same as the extensions form the webpack config but it seems resolver plug-ins does not have access to this infomration so you need to specify it again for the plugin.
+
 #### silent _(boolean) (default=false)_
 
 If true, no console.log messages will be emitted. Note that most error messages

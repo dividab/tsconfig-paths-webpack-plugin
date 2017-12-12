@@ -26,9 +26,9 @@
   },
   "scripts": {
     "precommit": "lint-staged",
-    "tsc": "tsc -p src",
-    "tsc:tests": "tsc -p tests",
-    "tsc:example": "tsc -p example",
+    "compile": "tsc -p src",
+    "compile:tests": "tsc -p tests",
+    "compile:example": "tsc -p example",
     "example": "yarn build && cd example && webpack",
     "build": "rm -rf lib && tsc -p src",
     "lint":
