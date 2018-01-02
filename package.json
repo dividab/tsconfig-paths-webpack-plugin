@@ -8,7 +8,7 @@
   "repository": "https://github.com/dividab/tsconfig-paths-webpack-plugin",
   "dependencies": {
     "chalk": "^2.3.0",
-    "tsconfig-paths": "^2.6.0"
+    "tsconfig-paths": "^2.7.1"
   },
   "devDependencies": {
     "@types/colors": "^1.1.3",
@@ -31,16 +31,14 @@
     "compile:example": "tsc -p example",
     "example": "yarn build && cd example && webpack",
     "build": "rm -rf lib && tsc -p src",
-    "lint": "tslint -t msbuild './src/**/*.ts{,x}' -e './src/node_modules/**/*'",
+    "lint":
+      "tslint -t msbuild './src/**/*.ts{,x}' -e './src/node_modules/**/*'",
     "publish:major": "yarn run build && node scripts/publish.js major",
     "publish:minor": "yarn run build && node scripts/publish.js minor",
     "publish:patch": "yarn run build && node scripts/publish.js patch"
   },
   "lint-staged": {
     "*.{ts,tsx}": "tslint",
-    "*.{ts,tsx,json,css}": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.{ts,tsx,json,css}": ["prettier --write", "git add"]
   }
 }
