@@ -9,6 +9,12 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 * Nothing yet.
 
+## [1.4.0]
+
+### Changed
+
+* Only log startup message when `logLevel` is set to `info`. See [#6](https://github.com/dividab/tsconfig-paths-webpack-plugin/issues/6).
+
 ## [1.3.1]
 
 ### Added

@@ -84,7 +84,7 @@ export class TsconfigPathsPlugin implements ResolverPlugin {
     if (loadResult.resultType === "failed") {
       this.log.logError(`Failed to load tsconfig.json: ${loadResult.message}`);
     } else {
-      this.log.logWarning(
+      this.log.logInfo(
         `tsconfig-paths-webpack-plugin: Using config file at ${
           loadResult.configFileAbsolutePath
         }`
@@ -167,7 +167,9 @@ function createPlugin(
     return resolver.doResolve(
       target,
       newRequest,
-      `Resolved request '${innerRequest}' to '${foundMatch}' using tsconfig.json paths mapping`,
+      `Resolved request '${innerRequest}' to '${
+        foundMatch
+      }' using tsconfig.json paths mapping`,
       createInnerCallback((err: Error, result2: string): void => {
         if (arguments.length > 0) {
           return callback(err, result2);
