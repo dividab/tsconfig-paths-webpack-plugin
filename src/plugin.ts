@@ -3,21 +3,52 @@ import * as TsconfigPaths from "tsconfig-paths";
 import * as path from "path";
 import * as Options from "./options";
 import * as Logger from "./logger";
+import { Stats } from "fs";
 
 interface ResolverPlugin {
   apply(resolver: Resolver): void;
 }
 
 interface Resolver {
-  apply(plugin: ResolverPlugin): void;
-  plugin(source: string, cb: ResolverCallback): void;
-  doResolve(
+  readonly apply: (plugin: ResolverPlugin) => void;
+  readonly plugin: (source: string, cb: ResolverCallback) => void;
+  readonly doResolve: (
     target: string,
     req: Request,
     desc: string,
     callback: Callback
-  ): void;
-  join(relativePath: string, innerRequest: Request): Request;
+  ) => void;
+  readonly join: (relativePath: string, innerRequest: Request) => Request;
+  // readonly extensions: ReadonlyArray<string>;
+  readonly fileSystem: ResolverFileSystem;
+}
+
+interface ResolverFileSystem {
+  readonly stat: (
+    path: string,
+    callback: (err: Error, stats: Stats) => void
+  ) => void;
+  readonly readdir: (
+    path: string,
+    callback: (err: Error, files: ReadonlyArray<string>) => void
+  ) => void;
+  readonly readFile: (
+    path: string,
+    callback: (err: Error, data: {}) => void
+  ) => void;
+  readonly readlink: (
+    path: string,
+    callback: (err: Error, linkString: string) => void
+  ) => void;
+  readonly readJson: (
+    path: string,
+    callback: (err: Error, json: {}) => void
+  ) => void;
+  readonly statSync: (path: string) => Stats;
+  readonly readdirSync: (path: string) => ReadonlyArray<string>;
+  readonly readFileSync: (path: string) => {};
+  readonly readlinkSync: (path: string) => string;
+  readonly readJsonSync: (path: string) => {};
 }
 
 type ResolverCallback = (request: Request, callback: Callback) => void;
@@ -31,11 +62,11 @@ type CreateInnerCallback = (
 type getInnerRequest = (resolver: Resolver, request: Request) => string;
 
 interface Request {
-  request?: Request | string;
-  relativePath: string;
-  path: string;
-  context: {
-    issuer: string;
+  readonly request?: Request | string;
+  readonly relativePath: string;
+  readonly path: string;
+  readonly context: {
+    readonly issuer: string;
   };
 }
 
@@ -45,12 +76,6 @@ interface Callback {
   stack?: string;
   missing?: string;
 }
-
-const modulesInRootPlugin: new (
-  a: string,
-  b: string,
-  c: string
-) => ResolverPlugin = require("enhanced-resolve/lib/ModulesInRootPlugin");
 
 const createInnerCallback: CreateInnerCallback = require("enhanced-resolve/lib/createInnerCallback");
 const getInnerRequest: getInnerRequest = require("enhanced-resolve/lib/getInnerRequest");
@@ -64,7 +89,7 @@ export class TsconfigPathsPlugin implements ResolverPlugin {
   absoluteBaseUrl: string;
   extensions: ReadonlyArray<string>;
 
-  matchPath: TsconfigPaths.MatchPath;
+  matchPath: TsconfigPaths.MatchPathAsync;
 
   constructor(rawOptions: Partial<Options.Options> = {}) {
     this.source = "described-resolve";
@@ -93,7 +118,7 @@ export class TsconfigPathsPlugin implements ResolverPlugin {
       this.absoluteBaseUrl = options.baseUrl
         ? path.resolve(options.baseUrl)
         : loadResult.absoluteBaseUrl;
-      this.matchPath = TsconfigPaths.createMatchPath(
+      this.matchPath = TsconfigPaths.createMatchPathAsync(
         this.absoluteBaseUrl,
         loadResult.paths
       );
@@ -111,11 +136,6 @@ export class TsconfigPathsPlugin implements ResolverPlugin {
       return;
     }
 
-    // This is for the baseUrl
-    resolver.apply(
-      new modulesInRootPlugin("module", this.absoluteBaseUrl, "resolve")
-    );
-
     resolver.plugin(
       this.source,
       createPlugin(
@@ -130,12 +150,14 @@ export class TsconfigPathsPlugin implements ResolverPlugin {
 }
 
 function createPlugin(
-  matchPath: TsconfigPaths.MatchPath,
+  matchPath: TsconfigPaths.MatchPathAsync,
   resolver: Resolver,
   absoluteBaseUrl: string,
   target: string,
   extensions: ReadonlyArray<string>
 ): ResolverCallback {
+  const fileExistAsync = createFileExistAsync(resolver.fileSystem);
+  const readJsonAsync = createReadJsonAsync(resolver.fileSystem);
   return (request, callback) => {
     const innerRequest = getInnerRequest(resolver, request);
 
@@ -146,37 +168,73 @@ function createPlugin(
       return callback();
     }
 
-    const foundMatch = matchPath(
-      request.context.issuer,
+    matchPath(
       innerRequest,
-      undefined,
-      undefined,
-      extensions
-    );
-
-    if (!foundMatch) {
-      return callback();
-    }
-
-    const newRequest = {
-      ...request,
-      request: foundMatch,
-      path: absoluteBaseUrl
-    };
-
-    return resolver.doResolve(
-      target,
-      newRequest,
-      `Resolved request '${innerRequest}' to '${
-        foundMatch
-      }' using tsconfig.json paths mapping`,
-      createInnerCallback((err: Error, result2: string): void => {
-        if (arguments.length > 0) {
-          return callback(err, result2);
+      readJsonAsync,
+      fileExistAsync,
+      extensions,
+      (err, foundMatch) => {
+        if (err) {
+          callback(err);
         }
-        // don't allow other aliasing or raw request
-        callback(null, null);
-      }, callback)
+
+        if (!foundMatch) {
+          return callback();
+        }
+
+        const newRequest = {
+          ...request,
+          request: foundMatch,
+          path: absoluteBaseUrl
+        };
+
+        return resolver.doResolve(
+          target,
+          newRequest,
+          `Resolved request '${innerRequest}' to '${foundMatch}' using tsconfig.json paths mapping`,
+          createInnerCallback((err2: Error, result2: string): void => {
+            if (arguments.length > 0) {
+              return callback(err2, result2);
+            }
+            // don't allow other aliasing or raw request
+            callback(null, null);
+          }, callback)
+        );
+      }
     );
+  };
+}
+
+function createReadJsonAsync(
+  filesystem: ResolverFileSystem
+): TsconfigPaths.ReadJsonAsync {
+  // tslint:disable-next-line:no-any
+  return (path2: string, callback2: (err?: Error, content?: any) => void) => {
+    filesystem.readJson(path2, (err, json) => {
+      // If error assume file does not exist
+      if (err || !json) {
+        callback2();
+        return;
+      }
+      callback2(undefined, json);
+    });
+  };
+}
+
+function createFileExistAsync(
+  filesystem: ResolverFileSystem
+): TsconfigPaths.FileExistsAsync {
+  return (
+    path2: string,
+    callback2: (err?: Error, exists?: boolean) => void
+  ) => {
+    filesystem.stat(path2, (err: Error, stats: Stats) => {
+      // If error assume file does not exist
+      if (err) {
+        callback2(undefined, false);
+        return;
+      }
+      callback2(undefined, stats ? stats.isFile() : false);
+    });
   };
 }
