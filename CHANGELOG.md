@@ -7,7 +7,13 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-* Nothing yet.
+## [2.0.0] - 2018-01-13
+
+### Changed
+
+* Performance enhancements:
+  * Using async versions of tsconfig-paths package matchPath functions.
+  * Using webpack's cached filesystem. Should give better performance.
 
 ## [1.4.0]
 
