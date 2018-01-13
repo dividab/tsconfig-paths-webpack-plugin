@@ -6,7 +6,7 @@ import * as Logger from "./logger";
 import { Stats } from "fs";
 
 interface ResolverPlugin {
-  apply(resolver: Resolver): void;
+  readonly apply: (resolver: Resolver) => void;
 }
 
 interface Resolver {
