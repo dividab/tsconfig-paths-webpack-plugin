@@ -2,6 +2,7 @@ const path = require("path");
 const TsconfigPathsPlugin = require("../index");
 
 module.exports = {
+  mode: "development",
   context: path.resolve(__dirname, "src"),
   entry: "./index",
   output: {
