@@ -16,13 +16,15 @@
     "@types/node": "^8.0.9",
     "husky": "^0.14.3",
     "lint-staged": "^6.0.0",
+    "rimraf": "^2.6.2",
     "shelljs": "^0.7.8",
     "ts-loader": "^2.2.2",
     "ts-node": "^3.2.0",
     "tslint": "^5.8.0",
     "tslint-immutable": "^4.4.0",
     "typescript": "^2.4.1",
-    "webpack": "^3.1.0"
+    "webpack": "^4.1.1",
+    "webpack-cli": "^2.0.11"
   },
   "scripts": {
     "precommit": "lint-staged",
@@ -30,7 +32,7 @@
     "compile:tests": "tsc -p tests",
     "compile:example": "tsc -p example",
     "example": "yarn build && cd example && webpack",
-    "build": "rm -rf lib && tsc -p src",
+    "build": "rimraf lib && tsc -p src",
     "lint":
       "tslint -t msbuild './src/**/*.ts{,x}' -e './src/node_modules/**/*'",
     "publish:major": "yarn run build && node scripts/publish.js major",
