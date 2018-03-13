@@ -37,6 +37,8 @@ module.exports = {
 }
 ```
 
+> Notice that the plugin is placed in the `resolve.plugins` section of the configuration. `tsconfig-paths-webpack-plugin` is a resolve plugin and should only be placed in this part of the configuration. Don't confuse this with the plugins array at the root of the webpack configuration object.
+
 ## Options
 
 #### configFile _(string) (default='tsconfig.json')_

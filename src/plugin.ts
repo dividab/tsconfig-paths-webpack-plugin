@@ -11,17 +11,27 @@ interface ResolverPlugin {
 
 interface Resolver {
   readonly apply: (plugin: ResolverPlugin) => void;
-  readonly plugin: (source: string, cb: ResolverCallback) => void;
-  readonly doResolve: (
-    target: string,
-    req: Request,
-    desc: string,
-    callback: Callback
-  ) => void;
+  readonly plugin: (source: string, cb: ResolverCallbackLegacy) => void;
+  readonly doResolve: doResolveLegacy | doResolve;
   readonly join: (relativePath: string, innerRequest: Request) => Request;
-  // readonly extensions: ReadonlyArray<string>;
   readonly fileSystem: ResolverFileSystem;
+  readonly getHook: (hook: string) => Tapable;
 }
+
+type doResolveLegacy = (
+  target: string,
+  req: Request,
+  desc: string,
+  callback: Callback
+) => void;
+
+type doResolve = (
+  hook: Tapable,
+  req: Request,
+  message: string,
+  resolveContext: ResolveContext,
+  callback: Callback
+) => void;
 
 interface ResolverFileSystem {
   readonly stat: (
@@ -51,7 +61,29 @@ interface ResolverFileSystem {
   readonly readJsonSync: (path: string) => {};
 }
 
-type ResolverCallback = (request: Request, callback: Callback) => void;
+interface ResolveContext {
+  log?: string;
+  stack?: string;
+  missing?: string;
+}
+
+interface Tapable {
+  readonly tapAsync: (
+    options: TapableOptions,
+    callback: ResolverCallback
+  ) => Promise<void>;
+}
+
+interface TapableOptions {
+  readonly name: string;
+}
+
+type ResolverCallbackLegacy = (request: Request, callback: Callback) => void;
+type ResolverCallback = (
+  request: Request,
+  resolveContext: ResolveContext,
+  callback: Callback
+) => void;
 
 type CreateInnerCallback = (
   callback: Callback,
@@ -59,6 +91,17 @@ type CreateInnerCallback = (
   message?: string,
   messageOptional?: string
 ) => Callback;
+
+type CreateInnerContext = (
+  options: {
+    log?: string;
+    stack?: string;
+    missing?: string;
+  },
+  message?: string,
+  messageOptional?: string
+) => ResolveContext;
+
 type getInnerRequest = (resolver: Resolver, request: Request) => string;
 
 interface Request {
@@ -77,7 +120,6 @@ interface Callback {
   missing?: string;
 }
 
-const createInnerCallback: CreateInnerCallback = require("enhanced-resolve/lib/createInnerCallback");
 const getInnerRequest: getInnerRequest = require("enhanced-resolve/lib/getInnerRequest");
 
 export class TsconfigPathsPlugin implements ResolverPlugin {
@@ -131,31 +173,126 @@ export class TsconfigPathsPlugin implements ResolverPlugin {
     if (!baseUrl) {
       // Nothing to do if there is no baseUrl
       this.log.logWarning(
-        "Found no baseUrl in tsconfig.json, not applying tsconfig-paths-webpack-plugin"
+        "tsconfig-paths-webpack-plugin: Found no baseUrl in tsconfig.json, not applying tsconfig-paths-webpack-plugin"
       );
       return;
     }
 
-    resolver.plugin(
-      this.source,
-      createPlugin(
-        this.matchPath,
-        resolver,
-        this.absoluteBaseUrl,
-        this.target,
-        this.extensions
-      )
-    );
+    // The file system only exists when the plugin is in the resolve context. This means it's also properly placed in the resolve.plugins array.
+    // If not, we should warn the user that this plugin should be placed in resolve.plugins and not the plugins array of the root config for example.
+    // This should hopefully prevent issues like: https://github.com/dividab/tsconfig-paths-webpack-plugin/issues/9
+    if (!resolver.fileSystem) {
+      this.log.logWarning(
+        "tsconfig-paths-webpack-plugin: No file system found on resolver." +
+          " Please make sure you've placed the plugin in the correct part of the configuration." +
+          " This plugin is a resolver plugin and should be placed in the resolve part of the Webpack configuration."
+      );
+      return;
+    }
+
+    // getHook will only exist in Webpack 4, if so we should comply to the Webpack 4 plugin system.
+    if (resolver.getHook && typeof resolver.getHook === "function") {
+      resolver
+        .getHook(this.source)
+        .tapAsync(
+          { name: "TsconfigPathsPlugin" },
+          createPluginCallback(
+            this.matchPath,
+            resolver,
+            this.absoluteBaseUrl,
+            resolver.getHook(this.target),
+            this.extensions
+          )
+        );
+    } else {
+      // This is the legacy (Webpack < 4.0.0) way of using the plugin system.
+      resolver.plugin(
+        this.source,
+        createPluginLegacy(
+          this.matchPath,
+          resolver,
+          this.absoluteBaseUrl,
+          this.target,
+          this.extensions
+        )
+      );
+    }
   }
 }
 
-function createPlugin(
+function createPluginCallback(
+  matchPath: TsconfigPaths.MatchPathAsync,
+  resolver: Resolver,
+  absoluteBaseUrl: string,
+  hook: Tapable,
+  extensions: ReadonlyArray<string>
+): ResolverCallback {
+  const fileExistAsync = createFileExistAsync(resolver.fileSystem);
+  const readJsonAsync = createReadJsonAsync(resolver.fileSystem);
+  return (
+    request: Request,
+    resolveContext: ResolveContext,
+    callback: Callback
+  ) => {
+    const innerRequest = getInnerRequest(resolver, request);
+
+    if (
+      !innerRequest ||
+      (innerRequest.startsWith(".") || innerRequest.startsWith(".."))
+    ) {
+      return callback();
+    }
+
+    matchPath(
+      innerRequest,
+      readJsonAsync,
+      fileExistAsync,
+      extensions,
+      (err, foundMatch) => {
+        if (err) {
+          callback(err);
+        }
+
+        if (!foundMatch) {
+          return callback();
+        }
+
+        const newRequest = {
+          ...request,
+          request: foundMatch,
+          path: absoluteBaseUrl
+        };
+
+        // Only at this point we are sure we are dealing with the latest Webpack version (>= 4.0.0)
+        // So only now can we require the createInnerContext function.
+        // (It doesn't exist in legacy versions)
+        const createInnerContext: CreateInnerContext = require("enhanced-resolve/lib/createInnerContext");
+
+        return (resolver.doResolve as doResolve)(
+          hook,
+          newRequest,
+          `Resolved request '${innerRequest}' to '${foundMatch}' using tsconfig.json paths mapping`,
+          createInnerContext({ ...resolveContext }),
+          (err2: Error, result2: string): void => {
+            if (arguments.length > 0) {
+              return callback(err2, result2);
+            }
+            // don't allow other aliasing or raw request
+            callback(null, null);
+          }
+        );
+      }
+    );
+  };
+}
+
+function createPluginLegacy(
   matchPath: TsconfigPaths.MatchPathAsync,
   resolver: Resolver,
   absoluteBaseUrl: string,
   target: string,
   extensions: ReadonlyArray<string>
-): ResolverCallback {
+): ResolverCallbackLegacy {
   const fileExistAsync = createFileExistAsync(resolver.fileSystem);
   const readJsonAsync = createReadJsonAsync(resolver.fileSystem);
   return (request, callback) => {
@@ -188,7 +325,12 @@ function createPlugin(
           path: absoluteBaseUrl
         };
 
-        return resolver.doResolve(
+        // Only at this point we are sure we are dealing with a legacy Webpack version (< 4.0.0)
+        // So only now can we require the createInnerCallback function.
+        // (It's already deprecated and might be removed down the line).
+        const createInnerCallback: CreateInnerCallback = require("enhanced-resolve/lib/createInnerCallback");
+
+        return (resolver.doResolve as doResolveLegacy)(
           target,
           newRequest,
           `Resolved request '${innerRequest}' to '${foundMatch}' using tsconfig.json paths mapping`,
