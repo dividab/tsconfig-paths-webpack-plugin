@@ -250,7 +250,7 @@ function createPluginCallback(
       extensions,
       (err, foundMatch) => {
         if (err) {
-          callback(err);
+          return callback(err);
         }
 
         if (!foundMatch) {
@@ -274,11 +274,18 @@ function createPluginCallback(
           `Resolved request '${innerRequest}' to '${foundMatch}' using tsconfig.json paths mapping`,
           createInnerContext({ ...resolveContext }),
           (err2: Error, result2: string): void => {
-            if (arguments.length > 0) {
-              return callback(err2, result2);
+            // Pattern taken from:
+            // https://github.com/webpack/enhanced-resolve/blob/42ff594140582c3f8f86811f95dea7bf6774a1c8/lib/AliasPlugin.js#L44
+            if (err2) {
+              return callback(err2);
             }
-            // don't allow other aliasing or raw request
-            callback(null, null);
+
+            // Don't allow other aliasing or raw request
+            if (result2 === undefined) {
+              return callback(null, null);
+            }
+
+            callback(null, result2);
           }
         );
       }
@@ -312,7 +319,7 @@ function createPluginLegacy(
       extensions,
       (err, foundMatch) => {
         if (err) {
-          callback(err);
+          return callback(err);
         }
 
         if (!foundMatch) {
@@ -334,10 +341,16 @@ function createPluginLegacy(
           target,
           newRequest,
           `Resolved request '${innerRequest}' to '${foundMatch}' using tsconfig.json paths mapping`,
-          createInnerCallback((err2: Error, result2: string): void => {
+          createInnerCallback(function(err2: Error, result2: string): void {
+            // Note:
+            //  *NOT* using an arrow function here because arguments.length implies we have "this"
+            //  That means "this" has to be in the current function scope, and not the scope above.
+            //  Pattern taken from:
+            //  https://github.com/s-panferov/awesome-typescript-loader/blob/10653beff85f555f1f3b5d4bfd7d21513d0e54a4/src/paths-plugin.ts#L169
             if (arguments.length > 0) {
               return callback(err2, result2);
             }
+
             // don't allow other aliasing or raw request
             callback(null, null);
           }, callback)
