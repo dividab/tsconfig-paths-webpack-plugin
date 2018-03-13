@@ -7,6 +7,12 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.0] - 2018-03-13
+
+### Added
+
+* Proper support for webpack 4. See [#9](https://github.com/dividab/tsconfig-paths-webpack-plugin/issues/9). Thanks to [@Nayni](https://github.com/Nayni) for adding this! (See PR [#10](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/10))
+
 ## [2.0.0] - 2018-01-13
 
 ### Changed
@@ -86,7 +92,8 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 * First release.
 
-[unreleased]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/2.0.0...master
+[unreleased]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.0.0...master
+[3.0.0]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/2.0.0...3.0.0
 [2.0.0]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/1.4.0...2.0.0
 [1.4.0]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/1.3.1...1.4.0
 [1.3.1]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/1.3.0...1.3.1
