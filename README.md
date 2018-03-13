@@ -11,6 +11,8 @@ as a webpack plug-in.
 
 ## How to install
 
+> NOTE: If you are using webpack 4 you need to use version >= 3.0.0 (which is aso backwards compatible with webpack 3).
+
 ```
 yarn add --dev tsconfig-paths-webpack-plugin
 ```
