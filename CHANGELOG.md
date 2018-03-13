@@ -7,6 +7,14 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.1] - 2018-03-13
+
+### Fixed
+
+* Upgraded tsconfig-paths to 3.1.2 which includes the fix in https://github.com/dividab/tsconfig-paths/pull/29.
+
+* Fix for the new webpack 4 code to prevent callback from firing multiple times, see [#11](https://github.com/dividab/tsconfig-paths-webpack-plugin/issues/11). Thanks to [@Nayni](https://github.com/Nayni) for this fix! (See PR [#12](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/12)).
+
 ## [3.0.0] - 2018-03-13
 
 ### Added
@@ -92,7 +100,8 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 * First release.
 
-[unreleased]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.0.0...master
+[unreleased]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.0.1...master
+[3.0.1]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.0.0...3.0.1
 [3.0.0]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/2.0.0...3.0.0
 [2.0.0]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/1.4.0...2.0.0
 [1.4.0]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/1.3.1...1.4.0
