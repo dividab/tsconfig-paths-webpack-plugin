@@ -1,6 +1,6 @@
 {
   "name": "tsconfig-paths-webpack-plugin",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Load modules according to tsconfig paths in webpack.",
   "main": "index.js",
   "author": "Jonas Kello",
