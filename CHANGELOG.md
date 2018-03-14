@@ -7,6 +7,12 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.2] - 2018-03-14
+
+### Fixed
+
+* Upgraded tsconfig-paths to 3.1.3 which includes the fix in https://github.com/dividab/tsconfig-paths/pull/30.
+
 ## [3.0.1] - 2018-03-13
 
 ### Fixed
@@ -100,7 +106,8 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 * First release.
 
-[unreleased]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.0.1...master
+[unreleased]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.0.2...master
+[3.0.2]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.0.1...3.0.2
 [3.0.1]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.0.0...3.0.1
 [3.0.0]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/2.0.0...3.0.0
 [2.0.0]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/1.4.0...2.0.0
