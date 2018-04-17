@@ -7,6 +7,12 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.0.4] - 2018-04-17
+
+### Fixed
+
+* Add missing module dependency [#15](https://github.com/dividab/tsconfig-paths/pull/15). Thanks to [@darlanalves](https://github.com/darlanalves) for this fix!
+
 ## [3.0.3] - 2018-03-31
 
 ### Fixed
@@ -113,7 +119,8 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 * First release.
 
-[unreleased]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.0.3...master
+[unreleased]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.0.4...master
+[3.0.4]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.0.4...3.0.4
 [3.0.3]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.0.2...3.0.3
 [3.0.2]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.0.1...3.0.2
 [3.0.1]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.0.0...3.0.1
