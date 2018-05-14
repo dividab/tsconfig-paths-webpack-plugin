@@ -7,6 +7,12 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.1.1] - 2018-05-14
+
+### Fixed
+
+* Add named typescript export.
+
 ## [3.1.0] - 2018-05-14
 
 ### Added
@@ -125,7 +131,9 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 * First release.
 
-[unreleased]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.0.4...master
+[unreleased]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.1.1...master
+[3.1.1]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.1.0...3.1.1
+[3.1.0]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.0.4...3.1.0
 [3.0.4]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.0.4...3.0.4
 [3.0.3]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.0.2...3.0.3
 [3.0.2]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.0.1...3.0.2
