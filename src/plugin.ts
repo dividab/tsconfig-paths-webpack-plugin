@@ -5,11 +5,11 @@ import * as Options from "./options";
 import * as Logger from "./logger";
 import { Stats } from "fs";
 
-interface ResolverPlugin {
+export interface ResolverPlugin {
   readonly apply: (resolver: Resolver) => void;
 }
 
-interface Resolver {
+export interface Resolver {
   readonly apply: (plugin: ResolverPlugin) => void;
   readonly plugin: (source: string, cb: ResolverCallbackLegacy) => void;
   readonly doResolve: doResolveLegacy | doResolve;
@@ -18,14 +18,14 @@ interface Resolver {
   readonly getHook: (hook: string) => Tapable;
 }
 
-type doResolveLegacy = (
+export type doResolveLegacy = (
   target: string,
   req: Request,
   desc: string,
   callback: Callback
 ) => void;
 
-type doResolve = (
+export type doResolve = (
   hook: Tapable,
   req: Request,
   message: string,
@@ -33,7 +33,7 @@ type doResolve = (
   callback: Callback
 ) => void;
 
-interface ResolverFileSystem {
+export interface ResolverFileSystem {
   readonly stat: (
     path: string,
     callback: (err: Error, stats: Stats) => void
@@ -61,25 +61,28 @@ interface ResolverFileSystem {
   readonly readJsonSync: (path: string) => {};
 }
 
-interface ResolveContext {
+export interface ResolveContext {
   log?: string;
   stack?: string;
   missing?: string;
 }
 
-interface Tapable {
+export interface Tapable {
   readonly tapAsync: (
     options: TapableOptions,
     callback: ResolverCallback
   ) => Promise<void>;
 }
 
-interface TapableOptions {
+export interface TapableOptions {
   readonly name: string;
 }
 
-type ResolverCallbackLegacy = (request: Request, callback: Callback) => void;
-type ResolverCallback = (
+export type ResolverCallbackLegacy = (
+  request: Request,
+  callback: Callback
+) => void;
+export type ResolverCallback = (
   request: Request,
   resolveContext: ResolveContext,
   callback: Callback
@@ -104,7 +107,7 @@ type CreateInnerContext = (
 
 type getInnerRequest = (resolver: Resolver, request: Request) => string;
 
-interface Request {
+export interface Request {
   readonly request?: Request | string;
   readonly relativePath: string;
   readonly path: string;
@@ -113,7 +116,7 @@ interface Request {
   };
 }
 
-interface Callback {
+export interface Callback {
   (err?: Error, result?: string): void;
   log?: string;
   stack?: string;

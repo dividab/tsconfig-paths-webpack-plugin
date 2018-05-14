@@ -5,7 +5,7 @@ import { Chalk } from "chalk";
 // tslint:disable-next-line:no-any
 type InternalLoggerFunc = (whereToLog: any, message: string) => void;
 
-type LoggerFunc = (message: string) => void;
+export type LoggerFunc = (message: string) => void;
 
 export interface Logger {
   log: LoggerFunc;
