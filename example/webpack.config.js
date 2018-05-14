@@ -1,5 +1,5 @@
 const path = require("path");
-const TsconfigPathsPlugin = require("../index");
+const TsconfigPathsPlugin = require("../");
 
 module.exports = {
   mode: "development",

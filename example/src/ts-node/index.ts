@@ -1,1 +1,1 @@
-import * as TsconfigPathsPlugin from "../../../src/index";
+import * as TsconfigPathsPlugin from "../../../index";
