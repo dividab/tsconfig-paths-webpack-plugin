@@ -7,6 +7,12 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.1.0] - 2018-05-14
+
+### Added
+
+* Typescript typings, see [#16](https://github.com/dividab/tsconfig-paths/issues/16).
+
 ## [3.0.4] - 2018-04-17
 
 ### Fixed
