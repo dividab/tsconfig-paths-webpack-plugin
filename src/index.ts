@@ -1,3 +1,4 @@
+export { TsconfigPathsPlugin } from "./plugin";
 import { TsconfigPathsPlugin } from "./plugin";
 // tslint:disable-next-line:no-default-export
 export default TsconfigPathsPlugin;
