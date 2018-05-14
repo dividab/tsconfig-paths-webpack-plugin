@@ -41,6 +41,20 @@ module.exports = {
 
 > Notice that the plugin is placed in the `resolve.plugins` section of the configuration. `tsconfig-paths-webpack-plugin` is a resolve plugin and should only be placed in this part of the configuration. Don't confuse this with the plugins array at the root of the webpack configuration object.
 
+## Typescript support
+
+This package has typescript typings included. If your webpack config is using typescript, you can use this syntax to import the default export:
+
+```ts
+import TsconfigPathsPluginDefault from "tsconfig-paths-webpack-plugin";
+```
+
+Or you can use this syntax to import the named export:
+
+```ts
+import { TsconfigPathsPlugin } from "tsconfig-paths-webpack-plugin";
+```
+
 ## Options
 
 #### configFile _(string) (default='tsconfig.json')_
@@ -106,3 +120,7 @@ This project uses work done in the
 [prettier-url]: https://github.com/prettier/prettier
 [license-image]: https://img.shields.io/github/license/jonaskello/tsconfig-paths-webpack-plugin.svg?style=flat
 [license-url]: https://opensource.org/licenses/MIT
+
+```
+
+```
