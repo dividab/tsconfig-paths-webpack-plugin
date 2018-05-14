@@ -2,5 +2,12 @@ export { TsconfigPathsPlugin } from "./plugin";
 import { TsconfigPathsPlugin } from "./plugin";
 // tslint:disable-next-line:no-default-export
 export default TsconfigPathsPlugin;
-const plugin = require("./plugin");
-module.exports = plugin.TsconfigPathsPlugin;
+
+// This is to make it importable in all these ways
+// const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+// import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
+// import { TsconfigPathsPlugin } from "tsconfig-paths-webpack-plugin";
+const theClass = require("./plugin").TsconfigPathsPlugin;
+theClass.TsconfigPathsPlugin = TsconfigPathsPlugin;
+theClass.default = TsconfigPathsPlugin;
+module.exports = theClass;
