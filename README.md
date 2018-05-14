@@ -46,7 +46,7 @@ module.exports = {
 This package has typescript typings included. If your webpack config is using typescript, you can use this syntax to import the default export:
 
 ```ts
-import TsconfigPathsPluginDefault from "tsconfig-paths-webpack-plugin";
+import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 ```
 
 Or you can use this syntax to import the named export:
