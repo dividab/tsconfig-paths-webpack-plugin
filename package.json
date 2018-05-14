@@ -3,6 +3,7 @@
   "version": "3.1.1",
   "description": "Load modules according to tsconfig paths in webpack.",
   "main": "lib/index.js",
+  "types": "lib/index",
   "author": "Jonas Kello",
   "license": "MIT",
   "repository": "https://github.com/dividab/tsconfig-paths-webpack-plugin",
