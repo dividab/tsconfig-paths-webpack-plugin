@@ -7,143 +7,150 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.1.4] - 2018-06-04
+
+### Fixed
+
+- Add undeclared dependency on `enhanced-resolve` to `dependencies`, see #19. Thanks to [@jbboehr](https://github.com/jbboehr) for this fix!
+
 ## [3.1.3] - 2018-05-14
 
 ### Fixed
 
-* Fix exports so all types of imports works (commonjs require and typescript import).
+- Fix exports so all types of imports works (commonjs require and typescript import).
 
 ## [3.1.2] - 2018-05-14
 
 ### Fixed
 
-* Add types field to package.json.
+- Add types field to package.json.
 
 ## [3.1.1] - 2018-05-14
 
 ### Fixed
 
-* Add named typescript export.
+- Add named typescript export.
 
 ## [3.1.0] - 2018-05-14
 
 ### Added
 
-* Typescript typings, see [#16](https://github.com/dividab/tsconfig-paths/issues/16).
+- Typescript typings, see [#16](https://github.com/dividab/tsconfig-paths/issues/16).
 
 ## [3.0.4] - 2018-04-17
 
 ### Fixed
 
-* Add missing module dependency [#15](https://github.com/dividab/tsconfig-paths/pull/15). Thanks to [@darlanalves](https://github.com/darlanalves) for this fix!
+- Add missing module dependency [#15](https://github.com/dividab/tsconfig-paths/pull/15). Thanks to [@darlanalves](https://github.com/darlanalves) for this fix!
 
 ## [3.0.3] - 2018-03-31
 
 ### Fixed
 
-* Fix configFileName not working as expected, see https://github.com/dividab/tsconfig-paths/issues/31.
-* Upgraded tsconfig-paths to 3.2.0 which includes the fix in https://github.com/dividab/tsconfig-paths/pull/32.
+- Fix configFileName not working as expected, see https://github.com/dividab/tsconfig-paths/issues/31.
+- Upgraded tsconfig-paths to 3.2.0 which includes the fix in https://github.com/dividab/tsconfig-paths/pull/32.
 
 ## [3.0.2] - 2018-03-14
 
 ### Fixed
 
-* Upgraded tsconfig-paths to 3.1.3 which includes the fix in https://github.com/dividab/tsconfig-paths/pull/30.
+- Upgraded tsconfig-paths to 3.1.3 which includes the fix in https://github.com/dividab/tsconfig-paths/pull/30.
 
 ## [3.0.1] - 2018-03-13
 
 ### Fixed
 
-* Upgraded tsconfig-paths to 3.1.2 which includes the fix in https://github.com/dividab/tsconfig-paths/pull/29.
+- Upgraded tsconfig-paths to 3.1.2 which includes the fix in https://github.com/dividab/tsconfig-paths/pull/29.
 
-* Fix for the new webpack 4 code to prevent callback from firing multiple times, see [#11](https://github.com/dividab/tsconfig-paths-webpack-plugin/issues/11). Thanks to [@Nayni](https://github.com/Nayni) for this fix! (See PR [#12](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/12)).
+- Fix for the new webpack 4 code to prevent callback from firing multiple times, see [#11](https://github.com/dividab/tsconfig-paths-webpack-plugin/issues/11). Thanks to [@Nayni](https://github.com/Nayni) for this fix! (See PR [#12](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/12)).
 
 ## [3.0.0] - 2018-03-13
 
 ### Added
 
-* Proper support for webpack 4. See [#9](https://github.com/dividab/tsconfig-paths-webpack-plugin/issues/9). Thanks to [@Nayni](https://github.com/Nayni) for adding this! (See PR [#10](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/10))
+- Proper support for webpack 4. See [#9](https://github.com/dividab/tsconfig-paths-webpack-plugin/issues/9). Thanks to [@Nayni](https://github.com/Nayni) for adding this! (See PR [#10](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/10))
 
 ## [2.0.0] - 2018-01-13
 
 ### Changed
 
-* Performance enhancements:
-  * Using async versions of tsconfig-paths package matchPath functions.
-  * Using webpack's cached filesystem. Should give better performance.
+- Performance enhancements:
+  - Using async versions of tsconfig-paths package matchPath functions.
+  - Using webpack's cached filesystem. Should give better performance.
 
 ## [1.4.0]
 
 ### Changed
 
-* Only log startup message when `logLevel` is set to `info`. See [#6](https://github.com/dividab/tsconfig-paths-webpack-plugin/issues/6).
+- Only log startup message when `logLevel` is set to `info`. See [#6](https://github.com/dividab/tsconfig-paths-webpack-plugin/issues/6).
 
 ## [1.3.1]
 
 ### Added
 
-* Upgraded to tsconfig-paths 2.7.2.
+- Upgraded to tsconfig-paths 2.7.2.
 
 ## [1.3.0]
 
 ### Added
 
-* Upgraded to tsconfig-paths 2.7.1.
+- Upgraded to tsconfig-paths 2.7.1.
 
 ## [1.2.0]
 
 ### Added
 
-* Added option for `baseUrl`.
+- Added option for `baseUrl`.
 
 ## [1.1.0]
 
 ### Added
 
-* Added option for `extensions`.
+- Added option for `extensions`.
 
 ## [1.0.0]
 
 ### Changed
 
-* Log path to tsconfig.json at warn log level so it is logged as default.
+- Log path to tsconfig.json at warn log level so it is logged as default.
 
 ## [0.4.0]
 
 ### Changed
 
-* Rename plugin class to TsconfigPathsPlugin (lower case s, breaking change)
-* Load config using tsconfig-paths.
+- Rename plugin class to TsconfigPathsPlugin (lower case s, breaking change)
+- Load config using tsconfig-paths.
 
 ### Removed
 
-* Remove compiler option (it was not used)
+- Remove compiler option (it was not used)
 
 ## [0.3.0]
 
 ### Changed
 
-* Use package tsconfig-paths to resolve paths.
+- Use package tsconfig-paths to resolve paths.
 
 ## [0.2.0]
 
 ### Changed
 
-* Internal refactor
+- Internal refactor
 
 ## [0.1.1]
 
 ### Added
 
-* Include files.
+- Include files.
 
 ## 0.1.0
 
 ### Added
 
-* First release.
+- First release.
 
-[unreleased]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.1.3...master
+[unreleased]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.1.4...master
+[3.1.3]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.1.3...3.1.4
 [3.1.3]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.1.2...3.1.3
 [3.1.2]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.1.1...3.1.2
 [3.1.1]: https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.1.0...3.1.1
