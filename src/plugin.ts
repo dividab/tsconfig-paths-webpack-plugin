@@ -165,7 +165,8 @@ export class TsconfigPathsPlugin implements ResolverPlugin {
         : loadResult.absoluteBaseUrl;
       this.matchPath = TsconfigPaths.createMatchPathAsync(
         this.absoluteBaseUrl,
-        loadResult.paths
+        loadResult.paths,
+        options.mainFields
       );
     }
   }
