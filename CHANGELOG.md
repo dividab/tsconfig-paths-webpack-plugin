@@ -13,8 +13,6 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 - Add `mainFields` option [#21](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/21), fixes [#20](https://github.com/dividab/tsconfig-paths-webpack-plugin/issues/20). Thanks to [@christoffer](https://github.com/christoffer) for this addition!
 
-- Add support for providing a list of field names to try instead of just using "main", [#45](https://github.com/dividab/tsconfig-paths/pull/45). Thanks to [@christoffer-dropbox](https://github.com/christoffer-dropbox) for this addition!
-
 ## [3.1.4] - 2018-06-04
 
 ### Fixed
