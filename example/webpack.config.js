@@ -27,7 +27,8 @@ module.exports = {
       new TsconfigPathsPlugin({
         configFile: "./tsconfig.json",
         logLevel: "info",
-        extensions: [".ts", ".tsx"]
+        extensions: [".ts", ".tsx"],
+        mainFields: ["browser", "main"],
         // baseUrl: "/foo"
       })
     ]

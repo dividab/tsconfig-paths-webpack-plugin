@@ -74,11 +74,15 @@ You may provide
 
 #### extensions _(string[]) (default=[".ts", ".tsx"])_
 
-An array of the extensions that will be tried during resolve. Ideally this would be the same as the extensions form the webpack config but it seems resolver plug-ins does not have access to this infomration so you need to specify it again for the plugin.
+An array of the extensions that will be tried during resolve. Ideally this would be the same as the extensions from the webpack config but it seems resolver plug-ins does not have access to this infomration so you need to specify it again for the plugin.
 
 #### baseUrl _(string) (default=undefined)_
 
 This allows you to override the `baseUrl` found in tsconfig.json. The baseUrl specifies from which directory `paths` should be resolved. So this option enabled you to resolve from anhother directory than the one where tsconfig.json is located. This can be useful if you want to use webpack with `tsc --watch` instead of a typescript loader. If this option is `undefined` then the `baseUrl` from tsconfig.json will be used.
+
+#### mainFields _(string[]) (default=["main"])_
+
+An array of the field names that should be considered when resolving packages. Ideally this would be the same as the mainFields from the webpack config but it seems resolver plug-ins does not have access to this infomration so you need to specify it again for the plugin.
 
 #### silent _(boolean) (default=false)_
 

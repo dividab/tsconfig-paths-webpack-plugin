@@ -9,6 +9,7 @@ export interface Options {
   readonly logInfoToStdOut: boolean;
   readonly context: string;
   readonly colors: boolean;
+  readonly mainFields: string[];
 }
 
 type ValidOptions = keyof Options;
@@ -19,7 +20,8 @@ const validOptions: ReadonlyArray<ValidOptions> = [
   "silent",
   "logLevel",
   "logInfoToStdOut",
-  "context"
+  "context",
+  "mainFields"
 ];
 
 /**
@@ -64,7 +66,8 @@ function makeOptions(rawOptions: Partial<Options>): Options {
       logLevel: "WARN",
       logInfoToStdOut: false,
       context: undefined,
-      colors: true
+      colors: true,
+      mainFields: ["main"]
     } as Options),
     ...rawOptions
   };
