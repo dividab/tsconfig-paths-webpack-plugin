@@ -9,6 +9,11 @@ Use this to load modules whose location is specified in the `paths` section of
 the [tsconfig-paths](https://www.npmjs.com/package/tsconfig-paths) package but
 as a webpack plug-in.
 
+Using this plugin means that you should no longer need to add `alias` entries in 
+your `webpack.config.js` which correspond to the `paths` entries in your 
+`tsconfig.json`. This plugin creates those `alias` entries for you, so you don't 
+have to!
+
 ## How to install
 
 > NOTE: If you are using webpack 4 you need to use version >= 3.0.0 (which is aso backwards compatible with webpack 3).
@@ -125,6 +130,3 @@ This project uses work done in the
 [license-image]: https://img.shields.io/github/license/jonaskello/tsconfig-paths-webpack-plugin.svg?style=flat
 [license-url]: https://opensource.org/licenses/MIT
 
-```
-
-```
