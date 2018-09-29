@@ -38,27 +38,15 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 module.exports = {
   ...
   resolve: {
-    plugins: [new TsconfigPathsPlugin({ /*configFile: "./path/to/tsconfig.json" */ })]
+    plugins: [new TsconfigPathsPlugin({/* options: see below */})]
   }
   ...
 }
 ```
 
-> Notice that the plugin is placed in the `resolve.plugins` section of the configuration. `tsconfig-paths-webpack-plugin` is a resolve plugin and should only be placed in this part of the configuration. Don't confuse this with the plugins array at the root of the webpack configuration object.
+**Notice that the plugin is placed in the `resolve.plugins` section of the configuration.** `tsconfig-paths-webpack-plugin` is a resolve plugin and should only be placed in this part of the configuration. Don't confuse this with the plugins array at the root of the webpack configuration object.
 
-## Typescript support
-
-This package has typescript typings included. If your webpack config is using typescript, you can use this syntax to import the default export:
-
-```ts
-import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
-```
-
-Or you can use this syntax to import the named export:
-
-```ts
-import { TsconfigPathsPlugin } from "tsconfig-paths-webpack-plugin";
-```
+If you're using `allowJs` in `tsconfig.json`, or allow other non-TS extensions in webpack, **make sure you set `extensions` option in sync with your webpack config.**
 
 ## Options
 
@@ -79,7 +67,7 @@ You may provide
 
 #### extensions _(string[]) (default=[".ts", ".tsx"])_
 
-An array of the extensions that will be tried during resolve. Ideally this would be the same as the extensions from the webpack config but it seems resolver plug-ins does not have access to this infomration so you need to specify it again for the plugin.
+An array of the extensions that will be tried during resolve. Ideally this would be the same as the extensions from the webpack config but it seems resolver plug-ins does not have access to this information so you need to specify it again for the plugin.
 
 #### baseUrl _(string) (default=undefined)_
 
@@ -109,6 +97,20 @@ If `false`, disables built-in colors in logger messages.
 This is important if you read from stdout or stderr and for proper error
 handling. The default value ensures that you can read from stdout e.g. via pipes
 or you use webpack -j to generate json output.
+
+## Typescript support
+
+This package has typescript typings included. If your webpack config is using typescript, you can use this syntax to import the default export:
+
+```ts
+import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
+```
+
+Or you can use this syntax to import the named export:
+
+```ts
+import { TsconfigPathsPlugin } from "tsconfig-paths-webpack-plugin";
+```
 
 ## How to test
 
