@@ -9,7 +9,7 @@
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
-    // "strictNullChecks": true
+    "noUnusedParameters": true,
+    "strictNullChecks": true
   }
 }
