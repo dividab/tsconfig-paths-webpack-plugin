@@ -286,10 +286,10 @@ function createPluginCallback(
 
             // Don't allow other aliasing or raw request
             if (result2 === undefined) {
-              return callback(null, null);
+              return callback(undefined, undefined);
             }
 
-            callback(null, result2);
+            callback(undefined, result2);
           }
         );
       }
@@ -356,7 +356,7 @@ function createPluginLegacy(
             }
 
             // don't allow other aliasing or raw request
-            callback(null, null);
+            callback(undefined, undefined);
           }, callback)
         );
       }
