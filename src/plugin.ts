@@ -3,7 +3,7 @@ import * as TsconfigPaths from "tsconfig-paths";
 import * as path from "path";
 import * as Options from "./options";
 import * as Logger from "./logger";
-import { Stats } from "fs";
+import * as fs from "fs";
 
 export interface ResolverPlugin {
   readonly apply: (resolver: Resolver) => void;
@@ -33,33 +33,7 @@ export type doResolve = (
   callback: Callback
 ) => void;
 
-export interface ResolverFileSystem {
-  readonly stat: (
-    path: string,
-    callback: (err: Error, stats: Stats) => void
-  ) => void;
-  readonly readdir: (
-    path: string,
-    callback: (err: Error, files: ReadonlyArray<string>) => void
-  ) => void;
-  readonly readFile: (
-    path: string,
-    callback: (err: Error, data: {}) => void
-  ) => void;
-  readonly readlink: (
-    path: string,
-    callback: (err: Error, linkString: string) => void
-  ) => void;
-  readonly readJson?: (
-    path: string,
-    callback: (err: Error, json: {}) => void
-  ) => void;
-  readonly statSync: (path: string) => Stats;
-  readonly readdirSync: (path: string) => ReadonlyArray<string>;
-  readonly readFileSync: (path: string) => {};
-  readonly readlinkSync: (path: string) => string;
-  readonly readJsonSync?: (path: string) => {};
-}
+export type ResolverFileSystem = typeof fs;
 
 export interface ResolveContext {
   log?: string;
@@ -387,7 +361,7 @@ function createFileExistAsync(
     path2: string,
     callback2: (err?: Error, exists?: boolean) => void
   ) => {
-    filesystem.stat(path2, (err: Error, stats: Stats) => {
+    filesystem.stat(path2, (err: Error, stats: fs.Stats) => {
       // If error assume file does not exist
       if (err) {
         callback2(undefined, false);
