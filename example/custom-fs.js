@@ -15,7 +15,7 @@ compiler.run(function (error, stats) {
 
   if (stats.compilation.errors.length) {
     stats.compilation.errors.forEach((compilationError) => {
-      logger.log(compilationError);
+      console.error(compilationError);
     });
 
     return process.exit(1);
