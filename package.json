@@ -33,7 +33,7 @@
     "compile": "tsc -p src",
     "compile:tests": "tsc -p tests",
     "compile:example": "tsc -p example",
-    "example": "yarn build && cd example && webpack",
+    "example": "yarn build && cd example && webpack && node custom-fs.js",
     "build": "rimraf lib && tsc -p src",
     "lint":
       "tslint -t msbuild './src/**/*.ts{,x}' -e './src/node_modules/**/*'",
