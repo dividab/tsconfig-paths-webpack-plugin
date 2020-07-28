@@ -3,11 +3,11 @@ export type LogLevel = "INFO" | "WARN" | "ERROR";
 export interface Options {
   readonly configFile: string;
   readonly extensions: ReadonlyArray<string>;
-  readonly baseUrl: string;
+  readonly baseUrl: string | undefined;
   readonly silent: boolean;
   readonly logLevel: LogLevel;
   readonly logInfoToStdOut: boolean;
-  readonly context: string;
+  readonly context: string | undefined;
   readonly colors: boolean;
   readonly mainFields: string[];
 }
