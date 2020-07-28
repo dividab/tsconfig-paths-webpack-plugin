@@ -33,7 +33,11 @@ export type doResolve = (
   callback: Callback
 ) => void;
 
-export type ResolverFileSystem = typeof fs;
+export type ReadJsonCallback = (error: Error | undefined, result?: {}) => void;
+
+export type ReadJson = (path2: string, callback: ReadJsonCallback) => void;
+
+export type ResolverFileSystem = typeof fs & { readJson?: ReadJson };
 
 export interface ResolveContext {
   log?: string;
@@ -338,12 +342,38 @@ function createPluginLegacy(
   };
 }
 
+function readJson(
+  fileSystem: ResolverFileSystem,
+  path2: string,
+  callback: ReadJsonCallback
+): void {
+  if ("readJson" in fileSystem && fileSystem.readJson) {
+    return fileSystem.readJson(path2, callback);
+  }
+
+  fileSystem.readFile(path2, (err, buf) => {
+    if (err) {
+      return callback(err);
+    }
+
+    let data;
+
+    try {
+      data = JSON.parse(buf.toString("utf-8"));
+    } catch (e) {
+      return callback(e);
+    }
+
+    return callback(undefined, data);
+  });
+}
+
 function createReadJsonAsync(
   filesystem: ResolverFileSystem
 ): TsconfigPaths.ReadJsonAsync {
   // tslint:disable-next-line:no-any
   return (path2: string, callback2: (err?: Error, content?: any) => void) => {
-    filesystem.readJson(path2, (err, json) => {
+    readJson(filesystem, path2, (err, json) => {
       // If error assume file does not exist
       if (err || !json) {
         callback2();
