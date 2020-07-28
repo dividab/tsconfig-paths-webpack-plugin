@@ -50,7 +50,7 @@ export interface ResolverFileSystem {
     path: string,
     callback: (err: Error, linkString: string) => void
   ) => void;
-  readonly readJson: (
+  readonly readJson?: (
     path: string,
     callback: (err: Error, json: {}) => void
   ) => void;
@@ -58,7 +58,7 @@ export interface ResolverFileSystem {
   readonly readdirSync: (path: string) => ReadonlyArray<string>;
   readonly readFileSync: (path: string) => {};
   readonly readlinkSync: (path: string) => string;
-  readonly readJsonSync: (path: string) => {};
+  readonly readJsonSync?: (path: string) => {};
 }
 
 export interface ResolveContext {
