@@ -3,7 +3,7 @@ import * as TsconfigPaths from "tsconfig-paths";
 import * as path from "path";
 import * as Options from "./options";
 import * as Logger from "./logger";
-import { Stats } from "fs";
+import * as fs from "fs";
 
 export interface ResolverPlugin {
   readonly apply: (resolver: Resolver) => void;
@@ -33,33 +33,11 @@ export type doResolve = (
   callback: Callback
 ) => void;
 
-export interface ResolverFileSystem {
-  readonly stat: (
-    path: string,
-    callback: (err: Error, stats: Stats) => void
-  ) => void;
-  readonly readdir: (
-    path: string,
-    callback: (err: Error, files: ReadonlyArray<string>) => void
-  ) => void;
-  readonly readFile: (
-    path: string,
-    callback: (err: Error, data: {}) => void
-  ) => void;
-  readonly readlink: (
-    path: string,
-    callback: (err: Error, linkString: string) => void
-  ) => void;
-  readonly readJson: (
-    path: string,
-    callback: (err: Error, json: {}) => void
-  ) => void;
-  readonly statSync: (path: string) => Stats;
-  readonly readdirSync: (path: string) => ReadonlyArray<string>;
-  readonly readFileSync: (path: string) => {};
-  readonly readlinkSync: (path: string) => string;
-  readonly readJsonSync: (path: string) => {};
-}
+export type ReadJsonCallback = (error: Error | undefined, result?: {}) => void;
+
+export type ReadJson = (path2: string, callback: ReadJsonCallback) => void;
+
+export type ResolverFileSystem = typeof fs & { readJson?: ReadJson };
 
 export interface ResolveContext {
   log?: string;
@@ -286,10 +264,10 @@ function createPluginCallback(
 
             // Don't allow other aliasing or raw request
             if (result2 === undefined) {
-              return callback(null, null);
+              return callback(undefined, undefined);
             }
 
-            callback(null, result2);
+            callback(undefined, result2);
           }
         );
       }
@@ -356,7 +334,7 @@ function createPluginLegacy(
             }
 
             // don't allow other aliasing or raw request
-            callback(null, null);
+            callback(undefined, undefined);
           }, callback)
         );
       }
@@ -364,12 +342,38 @@ function createPluginLegacy(
   };
 }
 
+function readJson(
+  fileSystem: ResolverFileSystem,
+  path2: string,
+  callback: ReadJsonCallback
+): void {
+  if ("readJson" in fileSystem && fileSystem.readJson) {
+    return fileSystem.readJson(path2, callback);
+  }
+
+  fileSystem.readFile(path2, (err, buf) => {
+    if (err) {
+      return callback(err);
+    }
+
+    let data;
+
+    try {
+      data = JSON.parse(buf.toString("utf-8"));
+    } catch (e) {
+      return callback(e);
+    }
+
+    return callback(undefined, data);
+  });
+}
+
 function createReadJsonAsync(
   filesystem: ResolverFileSystem
 ): TsconfigPaths.ReadJsonAsync {
   // tslint:disable-next-line:no-any
   return (path2: string, callback2: (err?: Error, content?: any) => void) => {
-    filesystem.readJson(path2, (err, json) => {
+    readJson(filesystem, path2, (err, json) => {
       // If error assume file does not exist
       if (err || !json) {
         callback2();
@@ -387,7 +391,7 @@ function createFileExistAsync(
     path2: string,
     callback2: (err?: Error, exists?: boolean) => void
   ) => {
-    filesystem.stat(path2, (err: Error, stats: Stats) => {
+    filesystem.stat(path2, (err: Error, stats: fs.Stats) => {
       // If error assume file does not exist
       if (err) {
         callback2(undefined, false);
