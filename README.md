@@ -9,9 +9,9 @@ Use this to load modules whose location is specified in the `paths` section of
 the [tsconfig-paths](https://www.npmjs.com/package/tsconfig-paths) package but
 as a webpack plug-in.
 
-Using this plugin means that you should no longer need to add `alias` entries in 
-your `webpack.config.js` which correspond to the `paths` entries in your 
-`tsconfig.json`. This plugin creates those `alias` entries for you, so you don't 
+Using this plugin means that you should no longer need to add `alias` entries in
+your `webpack.config.js` which correspond to the `paths` entries in your
+`tsconfig.json`. This plugin creates those `alias` entries for you, so you don't
 have to!
 
 ## How to install
@@ -56,11 +56,11 @@ Allows you to specify where to find the TypeScript configuration file.
 
 You may provide
 
-* just a file name. The plugin will search for the filename using the built-in
+- just a file name. The plugin will search for the filename using the built-in
   logic in the `tsconfig-paths` package. The search will start at `cwd`.
-* a relative path to the configuration file. It will be resolved relative to
+- a relative path to the configuration file. It will be resolved relative to
   `cwd`.
-* an absolute path to the configuration file.
+- an absolute path to the configuration file.
 
 > The use of `cwd` as default above is not optimal but we've found no better
 > solution yet. If you have a suggestion please file an issue.
@@ -120,6 +120,14 @@ To run the provided example:
 yarn example
 ```
 
+## How to publish
+
+```
+yarn version --patch
+yarn version --minor
+yarn version --major
+```
+
 ## Prior work
 
 This project uses work done in the
@@ -131,4 +139,3 @@ This project uses work done in the
 [prettier-url]: https://github.com/prettier/prettier
 [license-image]: https://img.shields.io/github/license/jonaskello/tsconfig-paths-webpack-plugin.svg?style=flat
 [license-url]: https://opensource.org/licenses/MIT
-
