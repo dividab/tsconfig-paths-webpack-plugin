@@ -30,9 +30,6 @@
     "example": "yarn build && cd example && webpack && node custom-fs.js",
     "build": "rimraf lib && tsc -p src",
     "lint": "tslint -t msbuild './src/**/*.ts{,x}' -e './src/node_modules/**/*'",
-    "publish:major": "yarn run build && node scripts/publish.js major",
-    "publish:minor": "yarn run build && node scripts/publish.js minor",
-    "publish:patch": "yarn run build && node scripts/publish.js patch",
     "verify": "yarn build && yarn lint",
     "preversion": "yarn verify",
     "postversion": "git push --tags && yarn publish --new-version $npm_package_version && git push && echo \"Successfully released version $npm_package_version!\""
