@@ -136,8 +136,8 @@ This project uses work done in the
 
 [version-image]: https://img.shields.io/npm/v/tsconfig-paths-webpack-plugin.svg?style=flat
 [version-url]: https://www.npmjs.com/package/tsconfig-paths-webpack-plugin
-[build-image]: https://github.com/tsconfig-paths-webpack-plugin/workflows/Build/badge.svg
-[build-url]: https://github.com/tsconfig-paths-webpack-plugin/actions?query=workflow%3ABuild+branch%3Amaster
+[build-image]: https://github.com/dividab/tsconfig-paths-webpack-plugin/workflows/Build/badge.svg
+[build-url]: https://github.com/dividab/tsconfig-paths-webpack-plugin/actions?query=workflow%3ABuild+branch%3Amaster
 [prettier-image]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat
 [prettier-url]: https://github.com/prettier/prettier
 [license-image]: https://img.shields.io/github/license/jonaskello/tsconfig-paths-webpack-plugin.svg?style=flat
