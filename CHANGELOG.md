@@ -7,6 +7,12 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.3.0] - 2020-07-29
+
+### Added
+
+- Add readJson fallback to support custom file systems, see [#51](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/51). Fixes [#50](https://github.com/dividab/tsconfig-paths-webpack-plugin/issues/50). Thanks to [@JakeSidSmith](https://github.com/JakeSidSmith) for this addition!
+
 ## [3.2.0] - 2018-06-12
 
 ### Added
