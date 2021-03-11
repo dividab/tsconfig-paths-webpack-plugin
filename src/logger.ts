@@ -17,7 +17,7 @@ export interface Logger {
 enum LogLevel {
   INFO = 1,
   WARN = 2,
-  ERROR = 3
+  ERROR = 3,
 }
 
 const stderrConsole = new Console(process.stderr);
@@ -29,13 +29,10 @@ const doNothingLogger = (_message: string) => {
 
 const makeLoggerFunc = (options: Options): InternalLoggerFunc =>
   options.silent
-    ? // tslint:disable-next-line:no-any
-      (_whereToLog: any, _message: string) => {
+    ? (_whereToLog: Console, _message: string) => {
         /* Do nothing */
       }
-    : // tslint:disable-next-line:no-any
-      (whereToLog: any, message: string) =>
-        console.log.call(whereToLog, message);
+    : (whereToLog: Console, message: string) => whereToLog.log(message);
 
 const makeExternalLogger = (
   loaderOptions: Options,
@@ -83,6 +80,6 @@ export function makeLogger(options: Options, colors: Chalk): Logger {
     log: makeExternalLogger(options, logger),
     logInfo: makeLogInfo(options, logger, colors.green),
     logWarning: makeLogWarning(options, logger, colors.yellow),
-    logError: makeLogError(options, logger, colors.red)
+    logError: makeLogError(options, logger, colors.red),
   };
 }

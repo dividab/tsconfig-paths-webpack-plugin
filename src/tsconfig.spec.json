@@ -1,0 +1,25 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // Output
+    "module": "commonjs",
+    "target": "es6",
+    "sourceMap": false,
+    "declaration": true,
+    "outDir": "../lib",
+    "baseUrl": ".",
+    "types": ["jest", "node"],
+    // "paths": {
+    //   "*": ["../custom-typings/*"]
+    // },
+    "lib": ["dom", "es2015", "es2017.object"],
+  },
+  "include": [
+    "**/*.spec.ts",
+    "**/*_spec.ts",
+    "**/*.spec.tsx",
+    "**/*.spec.js",
+    "**/*.spec.jsx",
+    "**/*.d.ts"
+  ]
+}

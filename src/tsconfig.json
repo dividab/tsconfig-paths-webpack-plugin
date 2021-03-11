@@ -1,16 +1,16 @@
 {
-  "extends": "../base-tsconfig.json",
+  "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    // Output
-    "module": "commonjs",
-    "target": "es6",
-    "sourceMap": false,
-    "declaration": true,
-    "outDir": "../lib",
-    "baseUrl": ".",
-    "paths": {
-      "*": ["../custom-typings/*"]
+    "lib": ["dom", "es2015", "es2017.object"],
+  },
+  "include": [],
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.lib.json"
     },
-    "lib": ["dom", "es2015", "es2017.object"]
-  }
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
 }

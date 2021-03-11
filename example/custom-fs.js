@@ -7,6 +7,7 @@ const compiler = webpack(config);
 
 compiler.inputFileSystem = fs;
 
+
 compiler.run(function (error, stats) {
   if (error) {
     console.error(error);
