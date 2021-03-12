@@ -1,4 +1,4 @@
-import chalk from "chalk";
+import * as chalk from "chalk";
 import * as TsconfigPaths from "tsconfig-paths";
 import * as path from "path";
 import * as Options from "./options";
@@ -104,8 +104,8 @@ export interface Callback {
 const getInnerRequest: getInnerRequest = require("enhanced-resolve/lib/getInnerRequest");
 
 export class TsconfigPathsPlugin implements ResolverPlugin {
-  source: string;
-  target: string;
+  source: string = "described-resolve";
+  target: string = "resolve";
 
   log: Logger.Logger;
   baseUrl: string;
@@ -115,15 +115,16 @@ export class TsconfigPathsPlugin implements ResolverPlugin {
   matchPath: TsconfigPaths.MatchPathAsync;
 
   constructor(rawOptions: Partial<Options.Options> = {}) {
-    this.source = "described-resolve";
-    this.target = "resolve";
-
     const options = Options.getOptions(rawOptions);
 
     this.extensions = options.extensions;
 
-    const colors = new chalk.constructor({ enabled: options.colors });
-    this.log = Logger.makeLogger(options, colors);
+    // const colors = new chalk.constructor({ enabled: options.colors });
+
+    this.log = Logger.makeLogger(
+      options,
+      new chalk.Instance({ level: options.colors ? undefined : 0 })
+    );
 
     const context = options.context || process.cwd();
     const loadFrom = options.configFile || context;
@@ -133,9 +134,7 @@ export class TsconfigPathsPlugin implements ResolverPlugin {
       this.log.logError(`Failed to load ${loadFrom}: ${loadResult.message}`);
     } else {
       this.log.logInfo(
-        `tsconfig-paths-webpack-plugin: Using config file at ${
-          loadResult.configFileAbsolutePath
-        }`
+        `tsconfig-paths-webpack-plugin: Using config file at ${loadResult.configFileAbsolutePath}`
       );
       this.baseUrl = options.baseUrl || loadResult.baseUrl;
       this.absoluteBaseUrl = options.baseUrl
@@ -149,7 +148,15 @@ export class TsconfigPathsPlugin implements ResolverPlugin {
     }
   }
 
-  apply(resolver: Resolver): void {
+  apply(untypedResolver: Resolver | unknown): void {
+    if (!untypedResolver) {
+      this.log.logWarning(
+        "tsconfig-paths-webpack-plugin: Found no resolver, not applying tsconfig-paths-webpack-plugin"
+      );
+      return;
+    }
+    const resolver = untypedResolver as Resolver;
+
     const { baseUrl } = this;
 
     if (!baseUrl) {
@@ -163,7 +170,7 @@ export class TsconfigPathsPlugin implements ResolverPlugin {
     // The file system only exists when the plugin is in the resolve context. This means it's also properly placed in the resolve.plugins array.
     // If not, we should warn the user that this plugin should be placed in resolve.plugins and not the plugins array of the root config for example.
     // This should hopefully prevent issues like: https://github.com/dividab/tsconfig-paths-webpack-plugin/issues/9
-    if (!resolver.fileSystem) {
+    if (!("fileSystem" in resolver)) {
       this.log.logWarning(
         "tsconfig-paths-webpack-plugin: No file system found on resolver." +
           " Please make sure you've placed the plugin in the correct part of the configuration." +
@@ -172,8 +179,8 @@ export class TsconfigPathsPlugin implements ResolverPlugin {
       return;
     }
 
-    // getHook will only exist in Webpack 4, if so we should comply to the Webpack 4 plugin system.
-    if (resolver.getHook && typeof resolver.getHook === "function") {
+    // getHook will only exist in Webpack 4 & 5, if so we should comply to the Webpack 4 plugin system.
+    if ("getHook" in resolver && typeof resolver.getHook === "function") {
       resolver
         .getHook(this.source)
         .tapAsync(
@@ -186,9 +193,12 @@ export class TsconfigPathsPlugin implements ResolverPlugin {
             this.extensions
           )
         );
-    } else {
+    } else if ("plugin" in resolver) {
       // This is the legacy (Webpack < 4.0.0) way of using the plugin system.
-      resolver.plugin(
+      const legacyResolver = resolver as {
+        plugin: (source: string, cb: ResolverCallbackLegacy) => void;
+      };
+      legacyResolver.plugin(
         this.source,
         createPluginLegacy(
           this.matchPath,
@@ -220,7 +230,8 @@ function createPluginCallback(
 
     if (
       !innerRequest ||
-      (innerRequest.startsWith(".") || innerRequest.startsWith(".."))
+      innerRequest.startsWith(".") ||
+      innerRequest.startsWith("..")
     ) {
       return callback();
     }
@@ -242,7 +253,7 @@ function createPluginCallback(
         const newRequest = {
           ...request,
           request: foundMatch,
-          path: absoluteBaseUrl
+          path: absoluteBaseUrl,
         };
 
         // Only at this point we are sure we are dealing with the latest Webpack version (>= 4.0.0)
@@ -289,7 +300,8 @@ function createPluginLegacy(
 
     if (
       !innerRequest ||
-      (innerRequest.startsWith(".") || innerRequest.startsWith(".."))
+      innerRequest.startsWith(".") ||
+      innerRequest.startsWith("..")
     ) {
       return callback();
     }
@@ -311,7 +323,7 @@ function createPluginLegacy(
         const newRequest = {
           ...request,
           request: foundMatch,
-          path: absoluteBaseUrl
+          path: absoluteBaseUrl,
         };
 
         // Only at this point we are sure we are dealing with a legacy Webpack version (< 4.0.0)
@@ -323,7 +335,7 @@ function createPluginLegacy(
           target,
           newRequest,
           `Resolved request '${innerRequest}' to '${foundMatch}' using tsconfig.json paths mapping`,
-          createInnerCallback(function(err2: Error, result2: string): void {
+          createInnerCallback(function (err2: Error, result2: string): void {
             // Note:
             //  *NOT* using an arrow function here because arguments.length implies we have "this"
             //  That means "this" has to be in the current function scope, and not the scope above.

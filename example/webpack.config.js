@@ -7,7 +7,7 @@ module.exports = {
   entry: "./index",
   output: {
     path: path.join(__dirname, "temp"),
-    filename: "bundle.js"
+    filename: "bundle.js",
   },
   module: {
     rules: [
@@ -16,10 +16,10 @@ module.exports = {
         exclude: /^node_modules/,
         loader: "ts-loader",
         options: {
-          configFile: "./example/tsconfig.json"
-        }
-      }
-    ]
+          configFile: "./example/tsconfig.json",
+        },
+      },
+    ],
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
@@ -30,7 +30,7 @@ module.exports = {
         extensions: [".ts", ".tsx"],
         mainFields: ["browser", "main"],
         // baseUrl: "/foo"
-      })
-    ]
-  }
+      }),
+    ],
+  },
 };
