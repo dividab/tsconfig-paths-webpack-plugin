@@ -30,7 +30,7 @@
     "webpack-cli": "^4.5.0"
   },
   "scripts": {
-    "postinstall": "husky install",
+    "prepare": "husky install",
     "compile:example": "tsc -p example",
     "example": "yarn build && cd example && webpack && node custom-fs.js",
     "build": "rimraf lib && tsc -p src/tsconfig.lib.json",
