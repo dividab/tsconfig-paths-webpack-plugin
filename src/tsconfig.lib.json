@@ -12,7 +12,6 @@
     // "paths": {
     //   "*": ["../custom-typings/*"]
     // },
-
   },
   "exclude": ["**/*.spec.ts", "**/*_spec.ts"],
   "include": ["**/*.ts"]

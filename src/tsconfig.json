@@ -1,7 +1,7 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
-    "lib": ["dom", "es2015", "es2017.object"],
+    "lib": ["dom", "es2015", "es2017.object"]
   },
   "include": [],
   "files": [],

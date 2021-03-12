@@ -12,7 +12,7 @@
     // "paths": {
     //   "*": ["../custom-typings/*"]
     // },
-    "lib": ["dom", "es2015", "es2017.object"],
+    "lib": ["dom", "es2015", "es2017.object"]
   },
   "include": [
     "**/*.spec.ts",
