@@ -32,7 +32,7 @@
   "scripts": {
     "compile:example": "tsc -p example",
     "example": "yarn build && cd example && webpack && node custom-fs.js",
-    "build": "npm run test && rimraf lib && tsc -p src/tsconfig.lib.json",
+    "build": "rimraf lib && tsc -p src/tsconfig.lib.json",
     "lint": "tslint -t msbuild './src/**/*.ts{,x}' -e './src/node_modules/**/*'",
     "test": "jest",
     "verify": "yarn build && yarn lint",

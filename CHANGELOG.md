@@ -7,6 +7,13 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.4.0] - 2020-07-29
+
+### Added
+
+- Support for Webpack 5, see [#51](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/66). Fixes [#50](https://github.com/dividab/tsconfig-paths-webpack-plugin/issues/61). Thanks to [@Brian-McBride](https://github.com/Brian-McBride) for this addition!
+
+
 ## [3.3.0] - 2020-07-29
 
 ### Added
