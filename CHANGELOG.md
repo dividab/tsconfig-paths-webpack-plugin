@@ -7,7 +7,13 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [3.4.0] - 2020-07-29
+## [3.4.1] - 2021-03-13
+
+### Fixed
+
+- Use prepare instead of postinstall for husky.
+
+## [3.4.0] - 2021-03-13
 
 ### Added
 
