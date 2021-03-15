@@ -4,17 +4,31 @@ import * as path from "path";
 import * as Options from "./options";
 import * as Logger from "./logger";
 import * as fs from "fs";
+import { ResolveRequest, ResolveContext } from "enhanced-resolve";
+import { ResolvePluginInstance, Resolver } from "./plugin.temp.types";
+import { inspect } from "util";
 
-export interface ResolverPlugin {
-  readonly apply: (resolver: Resolver) => void;
+type FileSystem = Resolver["fileSystem"];
+type TapAsyncCallback = (
+  request: ResolveRequest,
+  context: ResolveContext,
+  callback: TapAsyncInnerCallback
+) => void;
+type TapAsyncInnerCallback = (
+  error?: Error | null | false,
+  result?: null | ResolveRequest
+) => void;
+
+export interface LegacyResolverPlugin {
+  readonly apply: (resolver: LegacyResolver) => void;
 }
 
-export interface Resolver {
-  readonly apply: (plugin: ResolverPlugin) => void;
+export interface LegacyResolver {
+  readonly apply: (plugin: LegacyResolverPlugin) => void;
   readonly plugin: (source: string, cb: ResolverCallbackLegacy) => void;
   readonly doResolve: doResolveLegacy | doResolve;
   readonly join: (relativePath: string, innerRequest: Request) => Request;
-  readonly fileSystem: ResolverFileSystem;
+  readonly fileSystem: LegacyResolverFileSystem;
   readonly getHook: (hook: string) => Tapable;
 }
 
@@ -29,7 +43,7 @@ export type doResolve = (
   hook: Tapable,
   req: Request,
   message: string,
-  resolveContext: ResolveContext,
+  resolveContext: LegacyResolveContext,
   callback: Callback
 ) => void;
 
@@ -37,9 +51,9 @@ export type ReadJsonCallback = (error: Error | undefined, result?: {}) => void;
 
 export type ReadJson = (path2: string, callback: ReadJsonCallback) => void;
 
-export type ResolverFileSystem = typeof fs & { readJson?: ReadJson };
+export type LegacyResolverFileSystem = typeof fs & { readJson?: ReadJson };
 
-export interface ResolveContext {
+export interface LegacyResolveContext {
   log?: string;
   stack?: string;
   missing?: string;
@@ -48,8 +62,8 @@ export interface ResolveContext {
 export interface Tapable {
   readonly tapAsync: (
     options: TapableOptions,
-    callback: ResolverCallback
-  ) => Promise<void>;
+    callback: TapAsyncCallback
+  ) => void;
 }
 
 export interface TapableOptions {
@@ -62,7 +76,7 @@ export type ResolverCallbackLegacy = (
 ) => void;
 export type ResolverCallback = (
   request: Request,
-  resolveContext: ResolveContext,
+  resolveContext: LegacyResolveContext,
   callback: Callback
 ) => void;
 
@@ -83,7 +97,10 @@ type CreateInnerContext = (
   messageOptional?: string
 ) => ResolveContext;
 
-type getInnerRequest = (resolver: Resolver, request: Request) => string;
+type getInnerRequest = (
+  resolver: Resolver | LegacyResolver,
+  request: ResolveRequest | Request
+) => string;
 
 export interface Request {
   readonly request?: Request | string;
@@ -103,7 +120,7 @@ export interface Callback {
 
 const getInnerRequest: getInnerRequest = require("enhanced-resolve/lib/getInnerRequest");
 
-export class TsconfigPathsPlugin implements ResolverPlugin {
+export class TsconfigPathsPlugin implements ResolvePluginInstance {
   source: string = "described-resolve";
   target: string = "resolve";
 
@@ -148,14 +165,13 @@ export class TsconfigPathsPlugin implements ResolverPlugin {
     }
   }
 
-  apply(untypedResolver: Resolver | unknown): void {
-    if (!untypedResolver) {
+  apply(resolver: Resolver): void {
+    if (!resolver) {
       this.log.logWarning(
         "tsconfig-paths-webpack-plugin: Found no resolver, not applying tsconfig-paths-webpack-plugin"
       );
       return;
     }
-    const resolver = untypedResolver as Resolver;
 
     const { baseUrl } = this;
 
@@ -218,13 +234,13 @@ function createPluginCallback(
   absoluteBaseUrl: string,
   hook: Tapable,
   extensions: ReadonlyArray<string>
-): ResolverCallback {
+): TapAsyncCallback {
   const fileExistAsync = createFileExistAsync(resolver.fileSystem);
   const readJsonAsync = createReadJsonAsync(resolver.fileSystem);
   return (
-    request: Request,
+    request: ResolveRequest,
     resolveContext: ResolveContext,
-    callback: Callback
+    callback: TapAsyncInnerCallback
   ) => {
     const innerRequest = getInnerRequest(resolver, request);
 
@@ -261,12 +277,13 @@ function createPluginCallback(
         // (It doesn't exist in legacy versions)
         const createInnerContext: CreateInnerContext = require("enhanced-resolve/lib/createInnerContext");
 
-        return (resolver.doResolve as doResolve)(
+        return resolver.doResolve(
           hook,
-          newRequest,
+          newRequest as never,
           `Resolved request '${innerRequest}' to '${foundMatch}' using tsconfig.json paths mapping`,
-          createInnerContext({ ...resolveContext }),
-          (err2: Error, result2: string): void => {
+          // tslint:disable-next-line:no-any
+          createInnerContext({ ...(resolveContext as any) }),
+          (err2: Error, result2: ResolveRequest): void => {
             // Pattern taken from:
             // https://github.com/webpack/enhanced-resolve/blob/42ff594140582c3f8f86811f95dea7bf6774a1c8/lib/AliasPlugin.js#L44
             if (err2) {
@@ -278,6 +295,10 @@ function createPluginCallback(
               return callback(undefined, undefined);
             }
 
+            console.log(
+              `Returning with path ${inspect({ result2 }, false, 4, true)}`
+            );
+            // tslint:disable-next-line:no-any
             callback(undefined, result2);
           }
         );
@@ -288,7 +309,7 @@ function createPluginCallback(
 
 function createPluginLegacy(
   matchPath: TsconfigPaths.MatchPathAsync,
-  resolver: Resolver,
+  resolver: LegacyResolver,
   absoluteBaseUrl: string,
   target: string,
   extensions: ReadonlyArray<string>
@@ -355,7 +376,7 @@ function createPluginLegacy(
 }
 
 function readJson(
-  fileSystem: ResolverFileSystem,
+  fileSystem: FileSystem,
   path2: string,
   callback: ReadJsonCallback
 ): void {
@@ -371,6 +392,7 @@ function readJson(
     let data;
 
     try {
+      // @ts-ignore  This will crash if buf is undefined, which I guess it can be...
       data = JSON.parse(buf.toString("utf-8"));
     } catch (e) {
       return callback(e);
@@ -381,7 +403,7 @@ function readJson(
 }
 
 function createReadJsonAsync(
-  filesystem: ResolverFileSystem
+  filesystem: FileSystem
 ): TsconfigPaths.ReadJsonAsync {
   // tslint:disable-next-line:no-any
   return (path2: string, callback2: (err?: Error, content?: any) => void) => {
@@ -397,7 +419,7 @@ function createReadJsonAsync(
 }
 
 function createFileExistAsync(
-  filesystem: ResolverFileSystem
+  filesystem: FileSystem
 ): TsconfigPaths.FileExistsAsync {
   return (
     path2: string,
