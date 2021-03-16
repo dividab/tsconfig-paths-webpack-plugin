@@ -295,9 +295,6 @@ function createPluginCallback(
               return callback(undefined, undefined);
             }
 
-            console.log(
-              `Returning with path ${inspect({ result2 }, false, 4, true)}`
-            );
             // tslint:disable-next-line:no-any
             callback(undefined, result2);
           }
