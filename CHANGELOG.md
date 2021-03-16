@@ -5,7 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this
 project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.5.0...master)
+## [Unreleased](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.5.1...master)
+
+## [3.5.1](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.5.0...3.5.0) - 2021-03-16
+
+### Fixed
+
+- Remove `console.log` from `plugin.ts` [#72](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/72). Thanks to [@visualfanatic](https://github.com/visualfanatic) for this fix!
 
 ## [3.5.0](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.4.1...3.5.0) - 2021-03-15
 
@@ -24,7 +30,6 @@ project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - Support for Webpack 5, see [#51](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/66). Fixes [#50](https://github.com/dividab/tsconfig-paths-webpack-plugin/issues/61). Thanks to [@Brian-McBride](https://github.com/Brian-McBride) for this addition!
-
 
 ## [3.3.0](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.2.0...3.3.0) - 2020-07-29
 
@@ -179,5 +184,3 @@ project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - First release.
-
-
