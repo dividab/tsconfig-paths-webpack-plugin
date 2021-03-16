@@ -6,7 +6,6 @@ import * as Logger from "./logger";
 import * as fs from "fs";
 import { ResolveRequest, ResolveContext } from "enhanced-resolve";
 import { ResolvePluginInstance, Resolver } from "./plugin.temp.types";
-import { inspect } from "util";
 
 type FileSystem = Resolver["fileSystem"];
 type TapAsyncCallback = (
