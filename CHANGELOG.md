@@ -5,7 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this
 project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.5.1...master)
+## [Unreleased](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.5.2...master)
+
+## [3.5.2](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.5.1...3.5.2) - 2021-11-13
+
+### Fixed
+
+- Fix incorrect resolution with relative imports on project dependencies [#85](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/85). Thanks to [@voliva](https://github.com/voliva) for this fix!
+
+- Remove `console.log` from `plugin.ts` [#72](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/72). Thanks to [@visualfanatic](https://github.com/visualfanatic) for this fix!
 
 ## [3.5.1](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.5.0...3.5.0) - 2021-03-16
 
