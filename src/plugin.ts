@@ -245,8 +245,8 @@ function createPluginCallback(
 
     if (
       !innerRequest ||
-      innerRequest.startsWith(".") ||
-      innerRequest.startsWith("..")
+      request?.request?.startsWith(".") ||
+      request?.request?.startsWith("..")
     ) {
       return callback();
     }
