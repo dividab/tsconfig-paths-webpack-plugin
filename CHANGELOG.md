@@ -5,9 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this
 project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.5.2...master)
+## [Unreleased](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/v3.5.2...master)
 
-## [3.5.2](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.5.1...3.5.2) - 2021-11-13
+## [3.5.2](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/v3.5.1...v3.5.2) - 2021-11-13
 
 ### Fixed
 
@@ -15,31 +15,31 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 - Remove `console.log` from `plugin.ts` [#72](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/72). Thanks to [@visualfanatic](https://github.com/visualfanatic) for this fix!
 
-## [3.5.1](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.5.0...3.5.0) - 2021-03-16
+## [3.5.1](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/v3.5.0...v3.5.1) - 2021-03-16
 
 ### Fixed
 
 - Remove `console.log` from `plugin.ts` [#72](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/72). Thanks to [@visualfanatic](https://github.com/visualfanatic) for this fix!
 
-## [3.5.0](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.4.1...3.5.0) - 2021-03-15
+## [3.5.0](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/v3.4.1...v3.5.0) - 2021-03-15
 
 ### Added
 
 - Copied webpack 5 types into `plugins.temp.types.ts` [#51](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/70). Thanks to [@Brian-McBride](https://github.com/Brian-McBride) for this addition!
 
-## [3.4.1](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.4.0...3.4.1) - 2021-03-13
+## [3.4.1](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/v3.4.0...v3.4.1) - 2021-03-13
 
 ### Fixed
 
 - Use prepare instead of postinstall for husky.
 
-## [3.4.0](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.3.0...3.4.0) - 2021-03-13
+## [3.4.0](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/v3.3.0...v3.4.0) - 2021-03-13
 
 ### Added
 
 - Support for Webpack 5, see [#51](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/66). Fixes [#50](https://github.com/dividab/tsconfig-paths-webpack-plugin/issues/61). Thanks to [@Brian-McBride](https://github.com/Brian-McBride) for this addition!
 
-## [3.3.0](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.2.0...3.3.0) - 2020-07-29
+## [3.3.0](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/3.2.0...v3.3.0) - 2020-07-29
 
 ### Added
 
