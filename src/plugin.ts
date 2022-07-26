@@ -4,8 +4,8 @@ import * as path from "path";
 import * as Options from "./options";
 import * as Logger from "./logger";
 import * as fs from "fs";
+import { ResolvePluginInstance, Resolver } from "webpack";
 import { ResolveRequest, ResolveContext } from "enhanced-resolve";
-import { ResolvePluginInstance, Resolver } from "./plugin.temp.types";
 
 type FileSystem = Resolver["fileSystem"];
 type TapAsyncCallback = (
@@ -210,14 +210,12 @@ export class TsconfigPathsPlugin implements ResolvePluginInstance {
         );
     } else if ("plugin" in resolver) {
       // This is the legacy (Webpack < 4.0.0) way of using the plugin system.
-      const legacyResolver = resolver as {
-        plugin: (source: string, cb: ResolverCallbackLegacy) => void;
-      };
+      const legacyResolver = (resolver as unknown) as LegacyResolver;
       legacyResolver.plugin(
         this.source,
         createPluginLegacy(
           this.matchPath,
-          resolver,
+          (resolver as unknown) as LegacyResolver,
           this.absoluteBaseUrl,
           this.target,
           this.extensions
