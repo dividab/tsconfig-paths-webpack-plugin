@@ -1,15 +1,17 @@
+import { ResolveOptions } from "webpack";
+
 export type LogLevel = "INFO" | "WARN" | "ERROR";
 
 export interface Options {
   readonly configFile: string;
-  readonly extensions: ReadonlyArray<string>;
+  readonly extensions: ResolveOptions["extensions"];
   readonly baseUrl: string | undefined;
   readonly silent: boolean;
   readonly logLevel: LogLevel;
   readonly logInfoToStdOut: boolean;
   readonly context: string | undefined;
   readonly colors: boolean;
-  readonly mainFields: string[];
+  readonly mainFields: ResolveOptions["mainFields"];
 }
 
 type ValidOptions = keyof Options;
