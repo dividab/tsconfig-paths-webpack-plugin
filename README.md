@@ -2,6 +2,7 @@
 
 [![npm version][version-image]][version-url]
 [![build][build-image]][build-url]
+[![Coverage Status][codecov-image]][codecov-url]
 [![code style: prettier][prettier-image]][prettier-url]
 [![MIT license][license-image]][license-url]
 
@@ -138,6 +139,8 @@ This project uses work done in the
 [version-url]: https://www.npmjs.com/package/tsconfig-paths-webpack-plugin
 [build-image]: https://github.com/dividab/tsconfig-paths-webpack-plugin/workflows/Build/badge.svg
 [build-url]: https://github.com/dividab/tsconfig-paths-webpack-plugin/actions?query=workflow%3ABuild+branch%3Amaster
+[codecov-image]: https://codecov.io/gh/dividab/tsconfig-paths-webpack-plugin/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/dividab/tsconfig-paths-webpack-plugin
 [prettier-image]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat
 [prettier-url]: https://github.com/prettier/prettier
 [license-image]: https://img.shields.io/github/license/jonaskello/tsconfig-paths-webpack-plugin.svg?style=flat
