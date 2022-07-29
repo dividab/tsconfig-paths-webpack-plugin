@@ -4,7 +4,7 @@ import * as path from "path";
 import * as Options from "./options";
 import * as Logger from "./logger";
 import * as fs from "fs";
-import { ResolvePluginInstance, Resolver } from "webpack";
+import { ResolveOptions, ResolvePluginInstance, Resolver } from "webpack";
 import { ResolveRequest, ResolveContext } from "enhanced-resolve";
 
 type FileSystem = Resolver["fileSystem"];
@@ -127,7 +127,7 @@ export class TsconfigPathsPlugin implements ResolvePluginInstance {
   log: Logger.Logger;
   baseUrl: string | undefined;
   absoluteBaseUrl: string;
-  extensions: ReadonlyArray<string>;
+  extensions: ResolveOptions["extensions"];
 
   matchPath: TsconfigPaths.MatchPathAsync;
 
@@ -160,7 +160,7 @@ export class TsconfigPathsPlugin implements ResolvePluginInstance {
       this.matchPath = TsconfigPaths.createMatchPathAsync(
         this.absoluteBaseUrl,
         loadResult.paths,
-        options.mainFields
+        options.mainFields as string[] | undefined
       );
     }
   }
@@ -231,7 +231,7 @@ function createPluginCallback(
   resolver: Resolver,
   absoluteBaseUrl: string,
   hook: Tapable,
-  extensions: ReadonlyArray<string>
+  extensions: ResolveOptions["extensions"]
 ): TapAsyncCallback {
   const fileExistAsync = createFileExistAsync(resolver.fileSystem);
   const readJsonAsync = createReadJsonAsync(resolver.fileSystem);
@@ -306,7 +306,7 @@ function createPluginLegacy(
   resolver: LegacyResolver,
   absoluteBaseUrl: string,
   target: string,
-  extensions: ReadonlyArray<string>
+  extensions: ResolveOptions["extensions"]
 ): ResolverCallbackLegacy {
   const fileExistAsync = createFileExistAsync(resolver.fileSystem);
   const readJsonAsync = createReadJsonAsync(resolver.fileSystem);
