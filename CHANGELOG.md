@@ -5,7 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this
 project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/v3.5.2...master)
+## [Unreleased](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/v4.0.0...master)
+
+## [4.0.0](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/v3.5.2...v4.0.0) - 2022-07-29
+
+- chore: update tsconfig-paths dependency [#90](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/90). Thanks to [@MichaelDeBoey ](https://github.com/MichaelDeBoey) for this PR!
+
+- Update webpack and remove temp types [#92](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/92). Thanks to [@hungtcs ](https://github.com/hungtcs) for this PR!
+
+- Eslint (#95)
+
+- Upgrade ci and jest (#96)
 
 ## [3.5.2](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/v3.5.1...v3.5.2) - 2021-11-13
 
