@@ -39,6 +39,7 @@ export function getOptions(rawOptions: {}): Options {
 /**
  * Validate the supplied loader options.
  * At present this validates the option names only; in future we may look at validating the values too
+ *
  * @param rawOptions
  */
 function validateOptions(rawOptions: {}): void {

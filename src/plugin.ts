@@ -117,6 +117,7 @@ export interface Callback {
   missing?: string;
 }
 
+// eslint-disable-next-line no-redeclare
 const getInnerRequest: getInnerRequest = require("enhanced-resolve/lib/getInnerRequest");
 
 export class TsconfigPathsPlugin implements ResolvePluginInstance {
@@ -278,7 +279,7 @@ function createPluginCallback(
           hook,
           newRequest as never,
           `Resolved request '${innerRequest}' to '${foundMatch}' using tsconfig.json paths mapping`,
-          // tslint:disable-next-line:no-any
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           createInnerContext({ ...(resolveContext as any) }),
           (err2: Error, result2: ResolveRequest): void => {
             // Pattern taken from:
@@ -292,7 +293,6 @@ function createPluginCallback(
               return callback(undefined, undefined);
             }
 
-            // tslint:disable-next-line:no-any
             callback(undefined, result2);
           }
         );
@@ -399,7 +399,7 @@ function readJson(
 function createReadJsonAsync(
   filesystem: FileSystem
 ): TsconfigPaths.ReadJsonAsync {
-  // tslint:disable-next-line:no-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (path2: string, callback2: (err?: Error, content?: any) => void) => {
     readJson(filesystem, path2, (err, json) => {
       // If error assume file does not exist
