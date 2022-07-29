@@ -29,7 +29,7 @@ describe(`TsconfigPathsPlugin`, () => {
     },
   };
 
-  it(`Can initialize the plugin`, async (done) => {
+  it(`Can initialize the plugin`, (done) => {
     const testPlugin = new TsconfigPathsPlugin({
       configFile: `${__dirname}/../../example/tsconfig.json`,
       logLevel: "INFO",
@@ -61,7 +61,7 @@ describe(`TsconfigPathsPlugin`, () => {
     });
   });
 
-  it(`Test to ensure Apply exists and is working`, async (done) => {
+  it(`Test to ensure Apply exists and is working`, (done) => {
     const webpackSettings: Configuration = {
       entry: `${__dirname}/../../example/src/index.ts`,
       target: "web",
