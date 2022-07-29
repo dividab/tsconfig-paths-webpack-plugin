@@ -124,7 +124,7 @@ export class TsconfigPathsPlugin implements ResolvePluginInstance {
   target: string = "resolve";
 
   log: Logger.Logger;
-  baseUrl: string;
+  baseUrl: string | undefined;
   absoluteBaseUrl: string;
   extensions: ReadonlyArray<string>;
 
