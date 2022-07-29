@@ -23,8 +23,12 @@
     "rimraf": "^3.0.2",
     "ts-jest": "^26.5.3",
     "ts-loader": "^8.0.18",
-    "tslint": "^5.20.1",
-    "tslint-immutable": "^6.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.22.0",
+    "@typescript-eslint/parser": "^5.22.0",
+    "eslint": "^8.14.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsdoc": "^39.2.9",
     "typescript": "^4.2.3",
     "webpack": "^5.65.0",
     "webpack-cli": "^4.5.0"
@@ -34,7 +38,7 @@
     "compile:example": "tsc -p example",
     "example": "yarn build && cd example && webpack && node custom-fs.js",
     "build": "rimraf lib && tsc -p src/tsconfig.lib.json",
-    "lint": "tslint -t msbuild './src/**/*.ts{,x}' -e './src/node_modules/**/*'",
+    "lint": "eslint \"./{src,tests}/**/*.ts{,x}\" --ext .js,.ts,.tsx -f visualstudio",
     "test": "jest",
     "verify": "yarn build && yarn lint",
     "preversion": "yarn verify",
@@ -44,7 +48,7 @@
     "node": ">=10.13.0"
   },
   "lint-staged": {
-    "*.{ts,tsx}": "tslint",
+    "*.{ts,tsx}": "eslint",
     "*.{ts,tsx,json,css}": "prettier --write"
   }
 }

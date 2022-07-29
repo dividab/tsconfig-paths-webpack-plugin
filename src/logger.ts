@@ -2,7 +2,7 @@ import { Console } from "console";
 import { Options } from "./options";
 import { Chalk } from "chalk";
 
-// tslint:disable-next-line:no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type InternalLoggerFunc = (whereToLog: any, message: string) => void;
 
 export type LoggerFunc = (message: string) => void;
@@ -23,7 +23,7 @@ enum LogLevel {
 const stderrConsole = new Console(process.stderr);
 const stdoutConsole = new Console(process.stdout);
 
-const doNothingLogger = (_message: string) => {
+const doNothingLogger = (_message: string): void => {
   /* Do nothing */
 };
 
@@ -37,7 +37,7 @@ const makeLoggerFunc = (options: Options): InternalLoggerFunc =>
 const makeExternalLogger = (
   loaderOptions: Options,
   logger: InternalLoggerFunc
-) => (message: string) =>
+): LoggerFunc => (message: string) =>
   logger(
     loaderOptions.logInfoToStdOut ? stdoutConsole : stderrConsole,
     message
@@ -47,7 +47,7 @@ const makeLogInfo = (
   options: Options,
   logger: InternalLoggerFunc,
   green: Chalk
-) =>
+): LoggerFunc =>
   LogLevel[options.logLevel] <= LogLevel.INFO
     ? (message: string) =>
         logger(
@@ -60,7 +60,7 @@ const makeLogError = (
   options: Options,
   logger: InternalLoggerFunc,
   red: Chalk
-) =>
+): LoggerFunc =>
   LogLevel[options.logLevel] <= LogLevel.ERROR
     ? (message: string) => logger(stderrConsole, red(message))
     : doNothingLogger;
@@ -69,7 +69,7 @@ const makeLogWarning = (
   options: Options,
   logger: InternalLoggerFunc,
   yellow: Chalk
-) =>
+): LoggerFunc =>
   LogLevel[options.logLevel] <= LogLevel.WARN
     ? (message: string) => logger(stderrConsole, yellow(message))
     : doNothingLogger;

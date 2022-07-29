@@ -1,6 +1,5 @@
 export { TsconfigPathsPlugin } from "./plugin";
 import { TsconfigPathsPlugin } from "./plugin";
-// tslint:disable-next-line:no-default-export
 export default TsconfigPathsPlugin;
 
 // This is to make it importable in all these ways
