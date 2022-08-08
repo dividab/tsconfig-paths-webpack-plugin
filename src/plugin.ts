@@ -160,7 +160,7 @@ export class TsconfigPathsPlugin implements ResolvePluginInstance {
       this.matchPath = TsconfigPaths.createMatchPathAsync(
         this.absoluteBaseUrl,
         loadResult.paths,
-        options.mainFields as string[] | undefined
+        options.mainFields
       );
     }
   }
