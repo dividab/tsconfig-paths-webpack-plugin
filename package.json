@@ -10,7 +10,7 @@
   "dependencies": {
     "chalk": "^4.1.0",
     "enhanced-resolve": "^5.7.0",
-    "tsconfig-paths": "^4.0.0"
+    "tsconfig-paths": "^4.1.0"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",
