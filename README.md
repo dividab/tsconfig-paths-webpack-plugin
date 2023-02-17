@@ -100,6 +100,10 @@ This is important if you read from stdout or stderr and for proper error
 handling. The default value ensures that you can read from stdout e.g. via pipes
 or you use webpack -j to generate json output.
 
+#### references _(string[]) (default=undefined)
+
+Support for [Typescript Project References](https://www.typescriptlang.org/docs/handbook/project-references.html).
+
 ## Typescript support
 
 This package has typescript typings included. If your webpack config is using typescript, you can use this syntax to import the default export:

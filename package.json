@@ -35,8 +35,8 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "compile:example": "tsc -p example",
-    "example": "yarn build && cd example && webpack && node custom-fs.js",
+    "compile:example": "tsc -p examples/example",
+    "example": "yarn build && cd examples/example && webpack && node custom-fs.js",
     "build": "rimraf lib && tsc -p .",
     "lint": "eslint \"./{src,tests}/**/*.ts{,x}\" --ext .js,.ts,.tsx -f visualstudio",
     "test": "jest",

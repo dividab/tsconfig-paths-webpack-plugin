@@ -6,9 +6,14 @@
     "outDir": "./js_out",
     "baseUrl": ".",
     "paths": {
-      "foo": ["./src/mapped/foo"],
-      "bar/*": ["./src/mapped/bar/*"],
+      "foo": ["src/mapped/bar"],
+      "bar/*": ["src/mapped/foo/*"],
       "*": ["./src/mapped/star/*"]
     }
-  }
+  },
+  "references": [
+    {
+      "path": "../example/tsconfig.json"
+    }
+  ]
 }
