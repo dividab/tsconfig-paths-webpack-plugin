@@ -5,13 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this
 project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/v4.0.0...master)
+## [Unreleased](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/v4.0.1...master)
+
+## [4.0.1](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/v4.0.0...v4.0.1) - 2023-03-09
+
+- Update tsconfig-paths [#103](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/103). Thanks to [@rippedspine](https://github.com/rippedspine) for this PR!
 
 ## [4.0.0](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/v3.5.2...v4.0.0) - 2022-07-29
 
-- chore: update tsconfig-paths dependency [#90](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/90). Thanks to [@MichaelDeBoey ](https://github.com/MichaelDeBoey) for this PR!
+- chore: update tsconfig-paths dependency [#90](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/90). Thanks to [@MichaelDeBoey](https://github.com/MichaelDeBoey) for this PR!
 
-- Update webpack and remove temp types [#92](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/92). Thanks to [@hungtcs ](https://github.com/hungtcs) for this PR!
+- Update webpack and remove temp types [#92](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/92). Thanks to [@hungtcs](https://github.com/hungtcs) for this PR!
 
 - Eslint (#95)
 
