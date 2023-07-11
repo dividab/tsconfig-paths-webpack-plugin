@@ -7,7 +7,7 @@ describe(`TsconfigPathsPlugin`, () => {
   const SETTINGS: Configuration = {
     mode: "development",
     context: path.resolve(__dirname, "src"),
-    entry: `${__dirname}/../../example/src/index.ts`,
+    entry: `${__dirname}/../../examples/example/src/index.ts`,
     output: {
       path: path.join(__dirname, "../../temp"),
       filename: "bundle.js",
@@ -31,7 +31,7 @@ describe(`TsconfigPathsPlugin`, () => {
 
   it(`Can initialize the plugin`, (done) => {
     const testPlugin = new TsconfigPathsPlugin({
-      configFile: `${__dirname}/../../example/tsconfig.json`,
+      configFile: `${__dirname}/../../examples/example/tsconfig.json`,
       logLevel: "INFO",
       extensions: [".ts", ".tsx"],
       mainFields: ["browser", "main"],
@@ -63,7 +63,7 @@ describe(`TsconfigPathsPlugin`, () => {
 
   it(`Test to ensure Apply exists and is working`, (done) => {
     const webpackSettings: Configuration = {
-      entry: `${__dirname}/../../example/src/index.ts`,
+      entry: `${__dirname}/../../examples/example/src/index.ts`,
       target: "web",
       output: {
         path: path.join(__dirname, "../../temp"),
@@ -86,7 +86,7 @@ describe(`TsconfigPathsPlugin`, () => {
         ],
         plugins: [
           new TsconfigPathsPlugin({
-            configFile: `${__dirname}/../../example/tsconfig.json`,
+            configFile: `${__dirname}/../../examples/example/tsconfig.json`,
           }),
         ],
       },
@@ -114,6 +114,40 @@ describe(`TsconfigPathsPlugin`, () => {
       expect(stats).toBeDefined();
       const details = stats?.toJson();
       expect(details?.errorsCount).toEqual(0);
+      done();
+    });
+  });
+
+  it(`Resolves project references`, (done) => {
+    const testPlugin = new TsconfigPathsPlugin({
+      configFile: `${__dirname}/../../examples/referenceExample/tsconfig.json`,
+      logLevel: "INFO",
+      extensions: [".ts", ".tsx"],
+      mainFields: ["browser", "main"],
+      references: [`${__dirname}/../../examples/example/tsconfig.json`],
+    });
+    expect(testPlugin).toBeInstanceOf(TsconfigPathsPlugin);
+
+    const testSettings: Configuration = {
+      ...SETTINGS,
+      resolve: {
+        extensions: [".ts", ".tsx", ".js"],
+        plugins: [testPlugin],
+      },
+    };
+
+    const compiler = webpack(testSettings);
+
+    compiler.run((err, stats) => {
+      if (err) {
+        done(err);
+        return;
+      }
+      expect(stats).toBeDefined();
+
+      const details = stats?.toJson();
+      expect(details?.errorsCount).toEqual(0);
+      // TODO There should probably be a test that verifies the stats match what is expected
       done();
     });
   });
