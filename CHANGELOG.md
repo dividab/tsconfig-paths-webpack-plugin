@@ -7,6 +7,8 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/v4.0.1...master)
 
+- Remove warning on missing baseUrl, which tsconfig-paths ^4.0.0 doesn't require anymore [#105](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/105).
+
 ## [4.0.1](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/v4.0.0...v4.0.1) - 2023-03-09
 
 - Update tsconfig-paths [#103](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/103). Thanks to [@rippedspine](https://github.com/rippedspine) for this PR!

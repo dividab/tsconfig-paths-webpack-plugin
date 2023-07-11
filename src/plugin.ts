@@ -173,16 +173,6 @@ export class TsconfigPathsPlugin implements ResolvePluginInstance {
       return;
     }
 
-    const { baseUrl } = this;
-
-    if (!baseUrl) {
-      // Nothing to do if there is no baseUrl
-      this.log.logWarning(
-        "tsconfig-paths-webpack-plugin: Found no baseUrl in tsconfig.json, not applying tsconfig-paths-webpack-plugin"
-      );
-      return;
-    }
-
     // The file system only exists when the plugin is in the resolve context. This means it's also properly placed in the resolve.plugins array.
     // If not, we should warn the user that this plugin should be placed in resolve.plugins and not the plugins array of the root config for example.
     // This should hopefully prevent issues like: https://github.com/dividab/tsconfig-paths-webpack-plugin/issues/9
