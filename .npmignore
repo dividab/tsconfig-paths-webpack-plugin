@@ -9,4 +9,4 @@ thumbs.db
 .editorconfig
 .gitignore
 .npmignore
-base-tsconfig.json
+tsconfig.json
