@@ -5,9 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this
 project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/v4.0.1...master)
+## [Unreleased](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/v4.1.0...master)
 
-- Remove warning on missing baseUrl, which tsconfig-paths ^4.0.0 doesn't require anymore [#105](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/105).
+## [4.1.0](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/v4.0.1...v4.1.0) - 2023-07-11
+
+### Added
+
+- Remove warning on missing baseUrl, which tsconfig-paths ^4.0.0 doesn't require anymore [#105](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/105). Thanks to [@sverweij](https://github.com/sverweij) for this PR!
+
+- Add support for multiple tsconfig paths [#79](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/79). Thanks to [@lynch16](https://github.com/lynch16) for this PR!
+
+### Fixed
+
+- Update tsconfig file name in .npmignore [#100](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/100). Thanks to [@tcd](https://github.com/tcd) for this PR!
+
 
 ## [4.0.1](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/v4.0.0...v4.0.1) - 2023-03-09
 
