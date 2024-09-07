@@ -5,6 +5,7 @@ import * as Options from "./options";
 import * as Logger from "./logger";
 import * as fs from "fs";
 import { ResolvePluginInstance, Resolver } from "webpack";
+import { AsyncSeriesBailHook } from "tapable";
 import { ResolveRequest, ResolveContext } from "enhanced-resolve";
 
 type FileSystem = Resolver["fileSystem"];
@@ -46,7 +47,10 @@ export type doResolve = (
   callback: Callback
 ) => void;
 
-export type ReadJsonCallback = (error: Error | undefined, result?: {}) => void;
+export type ReadJsonCallback = (
+  error: Error | undefined | null,
+  result?: {}
+) => void;
 
 export type ReadJson = (path2: string, callback: ReadJsonCallback) => void;
 
@@ -120,7 +124,9 @@ export interface Callback {
 // eslint-disable-next-line no-redeclare
 const getInnerRequest: getInnerRequest = require("enhanced-resolve/lib/getInnerRequest");
 
-export class TsconfigPathsPlugin implements ResolvePluginInstance {
+export class TsconfigPathsPlugin
+  implements Exclude<ResolvePluginInstance, Function>
+{
   source: string = "described-resolve";
   target: string = "resolve";
 
@@ -216,12 +222,12 @@ export class TsconfigPathsPlugin implements ResolvePluginInstance {
         );
     } else if ("plugin" in resolver) {
       // This is the legacy (Webpack < 4.0.0) way of using the plugin system.
-      const legacyResolver = (resolver as unknown) as LegacyResolver;
+      const legacyResolver = resolver as unknown as LegacyResolver;
       legacyResolver.plugin(
         this.source,
         createPluginLegacy(
           this.matchPath,
-          (resolver as unknown) as LegacyResolver,
+          resolver as unknown as LegacyResolver,
           this.absoluteBaseUrl,
           this.target,
           this.extensions
@@ -251,7 +257,10 @@ function createPluginCallback(
   baseMatchPath: TsconfigPaths.MatchPathAsync,
   resolver: Resolver,
   baseAbsoluteBaseUrl: string,
-  hook: Tapable,
+  hook: AsyncSeriesBailHook<
+    [ResolveRequest, ResolveContext],
+    null | ResolveRequest
+  >,
   extensions: ReadonlyArray<string>
 ): TapAsyncCallback {
   const fileExistAsync = createFileExistAsync(resolver.fileSystem);
@@ -420,7 +429,7 @@ function createPluginLegacy(
 }
 
 function readJson(
-  fileSystem: FileSystem,
+  fileSystem: FileSystem | LegacyResolverFileSystem,
   path2: string,
   callback: ReadJsonCallback
 ): void {
@@ -447,7 +456,7 @@ function readJson(
 }
 
 function createReadJsonAsync(
-  filesystem: FileSystem
+  filesystem: FileSystem | LegacyResolverFileSystem
 ): TsconfigPaths.ReadJsonAsync {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (path2: string, callback2: (err?: Error, content?: any) => void) => {
@@ -463,7 +472,7 @@ function createReadJsonAsync(
 }
 
 function createFileExistAsync(
-  filesystem: FileSystem
+  filesystem: FileSystem | LegacyResolverFileSystem
 ): TsconfigPaths.FileExistsAsync {
   return (
     path2: string,
