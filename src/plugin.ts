@@ -6,18 +6,18 @@ import * as Logger from "./logger";
 import * as fs from "fs";
 import { ResolvePluginInstance, Resolver } from "webpack";
 import { AsyncSeriesBailHook } from "tapable";
-import { ResolveRequest, ResolveContext } from "enhanced-resolve";
+import { ResolveContext, ResolveRequest } from "enhanced-resolve";
+
+type TapAsyncCallback = Parameters<
+  AsyncSeriesBailHook<
+    [ResolveRequest, ResolveContext],
+    null | ResolveRequest
+  >["tapAsync"]
+>[1];
+
+type TapAsyncInnerCallback = Parameters<TapAsyncCallback>[2];
 
 type FileSystem = Resolver["fileSystem"];
-type TapAsyncCallback = (
-  request: ResolveRequest,
-  context: ResolveContext,
-  callback: TapAsyncInnerCallback
-) => void;
-type TapAsyncInnerCallback = (
-  error?: Error | null | false,
-  result?: null | ResolveRequest
-) => void;
 
 export interface LegacyResolverPlugin {
   readonly apply: (resolver: LegacyResolver) => void;
@@ -29,7 +29,12 @@ export interface LegacyResolver {
   readonly doResolve: doResolveLegacy | doResolve;
   readonly join: (relativePath: string, innerRequest: Request) => Request;
   readonly fileSystem: LegacyResolverFileSystem;
-  readonly getHook: (hook: string) => Tapable;
+  readonly getHook: (
+    hook: string
+  ) => AsyncSeriesBailHook<
+    [ResolveRequest, ResolveContext],
+    null | ResolveRequest
+  >;
 }
 
 export type doResolveLegacy = (
@@ -40,7 +45,10 @@ export type doResolveLegacy = (
 ) => void;
 
 export type doResolve = (
-  hook: Tapable,
+  hook: AsyncSeriesBailHook<
+    [ResolveRequest, ResolveContext],
+    null | ResolveRequest
+  >,
   req: Request,
   message: string,
   resolveContext: LegacyResolveContext,
@@ -60,17 +68,6 @@ export interface LegacyResolveContext {
   log?: string;
   stack?: string;
   missing?: string;
-}
-
-export interface Tapable {
-  readonly tapAsync: (
-    options: TapableOptions,
-    callback: TapAsyncCallback
-  ) => void;
-}
-
-export interface TapableOptions {
-  readonly name: string;
 }
 
 export type ResolverCallbackLegacy = (
