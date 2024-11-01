@@ -9,7 +9,7 @@ export interface Options {
   readonly logInfoToStdOut: boolean;
   readonly context: string | undefined;
   readonly colors: boolean;
-  readonly mainFields: string[];
+  readonly mainFields: (string | string[])[];
   readonly references: string[] | undefined;
 }
 
