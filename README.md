@@ -141,8 +141,8 @@ This project uses work done in the
 
 [version-image]: https://img.shields.io/npm/v/tsconfig-paths-webpack-plugin.svg?style=flat
 [version-url]: https://www.npmjs.com/package/tsconfig-paths-webpack-plugin
-[build-image]: https://github.com/dividab/tsconfig-paths-webpack-plugin/workflows/Build/badge.svg
-[build-url]: https://github.com/dividab/tsconfig-paths-webpack-plugin/actions?query=workflow%3ABuild+branch%3Amaster
+[build-image]: https://github.com/dividab/tsconfig-paths-webpack-plugin/workflows/CI/badge.svg
+[build-url]: https://github.com/dividab/tsconfig-paths-webpack-plugin/actions/workflows/ci.yml?query=branch%3Amaster
 [codecov-image]: https://codecov.io/gh/dividab/tsconfig-paths-webpack-plugin/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/dividab/tsconfig-paths-webpack-plugin
 [prettier-image]: https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat
