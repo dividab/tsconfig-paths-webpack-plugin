@@ -5,7 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this
 project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/v4.1.0...master)
+## [Unreleased](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/v4.2.0...master)
+
+## [4.2.0](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/v4.1.0...v4.2.0) - 2024-11-15
+
+### Added
+
+- Update typing for webpack@^5.94.0 [#110](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/110). Thanks to [@rostislav-simonik](https://github.com/rostislav-simonik) for this PR! 
+
+### Fixed
+
+- Fix typing of mainFields option [#105](https://github.com/dividab/tsconfig-paths-webpack-plugin/pull/106). Thanks to [@chenjiahan](https://github.com/chenjiahan) for this PR! 
 
 ## [4.1.0](https://github.com/dividab/tsconfig-paths-webpack-plugin/compare/v4.0.1...v4.1.0) - 2023-07-11
 
